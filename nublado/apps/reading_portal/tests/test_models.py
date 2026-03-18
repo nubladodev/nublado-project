@@ -1,5 +1,2 @@
-
-
-
 class TestReadingPortal:
     pass

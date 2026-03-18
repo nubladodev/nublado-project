@@ -49,15 +49,12 @@ class PortalReadingQuerySet(models.QuerySet):
     """
     QuerySet for PortalReadingManager
     """
+
     def with_portal(self):
         return self.select_related("reading_portal")
 
     def for_portal(self, portal):
-        return (
-            self.with_portal()
-            .filter(reading_portal=portal)
-            .order_by("language")
-        )
+        return self.with_portal().filter(reading_portal=portal).order_by("language")
 
 
 class PortalReadingManager(models.Manager.from_queryset(PortalReadingQuerySet)):
@@ -70,6 +67,7 @@ class ReadingSubmissionQuerySet(models.QuerySet):
     """
     QuerySet for ReadingSubmission
     """
+
     def with_portal(self):
         """
         Select related reading portal through portal reading.
@@ -86,10 +84,8 @@ class ReadingSubmissionQuerySet(models.QuerySet):
         return self.filter(reading_status=self.model.ReadingStatus.PENDING)
 
     def for_portal(self, portal):
-        return (
-            self.with_portal()
-            .filter(portal_reading__reading_portal=portal)
-        )
+        return self.with_portal().filter(portal_reading__reading_portal=portal)
+
 
 class ReadingSubmissionManager(models.Manager.from_queryset(ReadingSubmissionQuerySet)):
     """

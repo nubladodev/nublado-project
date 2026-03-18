@@ -43,12 +43,12 @@ async def on_success(update: Update, context: ContextTypes.DEFAULT_TYPE, result)
             num_points=num_points,
             points_name=_(POINTS_NAME),
             receiver_name=receiver_name,
-            receiver_points=receiver_member.points_map
+            receiver_points=receiver_member.points_map,
         )
         await context.bot.send_message(
             chat_id=tg_chat.id,
             text=str(bot_message),
-            reply_to_message_id=tg_message.message_id
+            reply_to_message_id=tg_message.message_id,
         )
     else:
         bot_message = BOT_MESSAGES["give_point"].format(
@@ -56,12 +56,12 @@ async def on_success(update: Update, context: ContextTypes.DEFAULT_TYPE, result)
             sender_points=sender_member.points,
             points_name=_(POINT_NAME),
             receiver_name=receiver_name,
-            receiver_points=receiver_member.points
+            receiver_points=receiver_member.points,
         )
         await context.bot.send_message(
             chat_id=tg_chat.id,
             text=str(bot_message),
-            reply_to_message_id=tg_message.message_id
+            reply_to_message_id=tg_message.message_id,
         )
 
 
@@ -70,20 +70,18 @@ async def on_error(update, context, error):
     tg_message = update.effective_message
 
     if error == PointTransferError.SELF:
-        bot_message = BOT_MESSAGES["no_give_self"].format(
-            points_name=_(POINTS_NAME)
-        )
+        bot_message = BOT_MESSAGES["no_give_self"].format(points_name=_(POINTS_NAME))
         await context.bot.send_message(
             chat_id=tg_chat.id,
             text=str(bot_message),
-            reply_to_message_id=tg_message.message_id
+            reply_to_message_id=tg_message.message_id,
         )
     elif error == PointTransferError.BOT:
         bot_message = BOT_MESSAGES["no_give_bot"].format(points_name=_(POINTS_NAME))
         await context.bot.send_message(
             chat_id=tg_chat.id,
             text=str(bot_message),
-            reply_to_message_id=tg_message.message_id
+            reply_to_message_id=tg_message.message_id,
         )
 
 

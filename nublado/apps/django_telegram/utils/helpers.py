@@ -1,8 +1,6 @@
-from telegram import Update, User, Chat, ChatMember
-from telegram.ext import ContextTypes
+from telegram import Chat, ChatMember
 from telegram.constants import ChatType, ChatMemberStatus
 
-from django.utils.translation import override
 
 
 # Helper functions

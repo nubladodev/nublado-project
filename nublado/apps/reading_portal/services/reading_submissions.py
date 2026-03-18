@@ -44,7 +44,7 @@ async def submit_reading_service(update: Update, context: ContextTypes.DEFAULT_T
 
     try:
         reading = await PortalReading.objects.with_portal().aget(
-            reading_portal=portal, 
+            reading_portal=portal,
             message_id=text_message.message_id,
         )
     except PortalReading.DoesNotExist:
@@ -57,8 +57,7 @@ async def submit_reading_service(update: Update, context: ContextTypes.DEFAULT_T
 
     # Delete old reading submission if this is a resubmission.
     old_submission = await (
-        ReadingSubmission.objects
-        .pending()
+        ReadingSubmission.objects.pending()
         .filter(
             portal_reading=reading,
             member=member,
@@ -70,8 +69,7 @@ async def submit_reading_service(update: Update, context: ContextTypes.DEFAULT_T
         # Delete the old voice message
         try:
             await bot.delete_message(
-                chat_id=tg_chat.id,
-                message_id=old_submission.message_id
+                chat_id=tg_chat.id, message_id=old_submission.message_id
             )
         except BadRequest:
             # Message may already be deleted.
@@ -81,8 +79,7 @@ async def submit_reading_service(update: Update, context: ContextTypes.DEFAULT_T
         if old_submission.reply_message_id:
             try:
                 await bot.delete_message(
-                    chat_id=tg_chat.id,
-                    message_id=old_submission.reply_message_id
+                    chat_id=tg_chat.id, message_id=old_submission.reply_message_id
                 )
             except BadRequest:
                 pass
@@ -121,11 +118,10 @@ async def review_reading_service(update: Update, context: ContextTypes.DEFAULT_T
     if not voice_message.voice:
         return None
 
-    # Check if voice message is a pending reading submission. 
+    # Check if voice message is a pending reading submission.
     try:
         reading_submission = await (
-            ReadingSubmission.objects
-            .with_user()
+            ReadingSubmission.objects.with_user()
             .pending()
             .for_portal(portal)
             .aget(
@@ -141,7 +137,9 @@ async def review_reading_service(update: Update, context: ContextTypes.DEFAULT_T
     return reading_submission
 
 
-async def get_pending_readings_service(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def get_pending_readings_service(
+    update: Update, context: ContextTypes.DEFAULT_TYPE
+):
     """
     Return pending reading submissions for the currently open
     Reading Portal.
@@ -156,14 +154,11 @@ async def get_pending_readings_service(update: Update, context: ContextTypes.DEF
     except ReadingPortal.DoesNotExist:
         raise NoOpenPortal()
 
-    pending_readings = ( 
-        ReadingSubmission.objects
-        .with_portal()
+    pending_readings = (
+        ReadingSubmission.objects.with_portal()
         .with_user()
         .pending()
-        .filter(
-            portal_reading__reading_portal_id=portal.id
-        )
+        .filter(portal_reading__reading_portal_id=portal.id)
     )
 
     return pending_readings

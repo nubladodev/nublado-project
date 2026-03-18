@@ -26,7 +26,7 @@ class HandlerPolicy(ABC):
         await context.bot.send_message(
             chat_id=tg_chat.id,
             text=str(message),
-            reply_to_message_id=tg_message.message_id
+            reply_to_message_id=tg_message.message_id,
         )
 
     async def _reply_and_block(
@@ -38,7 +38,7 @@ class HandlerPolicy(ABC):
         await context.bot.send_message(
             chat_id=tg_chat.id,
             text=str(message),
-            reply_to_message_id=tg_message.message_id
+            reply_to_message_id=tg_message.message_id,
         )
         return False
 
@@ -100,7 +100,8 @@ class AdminOnly(HandlerPolicy):
             tg_member = await context.bot.get_chat_member(tg_chat.id, tg_user.id)
         except Exception:
             return await self._reply_and_block(
-                update, context, 
+                update,
+                context,
             )
 
         if not _is_admin(tg_member):

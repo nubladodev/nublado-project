@@ -32,8 +32,8 @@ class TelegramUser(TimestampModel):
     @property
     def display_name(self):
         if self.username:
-            name =  f"@{self.username}"
-        else: 
+            name = f"@{self.username}"
+        else:
             if self.last_name:
                 name = f"{self.first_name} {self.last_name}"
             else:

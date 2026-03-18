@@ -11,7 +11,9 @@ from ..exceptions import NoDraftPortal, NoOpenPortal, OpenPortalExists, EmptyPor
 from .formatting import format_portal_intro, format_portal_closed
 
 
-async def list_draft_portals_service(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def list_draft_portals_service(
+    update: Update, context: ContextTypes.DEFAULT_TYPE
+):
     tg_chat = update.effective_chat
 
     chat = await TelegramChat.objects.aget_or_create_from_telegram_chat(tg_chat)
@@ -24,7 +26,7 @@ async def open_portal_service(
     update: Update,
     context: ContextTypes.DEFAULT_TYPE,
     slug: str = None,
-    notify: bool = False
+    notify: bool = False,
 ):
     """
     Open the next draft portal for the given Telegram chat.
@@ -50,7 +52,7 @@ async def open_portal_service(
             await context.bot.send_message(
                 chat_id=tg_chat.id,
                 text=str(_("reading_portal.error.portal_not_found")),
-                reply_to_message_id=tg_message.message_id
+                reply_to_message_id=tg_message.message_id,
             )
             return
     else:
@@ -132,7 +134,7 @@ async def close_open_portal_service(
             )
         except BadRequest:
             pass
-    
+
         try:
             closed_message = await bot.send_message(
                 chat_id=tg_chat.id,
@@ -153,4 +155,3 @@ async def close_open_portal_service(
         message_id=closed_message.message_id,
         disable_notification=not notify,
     )
-

@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 
 class ReadingPortalError(Exception):
     """Base exception for Reading Portal domain."""
+
     default_message = _("Reading Portal error")
 
     def __init__(self, message=None):

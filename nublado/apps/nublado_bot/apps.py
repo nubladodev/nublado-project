@@ -6,7 +6,7 @@ from telegram.ext import (
     Defaults,
     MessageHandler,
     CallbackQueryHandler,
-    filters
+    filters,
 )
 from telegram.constants import ParseMode
 
@@ -98,7 +98,7 @@ class NubladoBotConfig(AppConfig):
                 open_portal_callback,
                 pattern="^open_portal:",
             ),
-            group=HANDLER_GROUP
+            group=HANDLER_GROUP,
         )
         app.add_handler(
             CommandHandler(
@@ -129,10 +129,7 @@ class NubladoBotConfig(AppConfig):
             group=HANDLER_GROUP,
         )
         app.add_handler(
-            MessageHandler(
-                filters.VOICE & filters.REPLY,
-                handle_voice_submission  
-            ),
+            MessageHandler(filters.VOICE & filters.REPLY, handle_voice_submission),
             group=HANDLER_GROUP,
         )
 

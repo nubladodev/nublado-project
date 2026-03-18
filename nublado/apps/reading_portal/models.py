@@ -8,7 +8,11 @@ from django.utils.translation import gettext_lazy as _
 from django_nublado_core.models import TimestampModel, LanguageModel
 from django_telegram.models import TelegramChat, TelegramGroupMember
 
-from .managers import ReadingPortalManager, PortalReadingManager, ReadingSubmissionManager
+from .managers import (
+    ReadingPortalManager,
+    PortalReadingManager,
+    ReadingSubmissionManager,
+)
 
 # Constant to keep the "open" value consistent in the meta constraint and in the choices enum.
 PORTAL_OPEN = "open"
@@ -124,13 +128,10 @@ class ReadingPortal(TimestampModel):
 
     async def open_portal(self):
         if not self.has_readings:
-            raise ValidationError(
-                "A Reading Portal must have at least one reading."
-            )
+            raise ValidationError("A Reading Portal must have at least one reading.")
 
         self.portal_status = self.PortalStatus.OPEN
         await self.asave(update_fields=["portal_status"])
-
 
     # def members_incomplete_readings(self):
     #     """
@@ -182,7 +183,7 @@ class ReadingPortal(TimestampModel):
 
     # def non_participants(self):
     #     """
-    #     Return active members who haven't submitted any readings for 
+    #     Return active members who haven't submitted any readings for
     #     this Reading Portal session.
     #     """
     #     members = TelegramGroupMember.objects.filter(
@@ -194,7 +195,7 @@ class ReadingPortal(TimestampModel):
     # # Queue helpers
     # def pending_readings(self, language: str):
     #     """
-    #     Return pending reading submissions for the given language, 
+    #     Return pending reading submissions for the given language,
     #     ordered by submission time.
     #     """
     #     return self.reading_submissions.filter(

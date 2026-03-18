@@ -35,7 +35,7 @@ async def set_bot_language(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.send_message(
             chat_id=tg_chat.id,
             text=str(bot_message),
-            reply_to_message_id=tg_message.message_id
+            reply_to_message_id=tg_message.message_id,
         )
         return
 
@@ -45,11 +45,10 @@ async def set_bot_language(update: Update, context: ContextTypes.DEFAULT_TYPE):
         bot_message = BOT_MESSAGES["bot_language_already_active"].format(
             language=_(settings.LANGUAGES_DICT[language_code])
         )
-
         await context.bot.send_message(
             chat_id=tg_chat.id,
             text=str(bot_message),
-            reply_to_message_id=tg_message.message_id
+            reply_to_message_id=tg_message.message_id,
         )
         return
 
@@ -64,6 +63,5 @@ async def set_bot_language(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.send_message(
             chat_id=tg_chat.id,
             text=str(bot_message),
-            reply_to_message_id=tg_message.message_id
+            reply_to_message_id=tg_message.message_id,
         )
-

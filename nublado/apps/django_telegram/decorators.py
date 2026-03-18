@@ -10,7 +10,9 @@ from .utils.language import get_context_language
 
 def with_language(handler):
     @wraps(handler)
-    async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE, *args, **kwargs):
+    async def wrapper(
+        update: Update, context: ContextTypes.DEFAULT_TYPE, *args, **kwargs
+    ):
         language_code = get_context_language(context)
 
         with override(language_code):

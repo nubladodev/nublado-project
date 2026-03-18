@@ -1,7 +1,9 @@
 from telegram.ext import Application, Defaults
 
 
-def create_app(bot_token, post_init=None, defaults: Defaults | None = None) -> Application:
+def create_app(
+    bot_token, post_init=None, defaults: Defaults | None = None
+) -> Application:
 
     builder = Application.builder().token(bot_token)
 

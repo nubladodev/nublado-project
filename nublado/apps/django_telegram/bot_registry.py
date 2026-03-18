@@ -32,10 +32,10 @@ class BotRegistry:
     def get_all(self) -> dict[str, Application]:
         return self._apps
 
-    def in_registry(self, name:str):
+    def in_registry(self, name: str):
         return name in self._apps
 
-    def is_initialized(self, name:str):
+    def is_initialized(self, name: str):
         return name in self._initialized
 
     async def ensure_initialized(self, name: str):
