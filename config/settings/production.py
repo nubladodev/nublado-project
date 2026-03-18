@@ -2,7 +2,7 @@ import dj_database_url
 
 from .base import *
 
-PROJECT_DOMAIN = "https://nubladoproject.onrender.com/"
+PROJECT_DOMAIN = "https://nubladoproject-ms5s.onrender.com/"
 
 DEBUG = False
 MIDDLEWARE += [
