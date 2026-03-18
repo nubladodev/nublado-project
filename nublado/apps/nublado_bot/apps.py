@@ -69,28 +69,35 @@ class NubladoBotConfig(AppConfig):
         app.add_handler(
             CommandHandler(
                 "start",
-                with_policies(PrivateOnly)(start),
+                with_policies(PrivateOnly)(
+                    with_language(start)
+                ),
             ),
             group=HANDLER_GROUP,
         )
         app.add_handler(
             CommandHandler(
                 "hello",
-                with_policies(GroupOnly)(hello),
+                with_policies(GroupOnly)(
+                    with_language(hello),
+                )
             ),
             group=HANDLER_GROUP,
         )
         app.add_handler(
             CommandHandler(
                 "set_bot_language",
-                with_policies(GroupOnly, AdminOnly)(set_bot_language),
+                with_policies(GroupOnly, AdminOnly)(
+                    with_language(set_bot_language)),
             ),
             group=HANDLER_GROUP,
         )
         app.add_handler(
             CommandHandler(
                 "show_portals",
-                with_policies(GroupOnly)(list_draft_portals),
+                with_policies(GroupOnly)(
+                    with_language(list_draft_portals),
+                )
             ),
             group=HANDLER_GROUP,
         )
@@ -104,28 +111,36 @@ class NubladoBotConfig(AppConfig):
         app.add_handler(
             CommandHandler(
                 "open_portal",
-                with_policies(GroupOnly)(open_portal),
+                with_policies(GroupOnly)(
+                    with_language(open_portal),
+                )
             ),
             group=HANDLER_GROUP,
         )
         app.add_handler(
             CommandHandler(
                 "close_portal",
-                with_policies(GroupOnly, GroupOwnerOnly)(close_portal),
+                with_policies(GroupOnly, GroupOwnerOnly)(
+                    with_language(close_portal),
+                )
             ),
             group=HANDLER_GROUP,
         )
         app.add_handler(
             CommandHandler(
                 "reviewed",
-                with_policies(GroupOnly)(review_reading),
+                with_policies(GroupOnly)(
+                    with_language(review_reading),
+                )
             ),
             group=HANDLER_GROUP,
         )
         app.add_handler(
             CommandHandler(
                 "pending_readings",
-                with_policies(GroupOnly)(pending_readings),
+                with_policies(GroupOnly)(
+                    with_language(pending_readings),
+                )
             ),
             group=HANDLER_GROUP,
         )

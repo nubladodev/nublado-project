@@ -14,7 +14,6 @@ from django.utils.translation import gettext_lazy as _
 from django_telegram.utils.helpers import message_link
 from django_telegram.utils.telegram import delete_command
 from django_telegram.utils.formatting import user_display_name
-from django_telegram.decorators import with_language
 from django_telegram.jobs import delete_message_job
 
 from .exceptions import ReadingPortalError, NoPendingReading
@@ -82,7 +81,6 @@ async def close_portal(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await delete_command(update)
 
 
-@with_language
 async def list_draft_portals(update: Update, context: ContextTypes.DEFAULT_TYPE):
     tg_chat = update.effective_chat
     tg_message = update.effective_message
@@ -159,7 +157,6 @@ async def handle_voice_submission(update: Update, context: ContextTypes.DEFAULT_
         await reading_submission.asave(update_fields=["reply_message_id"])
 
 
-@with_language
 async def pending_readings(update: Update, context: ContextTypes.DEFAULT_TYPE):
     tg_message = update.effective_message
     tg_chat = update.effective_chat

@@ -9,12 +9,10 @@ from django_telegram.utils.language import (
     normalize_language_code,
 )
 from django_telegram.services.language import set_chat_language
-from django_telegram.decorators import with_language
 
 from ..bot_messages import BOT_MESSAGES
 
 
-@with_language
 async def set_bot_language(update: Update, context: ContextTypes.DEFAULT_TYPE):
     tg_chat = update.effective_chat
     tg_message = update.effective_message
