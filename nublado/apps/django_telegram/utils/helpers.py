@@ -2,7 +2,6 @@ from telegram import Chat, ChatMember
 from telegram.constants import ChatType, ChatMemberStatus
 
 
-
 # Helper functions
 def _is_group(tg_chat: Chat):
     return tg_chat.type in {ChatType.GROUP, ChatType.SUPERGROUP}

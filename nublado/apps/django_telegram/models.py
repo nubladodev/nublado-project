@@ -20,7 +20,7 @@ class TelegramUser(TimestampModel):
     telegram_id = models.BigIntegerField(primary_key=True)
 
     username = models.CharField(max_length=255, null=True, blank=True)
-    first_name = models.CharField(max_length=255, null=True, blank=True)
+    first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255, null=True, blank=True)
     is_bot = models.BooleanField(default=False)
 

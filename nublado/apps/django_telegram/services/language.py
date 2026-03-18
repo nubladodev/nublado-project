@@ -58,11 +58,11 @@ async def set_chat_language(
     set_context_language(context, language_code)
 
 
-def get_or_create_telegram_chat(update):
-    tg_chat = update.effective_chat
+# def get_or_create_telegram_chat(update):
+#     tg_chat = update.effective_chat
 
-    chat, created = TelegramChat.objects.aget_or_create(
-        telegram_id=tg_chat.id, defaults={"title": tg_chat.title or ""}
-    )
+#     chat, created = TelegramChat.objects.aget_or_create(
+#         telegram_id=tg_chat.id, defaults={"title": tg_chat.title or ""}
+#     )
 
-    return chat
+#     return chat
