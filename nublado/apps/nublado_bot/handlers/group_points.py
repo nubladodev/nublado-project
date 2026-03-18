@@ -43,7 +43,7 @@ async def on_success(update: Update, context: ContextTypes.DEFAULT_TYPE, result)
             num_points=num_points,
             points_name=_(POINTS_NAME),
             receiver_name=receiver_name,
-            receiver_points=receiver_member.points_map,
+            receiver_points=receiver_member.points,
         )
         await context.bot.send_message(
             chat_id=tg_chat.id,
