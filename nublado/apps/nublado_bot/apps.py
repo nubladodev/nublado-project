@@ -22,6 +22,7 @@ from django_telegram.policies import (
     GroupOwnerOnly,
     with_policies,
 )
+from django_telegram.decorators import with_language
 
 logger = logging.getLogger("django")
 
@@ -137,7 +138,9 @@ class NubladoBotConfig(AppConfig):
         app.add_handler(
             MessageHandler(
                 POINT_FILTER,
-                with_policies(GroupOnly)(give_points),
+                with_policies(GroupOnly)(
+                    with_language(give_points)
+                ),
             ),
             group=HANDLER_GROUP,
         )
