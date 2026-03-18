@@ -64,7 +64,6 @@ class PortalReadingManager(models.Manager.from_queryset(PortalReadingQuerySet)):
     """
     Manager for PortalReading
     """
-    pass
 
 
 class ReadingSubmissionQuerySet(models.QuerySet):
@@ -96,4 +95,3 @@ class ReadingSubmissionManager(models.Manager.from_queryset(ReadingSubmissionQue
     """
     Manager for ReadingSubmission
     """
-    pass

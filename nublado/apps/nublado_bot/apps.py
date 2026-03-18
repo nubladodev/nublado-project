@@ -37,7 +37,7 @@ class NubladoBotConfig(AppConfig):
     name = "nublado_bot"
 
     def ready(self):
-        from django_telegram.utils.database import resolve_chat_language
+        from django_telegram.services.language import resolve_chat_language
         from django_telegram.handlers import LanguageHandler
         from django_telegram.constants import MIDDLEWARE_GROUP, HANDLER_GROUP
         from reading_portal.handlers import (

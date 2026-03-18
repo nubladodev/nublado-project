@@ -1,22 +1,23 @@
 from telegram import Update
 from telegram.ext import ContextTypes
 
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import override, gettext_lazy as _
 from django.conf import settings
 
-from django_telegram.utils.database import set_chat_language
-from django_telegram.utils.helpers import (
+from django_telegram.utils.language import (
     get_context_language,
     normalize_language_code,
-    safe_reply,
 )
+from django_telegram.services.language import set_chat_language
+from django_telegram.decorators import with_language
 
 from ..bot_messages import BOT_MESSAGES
 
 
+@with_language
 async def set_bot_language(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    tg_message = update.effective_message
     tg_chat = update.effective_chat
+    tg_message = update.effective_message
 
     # The bot command language-code argument.
     if len(context.args) != 1:
@@ -31,7 +32,11 @@ async def set_bot_language(update: Update, context: ContextTypes.DEFAULT_TYPE):
         bot_message = BOT_MESSAGES["error_invalid_language_code"].format(
             language_keys=keys
         )
-        await safe_reply(update, context, bot_message)
+        await context.bot.send_message(
+            chat_id=tg_chat.id,
+            text=str(bot_message),
+            reply_to_message_id=tg_message.message_id
+        )
         return
 
     current_language = get_context_language(context)
@@ -40,16 +45,25 @@ async def set_bot_language(update: Update, context: ContextTypes.DEFAULT_TYPE):
         bot_message = BOT_MESSAGES["bot_language_already_active"].format(
             language=_(settings.LANGUAGES_DICT[language_code])
         )
-        await safe_reply(update, context, bot_message)
+
+        await context.bot.send_message(
+            chat_id=tg_chat.id,
+            text=str(bot_message),
+            reply_to_message_id=tg_message.message_id
+        )
         return
 
     # If the language_code isn't the current language, update the group settings language and
     # context data bot language, then activate the new language.
     await set_chat_language(update, context, language_code)
 
-    await safe_reply(
-        update,
-        context,
-        BOT_MESSAGES["bot_language_set"],
-        language=_(settings.LANGUAGES_DICT[language_code]),
-    )
+    with override(language_code):
+        bot_message = BOT_MESSAGES["bot_language_set"].format(
+            language=_(settings.LANGUAGES_DICT[language_code])
+        )
+        await context.bot.send_message(
+            chat_id=tg_chat.id,
+            text=str(bot_message),
+            reply_to_message_id=tg_message.message_id
+        )
+

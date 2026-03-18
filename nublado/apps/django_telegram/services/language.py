@@ -1,11 +1,10 @@
 from telegram import Update
 from telegram.ext import ContextTypes
 
-from ..models import TelegramChat, TelegramGroupSettings
-from ..constants import CONTEXT_LANGUAGE_KEY
-from .helpers import get_context_language, set_context_language
+from django.conf import settings 
 
-# Helpers that can touch the database. I put them here to avoid AppRegristry errors.
+from ..models import TelegramChat, TelegramGroupSettings
+from ..utils.language import set_context_language
 
 
 async def resolve_chat_language(

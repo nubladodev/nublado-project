@@ -32,21 +32,29 @@ class BotRegistry:
     def get_all(self) -> dict[str, Application]:
         return self._apps
 
+    def in_registry(self, name:str):
+        return name in self._apps
+
+    def is_initialized(self, name:str):
+        return name in self._initialized
+
     async def ensure_initialized(self, name: str):
         """
         Ensures each Application.initialize() is called exactly once,
         """
+        # Skip if name isn't in app registry.
+        if not self.in_registry(name):
+            return
 
         # Skip if app is already initialized.
-        if name in self._initialized:
+        if self.is_initialized(name):
             return
 
         async with self._locks[name]:
-            if name not in self._initialized:
-                app = self._apps[name]
-                await app.initialize()
-                await app.start()
-                self._initialized.add(name)
+            app = self._apps[name]
+            await app.initialize()
+            await app.start()
+            self._initialized.add(name)
 
 
 registry = BotRegistry()

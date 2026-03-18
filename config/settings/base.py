@@ -3,7 +3,6 @@ import sys
 from pathlib import Path
 
 from django.utils.translation import gettext_noop as _
-from django.db import models
 
 
 # Get key env values from the virtual environment.
@@ -110,11 +109,11 @@ LANGUAGES = [
 ]
 
 # Variations of LANGUAGES in different data types.
-LANGUAGES_DICT = {key: value for key, value in LANGUAGES}
+LANGUAGES_DICT = dict(LANGUAGES)
 
 # Language Enums
-languages_members = [(key.upper(), (key, label)) for key, label in LANGUAGES]
-LANGUAGES_ENUM = models.TextChoices("LanguagesEnum", languages_members)
+# languages_members = [(key.upper(), (key, label)) for key, label in LANGUAGES]
+# LANGUAGES_ENUM = models.TextChoices("LanguagesEnum", languages_members)
 
 LOCALE_PATHS = (APPS_ROOT / "project_app" / "locale",)
 

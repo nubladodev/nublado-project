@@ -5,7 +5,7 @@ from telegram.ext import ContextTypes
 
 from django.utils.translation import override
 
-from .helpers import get_context_language
+from .utils.language import get_context_language
 
 
 def with_language(handler):

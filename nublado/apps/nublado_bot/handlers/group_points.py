@@ -3,7 +3,7 @@ from telegram.ext import ContextTypes
 
 from django.utils.translation import gettext_lazy as _
 
-from django_telegram.utils.helpers import user_display_name, safe_reply
+from django_telegram.utils.formatting import user_display_name
 from group_points.handlers import make_give_points_handler
 from group_points.constants import PointTransferError
 
@@ -25,6 +25,8 @@ POINTS_NAME = "bot.nublado.points_name"
 
 
 async def on_success(update: Update, context: ContextTypes.DEFAULT_TYPE, result):
+    tg_chat = update.effective_chat
+    tg_message = update.effective_message
     tg_sender = result["tg_sender"]
     sender_member = result["sender_member"]
     tg_receiver = result["tg_receiver"]
@@ -35,38 +37,53 @@ async def on_success(update: Update, context: ContextTypes.DEFAULT_TYPE, result)
     receiver_name = user_display_name(tg_receiver)
 
     if num_points > 1:
-        await safe_reply(
-            update,
-            context,
-            BOT_MESSAGES["give_points"],
+        bot_message = BOT_MESSAGES["give_points"].format(
             sender_name=sender_name,
             sender_points=sender_member.points,
             num_points=num_points,
             points_name=_(POINTS_NAME),
             receiver_name=receiver_name,
-            receiver_points=receiver_member.points,
+            receiver_points=receiver_member.points_map
+        )
+        await context.bot.send_message(
+            chat_id=tg_chat.id,
+            text=str(bot_message),
+            reply_to_message_id=tg_message.message_id
         )
     else:
-        await safe_reply(
-            update,
-            context,
-            BOT_MESSAGES["give_point"],
+        bot_message = BOT_MESSAGES["give_point"].format(
             sender_name=sender_name,
             sender_points=sender_member.points,
             points_name=_(POINT_NAME),
             receiver_name=receiver_name,
-            receiver_points=receiver_member.points,
+            receiver_points=receiver_member.points
+        )
+        await context.bot.send_message(
+            chat_id=tg_chat.id,
+            text=str(bot_message),
+            reply_to_message_id=tg_message.message_id
         )
 
 
 async def on_error(update, context, error):
+    tg_chat = update.effective_chat
+    tg_message = update.effective_message
+
     if error == PointTransferError.SELF:
-        await safe_reply(
-            update, context, BOT_MESSAGES["no_give_self"], points_name=_(POINTS_NAME)
+        bot_message = BOT_MESSAGES["no_give_self"].format(
+            points_name=_(POINTS_NAME)
+        )
+        await context.bot.send_message(
+            chat_id=tg_chat.id,
+            text=str(bot_message),
+            reply_to_message_id=tg_message.message_id
         )
     elif error == PointTransferError.BOT:
-        await safe_reply(
-            update, context, BOT_MESSAGES["no_give_bot"], points_name=_(POINTS_NAME)
+        bot_message = BOT_MESSAGES["no_give_bot"].format(points_name=_(POINTS_NAME))
+        await context.bot.send_message(
+            chat_id=tg_chat.id,
+            text=str(bot_message),
+            reply_to_message_id=tg_message.message_id
         )
 
 

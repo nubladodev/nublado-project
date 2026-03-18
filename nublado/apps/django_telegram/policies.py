@@ -4,13 +4,15 @@ from functools import wraps
 from telegram import Update
 from telegram.ext import ContextTypes, ApplicationHandlerStop
 
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 
-from .utils.helpers import _is_group, _is_private, _is_admin, _is_group_owner, safe_reply
+from .utils.helpers import _is_group, _is_private, _is_admin, _is_group_owner
 
 BOT_MESSAGES = {
-    "bot_group_only": "bot.message.group_only",
-    "bot_private_only": "bot.message.private_only",
+    "group_only": _("bot.error.group_only"),
+    "private_only": _("bot.error.private_only"),
+    "admin_access": _("bot.error.admin_access"),
+    "group_owner_access": _("bot.error.group_owner_access"),
 }
 
 
@@ -18,12 +20,26 @@ class HandlerPolicy(ABC):
     async def _reply(
         self, update: Update, context: ContextTypes.DEFAULT_TYPE, message: str
     ):
-        await safe_reply(update, context, message)
+        tg_chat = update.effective_chat
+        tg_message = update.effective_message
+
+        await context.bot.send_message(
+            chat_id=tg_chat.id,
+            text=str(message),
+            reply_to_message_id=tg_message.message_id
+        )
 
     async def _reply_and_block(
         self, update: Update, context: ContextTypes.DEFAULT_TYPE, message: str
     ) -> bool:
-        await self._reply(update, context, message)
+        tg_chat = update.effective_chat
+        tg_message = update.effective_message
+
+        await context.bot.send_message(
+            chat_id=tg_chat.id,
+            text=str(message),
+            reply_to_message_id=tg_message.message_id
+        )
         return False
 
     @abstractmethod
@@ -48,7 +64,7 @@ class GroupOnly(HandlerPolicy):
         tg_chat = update.effective_chat
         if not tg_chat or not _is_group(tg_chat):
             return await self._reply_and_block(
-                update, context, _(BOT_MESSAGES["bot_group_only"])
+                update, context, BOT_MESSAGES["group_only"]
             )
         return True
 
@@ -62,7 +78,7 @@ class PrivateOnly(HandlerPolicy):
         tg_chat = update.effective_chat
         if not tg_chat or not _is_private(tg_chat):
             return await self._reply_and_block(
-                update, context, _(BOT_MESSAGES["bot_private_only"])
+                update, context, BOT_MESSAGES["private_only"]
             )
         return True
 
@@ -84,14 +100,14 @@ class AdminOnly(HandlerPolicy):
             tg_member = await context.bot.get_chat_member(tg_chat.id, tg_user.id)
         except Exception:
             return await self._reply_and_block(
-                update, context, "Could not verify admin status."
+                update, context, 
             )
 
         if not _is_admin(tg_member):
             return await self._reply_and_block(
                 update,
                 context,
-                "This command is restricted to admins.",
+                BOT_MESSAGES["admin_access"],
             )
 
         return True
@@ -121,7 +137,7 @@ class GroupOwnerOnly(HandlerPolicy):
             return await self._reply_and_block(
                 update,
                 context,
-                "This command is restricted to the group owner.",
+                BOT_MESSAGES["group_owner_access"],
             )
 
         return True

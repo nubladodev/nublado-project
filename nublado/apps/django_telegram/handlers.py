@@ -3,8 +3,7 @@ from telegram.ext import BaseHandler, ContextTypes
 
 from django.conf import settings
 
-from .utils.helpers import set_context_language
-from .utils.database import resolve_chat_language
+from .services.language import resolve_chat_language, set_context_language
 
 
 class LanguageHandler(BaseHandler):

@@ -7,8 +7,6 @@ from django_telegram.models import TelegramChat, TelegramGroupMember
 from ..models import ReadingPortal, PortalReading, ReadingSubmission
 from ..exceptions import (
     NoOpenPortal,
-    NoReplyToAudio,
-    NoAudioReplyToText,
     NoReplyToReading,
     NoPendingReading,
 )

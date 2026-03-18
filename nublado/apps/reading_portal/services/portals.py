@@ -5,7 +5,6 @@ from telegram.error import BadRequest
 from django.utils.translation import gettext_lazy as _
 
 from django_telegram.models import TelegramChat
-from django_telegram.utils.helpers import safe_reply
 
 from ..models import ReadingPortal, PortalReading
 from ..exceptions import NoDraftPortal, NoOpenPortal, OpenPortalExists, EmptyPortal
@@ -31,6 +30,7 @@ async def open_portal_service(
     Open the next draft portal for the given Telegram chat.
     """
     tg_chat = update.effective_chat
+    tg_message = update.effective_message
     bot = context.bot
 
     chat = await TelegramChat.objects.aget_or_create_from_telegram_chat(tg_chat)
@@ -47,7 +47,11 @@ async def open_portal_service(
         try:
             portal = await ReadingPortal.objects.draft().from_chat(chat).aget(slug=slug)
         except ReadingPortal.DoesNotExist:
-            await safe_reply(update, context, _("reading_portal.error.portal_not_found"))
+            await context.bot.send_message(
+                chat_id=tg_chat.id,
+                text=str(_("reading_portal.error.portal_not_found")),
+                reply_to_message_id=tg_message.message_id
+            )
             return
     else:
         portal = await ReadingPortal.objects.anext_draft(chat=chat)

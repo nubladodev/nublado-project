@@ -47,7 +47,7 @@ def make_give_points_handler(
         if not tg_message or not tg_message.reply_to_message:
             return
 
-        # The user reeiving the points.
+        # The telegram user reeiving the points.
         tg_receiver = tg_message.reply_to_message.from_user
 
         # Validate point transfer.
