@@ -5,7 +5,7 @@ databases:
 
 services:
 - type: web
-  name: nubladoproject
+  name: nublado-project
   plan: free
   env: python
   buildCommand: "./build.sh"
