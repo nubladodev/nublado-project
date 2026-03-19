@@ -178,7 +178,7 @@ DJANGO_TELEGRAM_BOT_MODE = BOT_MODE_WEBHOOK
 
 NUBLADO_BOT = "nublado"
 NUBLADO_BOT_TOKEN = get_env_variable("NUBLADO_BOT_TOKEN")
-NUBLADO_BOT_WEBHOOK_URL = "https://nubladoproject-ms5s.onrender.com/bot/nublado/webhook/"
+NUBLADO_BOT_WEBHOOK_URL = "https://nublado-project.onrender.com/bot/nublado/webhook/"
 NUBLADO_BOT_WEBHOOK_SECRET = "supersecretnubladowebhooktoken"
 
 BOTS = {
