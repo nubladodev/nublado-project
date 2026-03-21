@@ -70,7 +70,7 @@ class TelegramBot:
             await bot.set_webhook(
                 url=self.webhook_url,
                 secret_token=self.webhook_token,
-                drop_pending_updates=True,
+                drop_pending_updates=False,
             )
 
             self._webhook_set = True
