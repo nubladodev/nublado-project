@@ -39,4 +39,4 @@ class Command(BaseCommand):
 
         # Keep the JobQueues running indefinitely
         logger.info("All bots initialized.")
-        await asyncio.Event().wait()
+        # await asyncio.Event().wait()
