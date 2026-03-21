@@ -40,7 +40,7 @@ class BotRegistry:
 
     async def ensure_initialized(self, name: str):
         """
-        Ensures each Application.initialize() is called exactly once,
+        Ensures each Application.initialize() is called exactly once.
         """
         # Skip if name isn't in app registry.
         if not self.in_registry(name):
