@@ -95,6 +95,7 @@ class BotRegistry:
                 secret_token=secret_token,
                 drop_pending_updates=True,
             )
+            self._webhook_set.add(name)
             logger.info(f"Webhook set for bot '{name}'")
         except Exception as e:
             logger.error(f"Failed to set webhook for bot '{name}': {e}")
