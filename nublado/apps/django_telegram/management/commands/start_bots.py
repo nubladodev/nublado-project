@@ -10,7 +10,7 @@ logger = logging.getLogger("django")
 
 
 class Command(BaseCommand):
-    help = "Initialize bots and pre-set webhooks (safe for Render)"
+    help = "Initialize bots and webhooks."
 
     def handle(self, *args, **kwargs):
         logger.info("Starting webhook bots (pre-set only)...")

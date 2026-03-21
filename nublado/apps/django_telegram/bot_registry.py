@@ -74,7 +74,7 @@ class BotRegistry:
         Idempotent: does nothing if already initialized or webhook is already set.
         """
         if not self.in_registry(name):
-            logger.warning(f"Cannot set webhook — bot '{name}' not in registry")
+            logger.warning(f"Cannot set webhook — bot {name} not in registry.")
             return
 
         # Ensure the Application is initialized.
@@ -82,7 +82,7 @@ class BotRegistry:
 
         # Skip if webhook already set.
         if name in self._webhook_set:
-            logger.info(f"Webhook already set for bot '{name}', skipping")
+            logger.info(f"Webhook already set for bot {name}, skipping.")
             return
 
         # Set the webhook using the Bot object.
@@ -93,12 +93,12 @@ class BotRegistry:
             await bot.set_webhook(
                 url=webhook_url,
                 secret_token=secret_token,
-                drop_pending_updates=True,
+                drop_pending_updates=False,
             )
             self._webhook_set.add(name)
-            logger.info(f"Webhook set for bot '{name}'")
+            logger.info(f"Webhook set for bot {name}.")
         except Exception as e:
-            logger.error(f"Failed to set webhook for bot '{name}': {e}")
+            logger.error(f"Failed to set webhook for bot {name}: {e}")
 
 
 registry = BotRegistry()
