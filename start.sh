@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
-gunicorn config.asgi:application -w 1 -k uvicorn.workers.UvicornWorker
+python manage.py start_bots &
 python manage.py set_bot_webhooks
+gunicorn config.asgi:application -w 1 -k uvicorn.workers.UvicornWorker
 
