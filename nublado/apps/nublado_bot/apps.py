@@ -170,4 +170,4 @@ class NubladoBotConfig(AppConfig):
             webhook_url=settings.NUBLADO_BOT_WEBHOOK_URL,
             webhook_token=settings.NUBLADO_BOT_WEBHOOK_SECRET,
         )
-        registry.register(BOT_NAME, app)
+        registry.register(BOT_NAME, bot)
