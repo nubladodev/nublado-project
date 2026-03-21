@@ -14,7 +14,7 @@ def register_handlers(app):
     r.raw(LanguageHandler(), group=MIDDLEWARE_GROUP)
 
     # commands
-    from .handlers.misc import start, hello
+    from .misc import start, hello
 
     r.command(
         "start",
@@ -38,7 +38,7 @@ def register_handlers(app):
     )
 
     # messages
-    from .handlers.group_points import give_points, POINT_FILTER
+    from .group_points import give_points, POINT_FILTER
 
     r.message(
         POINT_FILTER,

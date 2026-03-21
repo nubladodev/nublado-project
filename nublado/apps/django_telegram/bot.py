@@ -1,7 +1,7 @@
 
 import asyncio
 import logging
-from telegram.ext import Application, Bot, Defaults
+from telegram.ext import Application, Defaults
 from telegram import Bot
 
 

@@ -54,7 +54,7 @@ class NubladoBotConfig(AppConfig):
         from .handlers.misc import start, hello
         from .handlers.group_settings import set_bot_language
 
-        from .handlers import register_handlers
+        from .handlers.register_handlers import register_handlers
 
         defaults = Defaults(
             parse_mode=ParseMode.HTML,

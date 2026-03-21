@@ -4,6 +4,8 @@ import asyncio
 from telegram import Bot
 from telegram.ext import Application
 
+from .bot import TelegramBot
+
 logger = logging.getLogger("django")
 
 
