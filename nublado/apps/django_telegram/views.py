@@ -38,6 +38,7 @@ class BotWebhookView(View):
         #     raise Http404(f"Bot '{bot_id}' not recognized.")
 
         # Get the already-initialized bot from the registry
+        bot_id = kwargs["bot_id"]
         app = registry.get(bot_id)
 
         try:
