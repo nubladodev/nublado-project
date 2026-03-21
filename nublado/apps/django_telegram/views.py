@@ -1,4 +1,5 @@
 import json
+import logging
 
 from telegram import Update
 
@@ -7,6 +8,8 @@ from django.views import View
 from django.conf import settings
 
 from .bot_registry import registry
+
+logger = logging.getLogger("django")
 
 
 class BotWebhookView(View):
