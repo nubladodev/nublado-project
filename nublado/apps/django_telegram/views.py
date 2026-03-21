@@ -34,7 +34,7 @@ class BotWebhookView(View):
             data = json.loads(request.body.decode("utf-8"))
             update = Update.de_json(data, app.bot)
         except Exception as e:
-            logger.error(f"Error parsing update: {e}")
+            logger.error(f"Error parsing update: {e}.")
             raise Http404
 
         # Process the update
