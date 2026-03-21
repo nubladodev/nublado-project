@@ -15,3 +15,5 @@ class Command(BaseCommand):
     async def run(self):
         for bot in registry.all():
             await bot.ensure_webhook()
+
+    logger.info("FINISHED START_BOTS")
