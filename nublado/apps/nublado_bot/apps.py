@@ -13,7 +13,7 @@ from telegram.constants import ParseMode
 from django.apps import AppConfig
 from django.conf import settings
 
-from django_telegram.bot import create_app
+from django_telegram.bot import create_app, TelegramBot
 from django_telegram.bot_registry import registry
 from django_telegram.policies import (
     GroupOnly,
@@ -54,108 +54,120 @@ class NubladoBotConfig(AppConfig):
         from .handlers.misc import start, hello
         from .handlers.group_settings import set_bot_language
 
+        from .handlers import register_handlers
+
         defaults = Defaults(
             parse_mode=ParseMode.HTML,
         )
 
         app = create_app(BOT_TOKEN, post_init=post_init, defaults=defaults)
         app.bot_data["language_resolver"] = resolve_chat_language
+
+        register_handlers(app)
+
+
+        # # Middleware
+        # app.add_handler(LanguageHandler(), group=MIDDLEWARE_GROUP)
+
+        # # Command handlers.
+        # app.add_handler(
+        #     CommandHandler(
+        #         "start",
+        #         with_policies(PrivateOnly)(
+        #             with_language(start)
+        #         ),
+        #     ),
+        #     group=HANDLER_GROUP,
+        # )
+        # app.add_handler(
+        #     CommandHandler(
+        #         "hello",
+        #         with_policies(GroupOnly)(
+        #             with_language(hello),
+        #         )
+        #     ),
+        #     group=HANDLER_GROUP,
+        # )
+        # app.add_handler(
+        #     CommandHandler(
+        #         "set_bot_language",
+        #         with_policies(GroupOnly, AdminOnly)(
+        #             with_language(set_bot_language)),
+        #     ),
+        #     group=HANDLER_GROUP,
+        # )
+        # app.add_handler(
+        #     CommandHandler(
+        #         "show_portals",
+        #         with_policies(GroupOnly)(
+        #             with_language(list_draft_portals),
+        #         )
+        #     ),
+        #     group=HANDLER_GROUP,
+        # )
+        # app.add_handler(
+        #     CallbackQueryHandler(
+        #         open_portal_callback,
+        #         pattern="^open_portal:",
+        #     ),
+        #     group=HANDLER_GROUP,
+        # )
+        # app.add_handler(
+        #     CommandHandler(
+        #         "open_portal",
+        #         with_policies(GroupOnly)(
+        #             with_language(open_portal),
+        #         )
+        #     ),
+        #     group=HANDLER_GROUP,
+        # )
+        # app.add_handler(
+        #     CommandHandler(
+        #         "close_portal",
+        #         with_policies(GroupOnly, GroupOwnerOnly)(
+        #             with_language(close_portal),
+        #         )
+        #     ),
+        #     group=HANDLER_GROUP,
+        # )
+        # app.add_handler(
+        #     CommandHandler(
+        #         "reviewed",
+        #         with_policies(GroupOnly)(
+        #             with_language(review_reading),
+        #         )
+        #     ),
+        #     group=HANDLER_GROUP,
+        # )
+        # app.add_handler(
+        #     CommandHandler(
+        #         "pending_readings",
+        #         with_policies(GroupOnly)(
+        #             with_language(pending_readings),
+        #         )
+        #     ),
+        #     group=HANDLER_GROUP,
+        # )
+        # app.add_handler(
+        #     MessageHandler(filters.VOICE & filters.REPLY, handle_voice_submission),
+        #     group=HANDLER_GROUP,
+        # )
+
+        # # Message handlers.
+        # app.add_handler(
+        #     MessageHandler(
+        #         POINT_FILTER,
+        #         with_policies(GroupOnly)(
+        #             with_language(give_points)
+        #         ),
+        #     ),
+        #     group=HANDLER_GROUP,
+        # )
+
+        bot = TelegramBot(
+            name=BOT_NAME,
+            application=app,
+            webhook_url=settings.NUBLADO_BOT_WEBHOOK_URL,
+            webhook_token=settings.NUBLADO_BOT_WEBHOOK_SECRET,
+        )
         registry.register(BOT_NAME, app)
-
-        # Middleware
-        app.add_handler(LanguageHandler(), group=MIDDLEWARE_GROUP)
-
-        # Command handlers.
-        app.add_handler(
-            CommandHandler(
-                "start",
-                with_policies(PrivateOnly)(
-                    with_language(start)
-                ),
-            ),
-            group=HANDLER_GROUP,
-        )
-        app.add_handler(
-            CommandHandler(
-                "hello",
-                with_policies(GroupOnly)(
-                    with_language(hello),
-                )
-            ),
-            group=HANDLER_GROUP,
-        )
-        app.add_handler(
-            CommandHandler(
-                "set_bot_language",
-                with_policies(GroupOnly, AdminOnly)(
-                    with_language(set_bot_language)),
-            ),
-            group=HANDLER_GROUP,
-        )
-        app.add_handler(
-            CommandHandler(
-                "show_portals",
-                with_policies(GroupOnly)(
-                    with_language(list_draft_portals),
-                )
-            ),
-            group=HANDLER_GROUP,
-        )
-        app.add_handler(
-            CallbackQueryHandler(
-                open_portal_callback,
-                pattern="^open_portal:",
-            ),
-            group=HANDLER_GROUP,
-        )
-        app.add_handler(
-            CommandHandler(
-                "open_portal",
-                with_policies(GroupOnly)(
-                    with_language(open_portal),
-                )
-            ),
-            group=HANDLER_GROUP,
-        )
-        app.add_handler(
-            CommandHandler(
-                "close_portal",
-                with_policies(GroupOnly, GroupOwnerOnly)(
-                    with_language(close_portal),
-                )
-            ),
-            group=HANDLER_GROUP,
-        )
-        app.add_handler(
-            CommandHandler(
-                "reviewed",
-                with_policies(GroupOnly)(
-                    with_language(review_reading),
-                )
-            ),
-            group=HANDLER_GROUP,
-        )
-        app.add_handler(
-            CommandHandler(
-                "pending_readings",
-                with_policies(GroupOnly)(
-                    with_language(pending_readings),
-                )
-            ),
-            group=HANDLER_GROUP,
-        )
-        app.add_handler(
-            MessageHandler(filters.VOICE & filters.REPLY, handle_voice_submission),
-            group=HANDLER_GROUP,
-        )
-
-        # Message handlers.
-        app.add_handler(
-            MessageHandler(
-                POINT_FILTER,
-                with_policies(GroupOnly)(
-                    with_language(give_points)
-                ),
-            ),
-            group=HANDLER_GROUP,
-        )
