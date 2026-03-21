@@ -58,24 +58,20 @@ class TelegramBot:
             logger.info(f"[{self.name}] webhook already set.")
             return
 
-        async with self._lock:
-            if self._webhook_set:
-                return
+        await self.ensure_initialized()
+        # asyncio.create_task(self.ensure_initialized())
 
-            # await self.ensure_initialized()
-            asyncio.create_task(self.ensure_initialized())
+        logger.info(f"Setting webhook for [{self.name}].")
 
-            logger.info(f"Setting webhook for [{self.name}].")
+        bot = Bot(self.app.bot.token)
+        await bot.set_webhook(
+            url=self.webhook_url,
+            secret_token=self.webhook_token,
+            drop_pending_updates=False,
+        )
 
-            bot = Bot(self.app.bot.token)
-            await bot.set_webhook(
-                url=self.webhook_url,
-                secret_token=self.webhook_token,
-                drop_pending_updates=False,
-            )
-
-            self._webhook_set = True
-            logger.info(f"[{self.name}] webhook set")
+        self._webhook_set = True
+        logger.info(f"[{self.name}] webhook set")
 
     async def process_update(self, update):
         await self.ensure_initialized()

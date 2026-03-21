@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-set -e  # 👈 fail fast if anything breaks
-set -x  # 👈 show commands in logs
+set -e  # fail fast if anything breaks
+set -x  # show commands in logs
 
 echo "Starting bots..."
 python manage.py start_bots
