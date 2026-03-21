@@ -1,8 +1,5 @@
 import pytest
-import pytest_asyncio
 
-from django.db import connections
-from django.utils.translation import get_language, override, gettext as _
 from django.conf import settings
 
 from django_telegram.services.language import (
@@ -13,10 +10,8 @@ from django_telegram.utils.language import (
     get_context_language,
     set_context_language,
     validate_language_code,
-    normalize_language_code
+    normalize_language_code,
 )
-from django_telegram.decorators import with_language
-from django_telegram.models import TelegramChat, TelegramGroupSettings
 from django_telegram.constants import CONTEXT_LANGUAGE_KEY
 
 pytestmark = pytest.mark.asyncio
@@ -59,7 +54,6 @@ class TestLanguageServices:
         assert CONTEXT_LANGUAGE_KEY in context.chat_data
         assert language_code == context.chat_data[CONTEXT_LANGUAGE_KEY]
         assert language_code == settings.LANGUAGE_CODE
-
 
     @pytest.mark.django_db
     async def test_resolver_uses_cached_context(self, update, context):

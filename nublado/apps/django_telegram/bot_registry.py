@@ -1,8 +1,5 @@
 import logging
-import asyncio
 
-from telegram import Bot
-from telegram.ext import Application
 
 from .bot import TelegramBot
 
@@ -84,8 +81,8 @@ class BotRegistry:
 #     async def ensure_webhook(
 #         self,
 #         *,
-#         name: str, 
-#         webhook_url: str, 
+#         name: str,
+#         webhook_url: str,
 #         secret_token: str | None = None,
 #     ):
 #         """

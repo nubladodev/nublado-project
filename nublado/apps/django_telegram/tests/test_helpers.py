@@ -1,4 +1,3 @@
-import pytest
 from types import SimpleNamespace
 
 from telegram.constants import ChatType, ChatMemberStatus
@@ -8,7 +7,7 @@ from django_telegram.utils.helpers import (
     _is_private,
     _is_admin,
     _is_group_owner,
-    message_link
+    message_link,
 )
 
 
@@ -42,8 +41,14 @@ class TestHelpers:
     def test_message_link(self):
         tg_chat_id = "12345"
         tg_message_id = "6789"
-        assert message_link(tg_chat_id, tg_message_id) == f"https://t.me/c/{tg_chat_id}/{tg_message_id}"
+        assert (
+            message_link(tg_chat_id, tg_message_id)
+            == f"https://t.me/c/{tg_chat_id}/{tg_message_id}"
+        )
         tg_chat_id = "-100123456789"
         tg_message_id = "6789"
         # Cut off the -100 in chat id.
-        assert message_link("-100123456789", "6789") == f"https://t.me/c/{tg_chat_id[4:]}/{tg_message_id}"
+        assert (
+            message_link("-100123456789", "6789")
+            == f"https://t.me/c/{tg_chat_id[4:]}/{tg_message_id}"
+        )

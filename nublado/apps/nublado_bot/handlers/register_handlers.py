@@ -1,7 +1,6 @@
-from telegram.ext import filters
 
 from django_telegram.registrar import HandlerRegistrar
-from django_telegram.policies import GroupOnly, PrivateOnly, AdminOnly, with_policies
+from django_telegram.policies import GroupOnly, PrivateOnly, with_policies
 from django_telegram.decorators import with_language
 from django_telegram.constants import HANDLER_GROUP, MIDDLEWARE_GROUP
 
@@ -11,6 +10,7 @@ def register_handlers(app):
 
     # middleware
     from django_telegram.handlers import LanguageHandler
+
     r.raw(LanguageHandler(), group=MIDDLEWARE_GROUP)
 
     # commands
