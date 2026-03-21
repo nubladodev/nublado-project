@@ -5,7 +5,6 @@ from telegram import Update
 
 from django.http import Http404, JsonResponse
 from django.views import View
-from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 
 from .bot_registry import registry
@@ -14,7 +13,6 @@ logger = logging.getLogger("django")
 
 
 class BotWebhookView(View):
-    @csrf_exempt
     async def post(self, request, *args, **kwargs):
         bot_id = kwargs["bot_id"]
 
