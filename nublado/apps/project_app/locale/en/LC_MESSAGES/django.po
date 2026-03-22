@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-22 11:29+0000\n"
+"POT-Creation-Date: 2026-03-22 12:33+0000\n"
 "PO-Revision-Date: 2026-03-22 04:42-0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -25,6 +25,22 @@ msgstr "English"
 #: config/settings/base.py:108
 msgid "common.language.es"
 msgstr "Spanish"
+
+#: nublado/apps/django_telegram/bot_messages.py:5
+msgid "django_telegram.bot.error.group_only"
+msgstr ""
+
+#: nublado/apps/django_telegram/bot_messages.py:6
+msgid "django_telegram.bot.error.private_only"
+msgstr ""
+
+#: nublado/apps/django_telegram/bot_messages.py:7
+msgid "django_telegram.bot.error.admin_access"
+msgstr ""
+
+#: nublado/apps/django_telegram/bot_messages.py:8
+msgid "django_telegram.bot.error.group_owner_access"
+msgstr ""
 
 #: nublado/apps/django_telegram/models.py:50
 msgid "private"
@@ -52,22 +68,6 @@ msgstr ""
 
 #: nublado/apps/django_telegram/models.py:87
 msgid "owner"
-msgstr ""
-
-#: nublado/apps/django_telegram/policies.py:12
-msgid "bot.error.group_only"
-msgstr ""
-
-#: nublado/apps/django_telegram/policies.py:13
-msgid "bot.error.private_only"
-msgstr ""
-
-#: nublado/apps/django_telegram/policies.py:14
-msgid "bot.error.admin_access"
-msgstr ""
-
-#: nublado/apps/django_telegram/policies.py:15
-msgid "bot.error.group_owner_access"
 msgstr ""
 
 #: nublado/apps/nublado_bot/bot_messages.py:4
@@ -185,6 +185,31 @@ msgstr ""
 msgid "label_logout"
 msgstr ""
 
+#: nublado/apps/reading_portal/bot_messages.py:5
+msgid "reading_portal.bot.error.no_draft_portals"
+msgstr ""
+
+#: nublado/apps/reading_portal/bot_messages.py:6
+msgid "reading_portal.bot.error.no_pending_readings"
+msgstr ""
+
+#: nublado/apps/reading_portal/bot_messages.py:7
+msgid "reading_portal.bot.error.review_no_pending_reading"
+msgstr ""
+
+#: nublado/apps/reading_portal/bot_messages.py:8
+msgid "reading_portal.bot.error.portal_not_found"
+msgstr ""
+
+#: nublado/apps/reading_portal/bot_messages.py:9
+#, python-brace-format
+msgid "reading_portal.bot.reading_reviewed {reviewer_name}"
+msgstr ""
+
+#: nublado/apps/reading_portal/bot_messages.py:10
+msgid "reading_portal.bot.pending_readings"
+msgstr ""
+
 #: nublado/apps/reading_portal/exceptions.py:7
 msgid "Reading Portal error"
 msgstr ""
@@ -206,7 +231,6 @@ msgid "reading_portal.error.no_reply_to_text"
 msgstr ""
 
 #: nublado/apps/reading_portal/exceptions.py:34
-#: nublado/apps/reading_portal/handlers.py:93
 msgid "reading_portal.error.no_draft_portal"
 msgstr ""
 
@@ -220,14 +244,6 @@ msgstr ""
 
 #: nublado/apps/reading_portal/exceptions.py:46
 msgid "reading_portal.error.no_pending_reading"
-msgstr ""
-
-#: nublado/apps/reading_portal/handlers.py:175
-msgid "reading_portal.error.no_pending_readings"
-msgstr ""
-
-#: nublado/apps/reading_portal/handlers.py:221
-msgid "reading_portal.error.review_no_pending_reading"
 msgstr ""
 
 #: nublado/apps/reading_portal/models.py:27
@@ -256,10 +272,6 @@ msgstr ""
 
 #: nublado/apps/reading_portal/models.py:260
 msgid "Archived"
-msgstr ""
-
-#: nublado/apps/reading_portal/services/portals.py:54
-msgid "reading_portal.error.portal_not_found"
 msgstr ""
 
 #: nublado/apps/users/apps.py:7

@@ -9,6 +9,7 @@ from django_telegram.models import TelegramChat
 from ..models import ReadingPortal, PortalReading
 from ..exceptions import NoDraftPortal, NoOpenPortal, OpenPortalExists, EmptyPortal
 from .formatting import format_portal_intro, format_portal_closed
+from ..bot_messages import BOT_MESSAGES
 
 
 async def list_draft_portals_service(
@@ -51,7 +52,7 @@ async def open_portal_service(
         except ReadingPortal.DoesNotExist:
             await context.bot.send_message(
                 chat_id=tg_chat.id,
-                text=str(_("reading_portal.error.portal_not_found")),
+                text=str(BOT_MESSAGES["error.portal_not_found"]),
                 reply_to_message_id=tg_message.message_id,
             )
             return
