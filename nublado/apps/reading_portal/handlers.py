@@ -27,6 +27,7 @@ from .services.reading_submissions import (
     review_reading_service,
     get_pending_readings_service,
 )
+from .bot_messages import BOT_MESSAGES
 
 
 async def open_portal(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -90,12 +91,12 @@ async def list_draft_portals(update: Update, context: ContextTypes.DEFAULT_TYPE)
     if not await portals.aexists():
         await context.bot.send_message(
             chat_id=tg_chat.id,
-            text=str(_("reading_portal.error.no_draft_portal")),
+            text=str(BOT_MESSAGES["error.no_draft_portals"]),
             reply_to_message_id=tg_message.message_id,
         )
         return
 
-    message = "READING PORTALS:\n"
+    bot_message = BOT_MESSAGES["reading_portals"]
     buttons = []
 
     async for portal in portals:
@@ -112,7 +113,7 @@ async def list_draft_portals(update: Update, context: ContextTypes.DEFAULT_TYPE)
 
     portals_message = await context.bot.send_message(
         chat_id=update.effective_chat.id,
-        text=message,
+        text=str(bot_message).upper(),
         reply_markup=keyboard,
     )
 
@@ -141,10 +142,10 @@ async def handle_voice_submission(update: Update, context: ContextTypes.DEFAULT_
     if reading_submission:
         tg_user = update.effective_user
         portal_reading = reading_submission.portal_reading
-        message = f"#pending_{portal_reading.language} : {user_display_name(tg_user)}"
+        bot_message = f"#pending_{portal_reading.language} : {user_display_name(tg_user)}"
 
         reply_message = await context.bot.send_message(
-            chat_id=tg_chat.id, text=message, reply_to_message_id=tg_message.message_id
+            chat_id=tg_chat.id, text=bot_message, reply_to_message_id=tg_message.message_id
         )
 
         await context.bot.set_message_reaction(
@@ -172,7 +173,7 @@ async def pending_readings(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not await pending_readings.aexists():
         await context.bot.send_message(
             chat_id=tg_chat.id,
-            text=str(_("reading_portal.error.no_pending_readings")),
+            text=str(BOT_MESSAGES["error.no_pending_readings"]),
             reply_to_message_id=tg_message.message_id,
         )
         return
@@ -182,7 +183,7 @@ async def pending_readings(update: Update, context: ContextTypes.DEFAULT_TYPE):
     async for pending_reading in pending_readings:
         readings_by_member[pending_reading.member].append(pending_reading)
 
-    readings_list = ["Pending Readings:"]
+    readings_list = [str(BOT_MESSAGES["pending_readings"])]
 
     for member, readings in readings_by_member.items():
         language_links = []
@@ -218,7 +219,7 @@ async def review_reading(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except NoPendingReading:
         await context.bot.send_message(
             chat_id=tg_chat.id,
-            text=str(_("reading_portal.error.review_no_pending_reading")),
+            text=str(BOT_MESSAGES["error.review_no_pending_reading"]),
             reply_to_message_id=tg_message.message_id,
         )
         return
@@ -239,11 +240,11 @@ async def review_reading(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reaction=[ReactionTypeEmoji("💯")],
         )
 
-        message = f"✨ Reviewed by {user_display_name(tg_user)}."
-
+    
+        bot_message = BOT_MESSAGES["reading_reviewed"].format(reviewer_name=user_display_name(tg_user))
         await context.bot.send_message(
             chat_id=tg_chat.id,
-            text=message,
+            text=str(bot_message),
             reply_to_message_id=reading_submission.message_id,
         )
 

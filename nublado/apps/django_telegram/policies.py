@@ -7,13 +7,7 @@ from telegram.ext import ContextTypes, ApplicationHandlerStop
 from django.utils.translation import gettext_lazy as _
 
 from .utils.helpers import _is_group, _is_private, _is_admin, _is_group_owner
-
-BOT_MESSAGES = {
-    "group_only": _("bot.error.group_only"),
-    "private_only": _("bot.error.private_only"),
-    "admin_access": _("bot.error.admin_access"),
-    "group_owner_access": _("bot.error.group_owner_access"),
-}
+from .bot_messages import BOT_MESSAGES
 
 
 class HandlerPolicy(ABC):
@@ -64,7 +58,7 @@ class GroupOnly(HandlerPolicy):
         tg_chat = update.effective_chat
         if not tg_chat or not _is_group(tg_chat):
             return await self._reply_and_block(
-                update, context, BOT_MESSAGES["group_only"]
+                update, context, BOT_MESSAGES["error.group_only"]
             )
         return True
 
@@ -78,7 +72,7 @@ class PrivateOnly(HandlerPolicy):
         tg_chat = update.effective_chat
         if not tg_chat or not _is_private(tg_chat):
             return await self._reply_and_block(
-                update, context, BOT_MESSAGES["private_only"]
+                update, context, BOT_MESSAGES["error.private_only"]
             )
         return True
 
@@ -108,7 +102,7 @@ class AdminOnly(HandlerPolicy):
             return await self._reply_and_block(
                 update,
                 context,
-                BOT_MESSAGES["admin_access"],
+                BOT_MESSAGES["error.admin_access"],
             )
 
         return True
@@ -138,7 +132,7 @@ class GroupOwnerOnly(HandlerPolicy):
             return await self._reply_and_block(
                 update,
                 context,
-                BOT_MESSAGES["group_owner_access"],
+                BOT_MESSAGES["error.group_owner_access"],
             )
 
         return True
