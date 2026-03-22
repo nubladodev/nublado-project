@@ -16,14 +16,14 @@ class Command(BaseCommand):
                 bot_name = options["name"]
                 bot = registry.get(bot_name)
                 self.stdout.write(
-                    self.style.SUCCESS(f"Now starting bot {bot_name} in polling mode.")
+                    self.style.SUCCESS(f"Now starting bot {bot.name} in polling mode.")
                 )
-                bot.run_polling()
+                bot.app.run_polling()
             else:
-                for bot_name, bot in registry.get_all().items():
+                for bot in registry.all():
                     self.stdout.write(
                         self.style.SUCCESS(
-                            f"Now starting bot {bot_name} in polling mode."
+                            f"Now starting bot {bot.name} in polling mode."
                         )
                     )
-                    bot.run_polling()
+                    bot.app.run_polling()

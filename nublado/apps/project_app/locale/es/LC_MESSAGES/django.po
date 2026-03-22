@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-26 23:31+0000\n"
-"PO-Revision-Date: 2026-01-26 15:47-0800\n"
+"POT-Creation-Date: 2026-03-22 11:29+0000\n"
+"PO-Revision-Date: 2026-03-22 04:41-0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -18,211 +18,147 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.4.2\n"
 
-#: config/settings/base.py:112
+#: config/settings/base.py:107
 msgid "common.language.en"
 msgstr "inglés"
 
-#: config/settings/base.py:113
+#: config/settings/base.py:108
 msgid "common.language.es"
 msgstr "español"
 
-#: config/settings/base.py:185
-msgid "common.monday"
-msgstr "lunes"
-
-#: config/settings/base.py:186
-msgid "common.tuesday"
-msgstr "martes"
-
-#: config/settings/base.py:187
-msgid "common.wednesday"
-msgstr "miércoles"
-
-#: config/settings/base.py:188
-msgid "common.thursday"
-msgstr "jueves"
-
-#: config/settings/base.py:189
-msgid "common.friday"
-msgstr "viernes"
-
-#: config/settings/base.py:190
-msgid "common.saturday"
-msgstr "sábado"
-
-#: config/settings/base.py:191
-msgid "sommon.sunday"
-msgstr "domingo"
-
-#: config/settings/base.py:194
-msgid "common.abbr.monday"
-msgstr "lun"
-
-#: config/settings/base.py:195
-msgid "common.abbr.tuesday"
-msgstr "mar"
-
-#: config/settings/base.py:196
-msgid "common.abbr.wednesday"
-msgstr "mié"
-
-#: config/settings/base.py:197
-msgid "common.abbr.thursday"
-msgstr "jue"
-
-#: config/settings/base.py:198
-msgid "common.abbr.friday"
-msgstr "vie"
-
-#: config/settings/base.py:199
-msgid "common.abbr.saturday"
-msgstr "sáb"
-
-#: config/settings/base.py:200
-msgid "common.abbr.sunday"
-msgstr "dom"
-
-#: nublado/apps/core/models.py:88
-msgid "Draft"
-msgstr ""
-
-#: nublado/apps/core/models.py:89
-msgid "Published"
-msgstr ""
-
-#: nublado/apps/django_telegram/models.py:40
+#: nublado/apps/django_telegram/models.py:50
 msgid "private"
 msgstr ""
 
-#: nublado/apps/django_telegram/models.py:41
+#: nublado/apps/django_telegram/models.py:51
 msgid "group"
 msgstr ""
 
-#: nublado/apps/django_telegram/models.py:42
+#: nublado/apps/django_telegram/models.py:52
 msgid "supergroup"
 msgstr ""
 
-#: nublado/apps/django_telegram/models.py:43
+#: nublado/apps/django_telegram/models.py:53
 msgid "channel"
 msgstr ""
 
-#: nublado/apps/django_telegram/models.py:72
+#: nublado/apps/django_telegram/models.py:85
 msgid "member"
 msgstr ""
 
-#: nublado/apps/django_telegram/models.py:73
+#: nublado/apps/django_telegram/models.py:86
 msgid "admin"
 msgstr ""
 
-#: nublado/apps/django_telegram/models.py:74
+#: nublado/apps/django_telegram/models.py:87
 msgid "owner"
 msgstr ""
 
-#: nublado/apps/django_telegram/permissions.py:27
-msgid "This command can only be used in groups."
+#: nublado/apps/django_telegram/policies.py:12
+msgid "bot.error.group_only"
 msgstr ""
 
-#: nublado/apps/django_telegram/permissions.py:40
-msgid "This command can only be used in a private chat."
+#: nublado/apps/django_telegram/policies.py:13
+msgid "bot.error.private_only"
 msgstr ""
 
-#: nublado/apps/django_telegram/permissions.py:63
-msgid "This command is for admins only."
+#: nublado/apps/django_telegram/policies.py:14
+msgid "bot.error.admin_access"
 msgstr ""
 
-#: nublado/apps/django_telegram/permissions.py:84
-msgid "This command is for the group owner only."
+#: nublado/apps/django_telegram/policies.py:15
+msgid "bot.error.group_owner_access"
 msgstr ""
 
-#: nublado/apps/nublado_bot/handlers/group_points.py:30
+#: nublado/apps/nublado_bot/bot_messages.py:4
+msgid "nublado.bot.start"
+msgstr "El bot Nublado se ha iniciado."
+
+#: nublado/apps/nublado_bot/bot_messages.py:5
+msgid "nublado.bot.hello"
+msgstr "Hola a todos."
+
+#: nublado/apps/nublado_bot/bot_messages.py:8
 #, python-brace-format
-msgid "bot.message.no_give_points_bot {points_name}"
+msgid "nublado.bot.language_set {language}"
+msgstr "El idioma del bot ha sido cambiado al {language}."
+
+#: nublado/apps/nublado_bot/bot_messages.py:9
+#, python-brace-format
+msgid "nublado.bot.error.language_active {language}"
+msgstr "El idioma  {language} ya está activo."
+
+#: nublado/apps/nublado_bot/bot_messages.py:11
+#, python-brace-format
+msgid "nublado.bot.error.invalid_language: {language_keys}"
+msgstr "Error: Las posibles claves de idioma son [{language_keys}]."
+
+#: nublado/apps/nublado_bot/bot_messages.py:15
+#, python-brace-format
+msgid "nublado.bot.error.no_give_points_bot {points_name}"
 msgstr "No puedes regalarle {points_name} a un bot."
 
-#: nublado/apps/nublado_bot/handlers/group_points.py:32
+#: nublado/apps/nublado_bot/bot_messages.py:16
 #, python-brace-format
-msgid "bot.message.no_give_points_self {points_name}"
+msgid "nublado.bot.error.no_take_points_bot {points_name}"
+msgstr "No puedes quitarle {points_name} a un bot."
+
+#: nublado/apps/nublado_bot/bot_messages.py:17
+#, python-brace-format
+msgid "nublado.bot.error.no_give_points_self {points_name}"
 msgstr "No puedes regalarte {points_name} a ti mismo/a."
 
-#: nublado/apps/nublado_bot/handlers/group_points.py:35
+#: nublado/apps/nublado_bot/bot_messages.py:18
+#, python-brace-format
+msgid "nublado.bot.error.no_take_points_self {points_name}"
+msgstr "No puedes quitarte {points_name} a ti mismo/a."
+
+#: nublado/apps/nublado_bot/bot_messages.py:20
 #, python-brace-format
 msgid ""
-"bot.message.give_point_member {sender_name} {sender_points} {points_name} "
+"nublado.bot.give_point {sender_name} {sender_points} {points_name} "
 "{receiver_name} {receiver_points}"
 msgstr ""
 "{sender_name} ({sender_points}) le ha regalado {points_name} a "
 "{receiver_name} ({receiver_points})."
 
-#: nublado/apps/nublado_bot/handlers/group_points.py:39
+#: nublado/apps/nublado_bot/bot_messages.py:24
 #, python-brace-format
 msgid ""
-"bot.message.give_points_member {sender_name} {sender_points} {num_points} "
+"nublado.bot.give_points {sender_name} {sender_points} {num_points} "
 "{points_name} {receiver_name} {receiver_points}"
 msgstr ""
 "{sender_name} ({sender_points}) le ha regalado {num_points} {points_name} a "
 "{receiver_name} ({receiver_points})."
 
-#: nublado/apps/nublado_bot/handlers/group_settings.py:15
+#: nublado/apps/nublado_bot/bot_messages.py:28
 #, python-brace-format
-msgid "bot.message.language_set {language}"
-msgstr "El idioma del bot ha sido cambiado al {language}."
+msgid ""
+"nublado.bot.take_point {sender_name} {sender_points} {points_name} "
+"{receiver_name} {receiver_points}"
+msgstr ""
+"{sender_name} ({sender_points}) le ha quitado {points_name} a "
+"{receiver_name} ({receiver_points})."
 
-#: nublado/apps/nublado_bot/handlers/group_settings.py:16
+#: nublado/apps/nublado_bot/bot_messages.py:32
 #, python-brace-format
-msgid "bot.message.language_already_active {language}"
-msgstr "El idioma  {language} ya está activo."
+msgid ""
+"nublado.bot.take_points {sender_name} {sender_points} {num_points} "
+"{points_name} {receiver_name} {receiver_points}"
+msgstr ""
+"{sender_name} ({sender_points}) le ha quitado {num_points} {points_name} a "
+"{receiver_name} ({receiver_points})."
 
-#: nublado/apps/nublado_bot/handlers/group_settings.py:18
-#, python-brace-format
-msgid "bot.message.invalid_language_key: {language_keys}"
-msgstr "Error: Las posibles claves de idioma son [{language_keys}]."
+#: nublado/apps/nublado_bot/handlers/group_points.py:23
+msgid "nublado.bot.point_name"
+msgstr "una gota de lluvia"
 
-#: nublado/apps/nublado_bot/handlers/group_settings.py:33
+#: nublado/apps/nublado_bot/handlers/group_points.py:24
+msgid "nublado.bot.points_name"
+msgstr "unas gotas de lluvia"
+
+#: nublado/apps/nublado_bot/handlers/group_settings.py:22
 msgid "Usage: /set_bot_language <language_code>"
-msgstr ""
-
-#: nublado/apps/nublado_bot/handlers/misc.py:14
-msgid "bot.message.start"
-msgstr "El bot ha sido iniciado."
-
-#: nublado/apps/nublado_bot/handlers/misc.py:16
-msgid "bot.message.hello"
-msgstr "Hola a todos."
-
-#: nublado/apps/users/apps.py:7
-msgid "label_user_config"
-msgstr ""
-
-#: nublado/apps/users/managers.py:9 nublado/apps/users/managers.py:32
-msgid "validation_username_required"
-msgstr ""
-
-#: nublado/apps/users/managers.py:11 nublado/apps/users/managers.py:34
-msgid "validation_email_required"
-msgstr ""
-
-#: nublado/apps/users/models.py:12
-msgid "label_username"
-msgstr ""
-
-#: nublado/apps/users/models.py:17
-msgid "label_email"
-msgstr ""
-
-#: nublado/apps/users/models.py:22
-msgid "label_first_name"
-msgstr ""
-
-#: nublado/apps/users/models.py:26
-msgid "label_last_name"
-msgstr ""
-
-#: nublado/apps/users/models.py:29
-msgid "label_is_active"
-msgstr ""
-
-#: nublado/apps/users/models.py:30
-msgid "label_is_admin"
 msgstr ""
 
 #: nublado/apps/project_app/templates/home.html:4
@@ -249,11 +185,166 @@ msgstr ""
 msgid "label_logout"
 msgstr ""
 
-msgid "bot.nublado.point_name"
-msgstr "una gota de lluvia"
+#: nublado/apps/reading_portal/exceptions.py:7
+msgid "Reading Portal error"
+msgstr ""
 
-msgid "bot.nublado.points_name"
-msgstr "gotas de lluvia"
+#: nublado/apps/reading_portal/exceptions.py:18
+msgid "reading_portal.error.no_open_portal"
+msgstr ""
+
+#: nublado/apps/reading_portal/exceptions.py:22
+msgid "reading_portal.error.no_reply_to_audio"
+msgstr ""
+
+#: nublado/apps/reading_portal/exceptions.py:26
+msgid "reading_portal.error.no_reply_to_reading"
+msgstr ""
+
+#: nublado/apps/reading_portal/exceptions.py:30
+msgid "reading_portal.error.no_reply_to_text"
+msgstr ""
+
+#: nublado/apps/reading_portal/exceptions.py:34
+#: nublado/apps/reading_portal/handlers.py:93
+msgid "reading_portal.error.no_draft_portal"
+msgstr ""
+
+#: nublado/apps/reading_portal/exceptions.py:38
+msgid "reading_portal.error.open_portal_exists"
+msgstr ""
+
+#: nublado/apps/reading_portal/exceptions.py:42
+msgid "reading_portal.error.empty_portal"
+msgstr ""
+
+#: nublado/apps/reading_portal/exceptions.py:46
+msgid "reading_portal.error.no_pending_reading"
+msgstr ""
+
+#: nublado/apps/reading_portal/handlers.py:175
+msgid "reading_portal.error.no_pending_readings"
+msgstr ""
+
+#: nublado/apps/reading_portal/handlers.py:221
+msgid "reading_portal.error.review_no_pending_reading"
+msgstr ""
+
+#: nublado/apps/reading_portal/models.py:27
+msgid "Draft"
+msgstr ""
+
+#: nublado/apps/reading_portal/models.py:28
+msgid "Scheduled"
+msgstr ""
+
+#: nublado/apps/reading_portal/models.py:29
+msgid "Open"
+msgstr ""
+
+#: nublado/apps/reading_portal/models.py:30
+msgid "Closed"
+msgstr ""
+
+#: nublado/apps/reading_portal/models.py:258
+msgid "Pending"
+msgstr ""
+
+#: nublado/apps/reading_portal/models.py:259
+msgid "Reviewed"
+msgstr ""
+
+#: nublado/apps/reading_portal/models.py:260
+msgid "Archived"
+msgstr ""
+
+#: nublado/apps/reading_portal/services/portals.py:54
+msgid "reading_portal.error.portal_not_found"
+msgstr ""
+
+#: nublado/apps/users/apps.py:7
+msgid "label_user_config"
+msgstr ""
+
+#: nublado/apps/users/managers.py:9 nublado/apps/users/managers.py:32
+msgid "validation_username_required"
+msgstr ""
+
+#: nublado/apps/users/managers.py:11 nublado/apps/users/managers.py:34
+msgid "validation_email_required"
+msgstr ""
+
+#: nublado/apps/users/models.py:11
+msgid "label_username"
+msgstr ""
+
+#: nublado/apps/users/models.py:16
+msgid "label_email"
+msgstr ""
+
+#: nublado/apps/users/models.py:21
+msgid "label_first_name"
+msgstr ""
+
+#: nublado/apps/users/models.py:25
+msgid "label_last_name"
+msgstr ""
+
+#: nublado/apps/users/models.py:28
+msgid "label_is_active"
+msgstr ""
+
+#: nublado/apps/users/models.py:29
+msgid "label_is_admin"
+msgstr ""
+
+#~ msgid "common.monday"
+#~ msgstr "lunes"
+
+#~ msgid "common.tuesday"
+#~ msgstr "martes"
+
+#~ msgid "common.wednesday"
+#~ msgstr "miércoles"
+
+#~ msgid "common.thursday"
+#~ msgstr "jueves"
+
+#~ msgid "common.friday"
+#~ msgstr "viernes"
+
+#~ msgid "common.saturday"
+#~ msgstr "sábado"
+
+#~ msgid "sommon.sunday"
+#~ msgstr "domingo"
+
+#~ msgid "common.abbr.monday"
+#~ msgstr "lun"
+
+#~ msgid "common.abbr.tuesday"
+#~ msgstr "mar"
+
+#~ msgid "common.abbr.wednesday"
+#~ msgstr "mié"
+
+#~ msgid "common.abbr.thursday"
+#~ msgstr "jue"
+
+#~ msgid "common.abbr.friday"
+#~ msgstr "vie"
+
+#~ msgid "common.abbr.saturday"
+#~ msgstr "sáb"
+
+#~ msgid "common.abbr.sunday"
+#~ msgstr "dom"
+
+#~ msgid "bot.message.start"
+#~ msgstr "El bot ha sido iniciado."
+
+#~ msgid "bot.message.hello"
+#~ msgstr "Hola a todos."
 
 #, python-brace-format
 #~ msgid "bot.message.coin_heads {member}"
@@ -364,30 +455,6 @@ msgstr "gotas de lluvia"
 #~| msgid "bot.points_name"
 #~ msgid "bot.points_name"
 #~ msgstr "puntos"
-
-#, python-brace-format
-#~ msgid "bot.message.no_take_points_bot {points_name}"
-#~ msgstr "No puedes quitarle {points_name} a un bot."
-
-#, python-brace-format
-#~ msgid "bot.message.no_take_points_self {points_name}"
-#~ msgstr "No puedes quitarte {points_name} a ti mismo/a."
-
-#, python-brace-format
-#~ msgid ""
-#~ "bot.message.take_point_member {sender_name} {sender_points} {points_name} "
-#~ "{receiver_name} {receiver_points}"
-#~ msgstr ""
-#~ "{sender_name} ({sender_points}) le ha quitado {points_name} a "
-#~ "{receiver_name} ({receiver_points})."
-
-#, python-brace-format
-#~ msgid ""
-#~ "bot.message.take_points_member {sender_name} {sender_points} {num_points} "
-#~ "{points_name} {receiver_name} {receiver_points}"
-#~ msgstr ""
-#~ "{sender_name} ({sender_points}) le ha quitado {num_points} {points_name} "
-#~ "a {receiver_name} ({receiver_points})."
 
 #~ msgid "bot.orchard.point_name"
 #~ msgstr "una cereza"

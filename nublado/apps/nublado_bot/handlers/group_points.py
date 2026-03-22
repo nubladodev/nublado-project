@@ -20,8 +20,8 @@ POINTS_MAP = {
 }
 
 # Translation keys or message templates
-POINT_NAME = "bot.nublado.point_name"
-POINTS_NAME = "bot.nublado.points_name"
+POINT_NAME = _("nublado.bot.point_name")
+POINTS_NAME = _("nublado.bot.points_name")
 
 
 async def on_success(update: Update, context: ContextTypes.DEFAULT_TYPE, result):
@@ -41,7 +41,7 @@ async def on_success(update: Update, context: ContextTypes.DEFAULT_TYPE, result)
             sender_name=sender_name,
             sender_points=sender_member.points,
             num_points=num_points,
-            points_name=_(POINTS_NAME),
+            points_name=POINTS_NAME,
             receiver_name=receiver_name,
             receiver_points=receiver_member.points,
         )
@@ -70,14 +70,14 @@ async def on_error(update, context, error):
     tg_message = update.effective_message
 
     if error == PointTransferError.SELF:
-        bot_message = BOT_MESSAGES["no_give_self"].format(points_name=_(POINTS_NAME))
+        bot_message = BOT_MESSAGES["error.no_give_points_self"].format(points_name=POINTS_NAME)
         await context.bot.send_message(
             chat_id=tg_chat.id,
             text=str(bot_message),
             reply_to_message_id=tg_message.message_id,
         )
     elif error == PointTransferError.BOT:
-        bot_message = BOT_MESSAGES["no_give_bot"].format(points_name=_(POINTS_NAME))
+        bot_message = BOT_MESSAGES["error.no_give_points_bot"].format(points_name=POINTS_NAME)
         await context.bot.send_message(
             chat_id=tg_chat.id,
             text=str(bot_message),

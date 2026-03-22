@@ -10,7 +10,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await context.bot.send_message(
         chat_id=tg_chat.id,
-        text=str(BOT_MESSAGES["bot_start"]),
+        text=str(BOT_MESSAGES["start"]),
         reply_to_message_id=tg_message.message_id,
     )
 
@@ -20,5 +20,5 @@ async def hello(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     await context.bot.send_message(
         chat_id=tg_chat.id,
-        text=str(BOT_MESSAGES["bot_hello"]),
+        text=str(BOT_MESSAGES["hello"]),
     )
