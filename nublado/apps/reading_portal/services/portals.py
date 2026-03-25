@@ -2,7 +2,6 @@ from telegram import Update
 from telegram.ext import ContextTypes
 from telegram.error import BadRequest
 
-from django.utils.translation import gettext_lazy as _
 
 from django_telegram.models import TelegramChat
 

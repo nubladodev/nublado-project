@@ -27,9 +27,7 @@ async def set_bot_language(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Check if language_code is in acceptable language codes.
     if not language_code:
         keys = list(settings.LANGUAGES_DICT.keys())
-        bot_message = BOT_MESSAGES["error.invalid_language"].format(
-            language_keys=keys
-        )
+        bot_message = BOT_MESSAGES["error.invalid_language"].format(language_keys=keys)
         await context.bot.send_message(
             chat_id=tg_chat.id,
             text=str(bot_message),

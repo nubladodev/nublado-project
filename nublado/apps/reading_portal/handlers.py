@@ -9,7 +9,6 @@ from telegram import (
 from telegram.error import BadRequest
 from telegram.ext import ContextTypes
 
-from django.utils.translation import gettext_lazy as _
 
 from django_telegram.utils.helpers import message_link
 from django_telegram.utils.telegram import delete_command
@@ -142,10 +141,14 @@ async def handle_voice_submission(update: Update, context: ContextTypes.DEFAULT_
     if reading_submission:
         tg_user = update.effective_user
         portal_reading = reading_submission.portal_reading
-        bot_message = f"#pending_{portal_reading.language} : {user_display_name(tg_user)}"
+        bot_message = (
+            f"#pending_{portal_reading.language} : {user_display_name(tg_user)}"
+        )
 
         reply_message = await context.bot.send_message(
-            chat_id=tg_chat.id, text=bot_message, reply_to_message_id=tg_message.message_id
+            chat_id=tg_chat.id,
+            text=bot_message,
+            reply_to_message_id=tg_message.message_id,
         )
 
         await context.bot.set_message_reaction(
@@ -240,8 +243,9 @@ async def review_reading(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reaction=[ReactionTypeEmoji("💯")],
         )
 
-    
-        bot_message = BOT_MESSAGES["reading_reviewed"].format(reviewer_name=user_display_name(tg_user))
+        bot_message = BOT_MESSAGES["reading_reviewed"].format(
+            reviewer_name=user_display_name(tg_user)
+        )
         await context.bot.send_message(
             chat_id=tg_chat.id,
             text=str(bot_message),

@@ -58,9 +58,6 @@ class TelegramBot:
             logger.info(f"[{self.name}] webhook already set.")
             return
 
-        await self.ensure_initialized()
-        #asyncio.create_task(self.ensure_initialized())
-
         logger.info(f"Setting webhook for [{self.name}].")
 
         bot = Bot(self.app.bot.token)

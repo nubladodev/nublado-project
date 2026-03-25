@@ -4,7 +4,6 @@ from functools import wraps
 from telegram import Update
 from telegram.ext import ContextTypes, ApplicationHandlerStop
 
-from django.utils.translation import gettext_lazy as _
 
 from .utils.helpers import _is_group, _is_private, _is_admin, _is_group_owner
 from .bot_messages import BOT_MESSAGES

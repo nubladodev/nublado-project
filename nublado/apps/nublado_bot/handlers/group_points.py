@@ -70,14 +70,18 @@ async def on_error(update, context, error):
     tg_message = update.effective_message
 
     if error == PointTransferError.SELF:
-        bot_message = BOT_MESSAGES["error.no_give_points_self"].format(points_name=POINTS_NAME)
+        bot_message = BOT_MESSAGES["error.no_give_points_self"].format(
+            points_name=POINTS_NAME
+        )
         await context.bot.send_message(
             chat_id=tg_chat.id,
             text=str(bot_message),
             reply_to_message_id=tg_message.message_id,
         )
     elif error == PointTransferError.BOT:
-        bot_message = BOT_MESSAGES["error.no_give_points_bot"].format(points_name=POINTS_NAME)
+        bot_message = BOT_MESSAGES["error.no_give_points_bot"].format(
+            points_name=POINTS_NAME
+        )
         await context.bot.send_message(
             chat_id=tg_chat.id,
             text=str(bot_message),

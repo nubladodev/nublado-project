@@ -3,7 +3,7 @@ set -e  # fail fast if anything breaks
 set -x  # show commands in logs
 
 echo "Starting bots..."
-python manage.py start_bots
+python manage.py set_bot_webhooks
 
 echo "Starting gunicorn..."
 exec gunicorn config.asgi:application \

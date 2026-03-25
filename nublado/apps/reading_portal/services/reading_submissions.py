@@ -28,11 +28,11 @@ async def submit_reading_service(update: Update, context: ContextTypes.DEFAULT_T
         return None
 
     # Must reply to a reading
-    text_message = tg_message.reply_to_message
-    if not text_message or not text_message.text:
+    tg_reply_to_message = tg_message.reply_to_message
+    if not tg_reply_to_message or not tg_reply_to_message.text:
         return None
 
-    if text_message.from_user.id != context.bot.id:
+    if tg_reply_to_message.from_user.id != context.bot.id:
         return None
 
     chat = await TelegramChat.objects.aget_or_create_from_telegram_chat(tg_chat)
@@ -45,7 +45,7 @@ async def submit_reading_service(update: Update, context: ContextTypes.DEFAULT_T
     try:
         reading = await PortalReading.objects.with_portal().aget(
             reading_portal=portal,
-            message_id=text_message.message_id,
+            message_id=tg_reply_to_message.message_id,
         )
     except PortalReading.DoesNotExist:
         raise NoReplyToReading()
@@ -113,26 +113,28 @@ async def review_reading_service(update: Update, context: ContextTypes.DEFAULT_T
     if not tg_message or not tg_message.reply_to_message:
         return None
 
-    voice_message = tg_message.reply_to_message
+    tg_reply_to_message = tg_message.reply_to_message
 
-    if not voice_message.voice:
+    if not tg_reply_to_message.voice:
         return None
 
     # Check if voice message is a pending reading submission.
     try:
         reading_submission = await (
             ReadingSubmission.objects.with_user()
-            .pending()
             .for_portal(portal)
             .aget(
-                message_id=voice_message.message_id,
+                message_id=tg_reply_to_message.message_id,
             )
         )
     except ReadingSubmission.DoesNotExist:
         raise NoPendingReading()
 
-    reading_submission.reading_status = ReadingSubmission.ReadingStatus.REVIEWED
-    await reading_submission.asave(update_fields=["reading_status"])
+    # Allow multiple reviews, but change the status of the reading submission from pending to reviewed
+    # with the first review to exclude it from the pending list.
+    if reading_submission.reading_status != ReadingSubmission.ReadingStatus.REVIEWED:
+        reading_submission.reading_status = ReadingSubmission.ReadingStatus.REVIEWED
+        await reading_submission.asave(update_fields=["reading_status"])
 
     return reading_submission
 
