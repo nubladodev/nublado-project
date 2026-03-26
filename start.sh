@@ -2,7 +2,7 @@
 set -e  # fail fast if anything breaks
 set -x  # show commands in logs
 
-echo "Starting bots..."
+echo "Setting webhooks..."
 python manage.py set_bot_webhooks
 
 echo "Starting gunicorn..."

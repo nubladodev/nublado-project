@@ -9,4 +9,5 @@ BOT_MESSAGES = {
     "error.portal_not_found": _("reading_portal.bot.error.portal_not_found"),
     "reading_reviewed": _("reading_portal.bot.reading_reviewed {reviewer_name}"),
     "pending_readings": _("reading_portal.bot.pending_readings"),
+    "draft_reading_portals": _("reading_portal.bot.draft_reading_portals"),
 }

@@ -95,7 +95,7 @@ async def list_draft_portals(update: Update, context: ContextTypes.DEFAULT_TYPE)
         )
         return
 
-    bot_message = BOT_MESSAGES["reading_portals"]
+    bot_message = BOT_MESSAGES["draft_reading_portals"]
     buttons = []
 
     async for portal in portals:
