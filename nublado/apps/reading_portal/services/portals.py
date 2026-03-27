@@ -62,11 +62,14 @@ async def open_portal_service(
         portal = await ReadingPortal.objects.anext_draft(chat=chat)
 
     if not portal:
+        # There are no draft portals ready to be posted.
         raise NoDraftPortal()
 
     if not await portal.ahas_readings():
+        # The portal has no readings.
         raise EmptyPortal()
 
+    # The intro message (e.d., "Welcome to the Reading Portal.")
     intro_text = format_portal_intro(portal)
 
     intro_message = await bot.send_message(
@@ -77,6 +80,7 @@ async def open_portal_service(
 
     readings = PortalReading.objects.for_portal(portal)
 
+    # Post the portal readings.
     async for reading in readings:
 
         language_label = reading.language.upper()
@@ -89,9 +93,11 @@ async def open_portal_service(
             parse_mode="HTML",
         )
 
+        # Update the PortalReading message_id for reference in the chat.
         reading.message_id = reading_message.message_id
         await reading.asave(update_fields=["message_id"])
 
+    # Pin the intro message.
     await bot.pin_chat_message(
         chat_id=tg_chat.id,
         message_id=intro_message.message_id,
