@@ -18,7 +18,7 @@ from django_telegram.jobs import delete_message_job
 from .exceptions import ReadingPortalError, NoPendingReading
 from .services.portals import (
     open_portal_service,
-    close_open_portal_service,
+    close_portal_service,
     list_draft_portals_service,
 )
 from .services.reading_submissions import (
@@ -70,7 +70,7 @@ async def close_portal(update: Update, context: ContextTypes.DEFAULT_TYPE):
     tg_message = update.effective_message
 
     try:
-        await close_open_portal_service(update, context)
+        await close_portal_service(update, context)
     except ReadingPortalError as e:
         await context.bot.send_message(
             chat_id=tg_chat.id, text=str(e), reply_to_message_id=tg_message.message_id

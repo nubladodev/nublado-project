@@ -29,7 +29,8 @@ async def open_portal_service(
     notify: bool = False,
 ):
     """
-    Open the next draft portal for the given Telegram chat.
+    Open a draft Reading Portal by slug if provided, 
+    or open the first Reading Portal in the queue.
     """
     tg_chat = update.effective_chat
     tg_message = update.effective_message
@@ -45,6 +46,7 @@ async def open_portal_service(
     if existing_open:
         raise OpenPortalExists()
 
+    # If a slug is provided, attempt to open a Reading Portal with the coresponding slug.
     if slug:
         try:
             portal = await ReadingPortal.objects.draft().from_chat(chat).aget(slug=slug)
@@ -56,6 +58,7 @@ async def open_portal_service(
             )
             return
     else:
+        # If no slug is provided, ger the next draft Reading Portal in the queue.
         portal = await ReadingPortal.objects.anext_draft(chat=chat)
 
     if not portal:
@@ -103,7 +106,7 @@ async def open_portal_service(
     return portal
 
 
-async def close_open_portal_service(
+async def close_portal_service(
     update: Update, context: ContextTypes.DEFAULT_TYPE, notify: bool = False
 ):
     tg_chat = update.effective_chat
