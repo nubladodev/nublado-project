@@ -28,6 +28,8 @@ from .services.reading_submissions import (
 )
 from .bot_messages import BOT_MESSAGES
 
+OPEN_PORTAL_CALLBACK = "open_portal"
+
 
 async def open_portal(update: Update, context: ContextTypes.DEFAULT_TYPE):
     tg_chat = update.effective_chat
@@ -53,7 +55,7 @@ async def open_portal_callback(update: Update, context: ContextTypes.DEFAULT_TYP
     await query.answer()  # <-- stops the “freezing” spinner
     data = query.data
 
-    if data.startswith("open_portal:"):
+    if data.startswith(f"{OPEN_PORTAL_CALLBACK}:"):
         slug = data.split(":", 1)[1]
 
         try:
@@ -103,7 +105,7 @@ async def list_draft_portals(update: Update, context: ContextTypes.DEFAULT_TYPE)
             [
                 InlineKeyboardButton(
                     f"{portal.title}",
-                    callback_data=f"open_portal:{portal.slug}",
+                    callback_data=f"{OPEN_PORTAL_CALLBACK}:{portal.slug}",
                 )
             ]
         )
