@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-22 12:33+0000\n"
-"PO-Revision-Date: 2026-03-22 04:42-0700\n"
+"POT-Creation-Date: 2026-03-28 07:47+0000\n"
+"PO-Revision-Date: 2026-03-28 00:51-0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -18,27 +18,27 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.4.2\n"
 
-#: config/settings/base.py:107
+#: config/settings/base.py:108
 msgid "common.language.en"
 msgstr "English"
 
-#: config/settings/base.py:108
+#: config/settings/base.py:109
 msgid "common.language.es"
 msgstr "Spanish"
 
-#: nublado/apps/django_telegram/bot_messages.py:5
+#: nublado/apps/django_telegram/bot_messages.py:4
 msgid "django_telegram.bot.error.group_only"
 msgstr ""
 
-#: nublado/apps/django_telegram/bot_messages.py:6
+#: nublado/apps/django_telegram/bot_messages.py:5
 msgid "django_telegram.bot.error.private_only"
 msgstr ""
 
-#: nublado/apps/django_telegram/bot_messages.py:7
+#: nublado/apps/django_telegram/bot_messages.py:6
 msgid "django_telegram.bot.error.admin_access"
 msgstr ""
 
-#: nublado/apps/django_telegram/bot_messages.py:8
+#: nublado/apps/django_telegram/bot_messages.py:7
 msgid "django_telegram.bot.error.group_owner_access"
 msgstr ""
 
@@ -78,37 +78,37 @@ msgstr "Nublado bot has started."
 msgid "nublado.bot.hello"
 msgstr "Hello, everybody."
 
-#: nublado/apps/nublado_bot/bot_messages.py:8
+#: nublado/apps/nublado_bot/bot_messages.py:7
 #, python-brace-format
 msgid "nublado.bot.language_set {language}"
 msgstr "The language has been changed to {language}."
 
-#: nublado/apps/nublado_bot/bot_messages.py:9
+#: nublado/apps/nublado_bot/bot_messages.py:8
 #, python-brace-format
 msgid "nublado.bot.error.language_active {language}"
 msgstr "The language {language} is already active."
 
-#: nublado/apps/nublado_bot/bot_messages.py:11
+#: nublado/apps/nublado_bot/bot_messages.py:9
 #, python-brace-format
 msgid "nublado.bot.error.invalid_language: {language_keys}"
 msgstr "The possible language keys are [{language_keys}]."
 
-#: nublado/apps/nublado_bot/bot_messages.py:15
+#: nublado/apps/nublado_bot/bot_messages.py:11
 #, python-brace-format
 msgid "nublado.bot.error.no_give_points_bot {points_name}"
 msgstr "You can't give {points_name} to a bot."
 
-#: nublado/apps/nublado_bot/bot_messages.py:16
+#: nublado/apps/nublado_bot/bot_messages.py:12
 #, python-brace-format
 msgid "nublado.bot.error.no_take_points_bot {points_name}"
 msgstr "You can't take {points_name} from a bot."
 
-#: nublado/apps/nublado_bot/bot_messages.py:17
+#: nublado/apps/nublado_bot/bot_messages.py:14
 #, python-brace-format
 msgid "nublado.bot.error.no_give_points_self {points_name}"
 msgstr "You can't give {points_name} to yourself."
 
-#: nublado/apps/nublado_bot/bot_messages.py:18
+#: nublado/apps/nublado_bot/bot_messages.py:17
 #, python-brace-format
 msgid "nublado.bot.error.no_take_points_self {points_name}"
 msgstr "You can't take {points_name} from yourself."
@@ -185,11 +185,11 @@ msgstr ""
 msgid "label_logout"
 msgstr ""
 
-#: nublado/apps/reading_portal/bot_messages.py:5
+#: nublado/apps/reading_portal/bot_messages.py:4
 msgid "reading_portal.bot.error.no_draft_portals"
 msgstr ""
 
-#: nublado/apps/reading_portal/bot_messages.py:6
+#: nublado/apps/reading_portal/bot_messages.py:5
 msgid "reading_portal.bot.error.no_pending_readings"
 msgstr ""
 
@@ -197,17 +197,21 @@ msgstr ""
 msgid "reading_portal.bot.error.review_no_pending_reading"
 msgstr ""
 
-#: nublado/apps/reading_portal/bot_messages.py:8
+#: nublado/apps/reading_portal/bot_messages.py:9
 msgid "reading_portal.bot.error.portal_not_found"
 msgstr ""
 
-#: nublado/apps/reading_portal/bot_messages.py:9
+#: nublado/apps/reading_portal/bot_messages.py:10
 #, python-brace-format
 msgid "reading_portal.bot.reading_reviewed {reviewer_name}"
+msgstr "Reviewed by {reviewer_name}."
+
+#: nublado/apps/reading_portal/bot_messages.py:11
+msgid "reading_portal.bot.pending_readings"
 msgstr ""
 
-#: nublado/apps/reading_portal/bot_messages.py:10
-msgid "reading_portal.bot.pending_readings"
+#: nublado/apps/reading_portal/bot_messages.py:12
+msgid "reading_portal.bot.draft_reading_portals"
 msgstr ""
 
 #: nublado/apps/reading_portal/exceptions.py:7
@@ -215,35 +219,35 @@ msgid "Reading Portal error"
 msgstr ""
 
 #: nublado/apps/reading_portal/exceptions.py:18
-msgid "reading_portal.error.no_open_portal"
+msgid "reading_portal.bot.error.no_open_portal"
 msgstr ""
 
 #: nublado/apps/reading_portal/exceptions.py:22
-msgid "reading_portal.error.no_reply_to_audio"
+msgid "reading_portal.bot.error.no_reply_to_audio"
 msgstr ""
 
 #: nublado/apps/reading_portal/exceptions.py:26
-msgid "reading_portal.error.no_reply_to_reading"
+msgid "reading_portal.bot.error.no_reply_to_reading"
 msgstr ""
 
 #: nublado/apps/reading_portal/exceptions.py:30
-msgid "reading_portal.error.no_reply_to_text"
+msgid "reading_portal.bot.error.no_reply_to_text"
 msgstr ""
 
 #: nublado/apps/reading_portal/exceptions.py:34
-msgid "reading_portal.error.no_draft_portal"
+msgid "reading_portal.bot.error.no_draft_portal"
 msgstr ""
 
 #: nublado/apps/reading_portal/exceptions.py:38
-msgid "reading_portal.error.open_portal_exists"
+msgid "reading_portal.bot.error.open_portal_exists"
 msgstr ""
 
 #: nublado/apps/reading_portal/exceptions.py:42
-msgid "reading_portal.error.empty_portal"
+msgid "reading_portal.bot.error.empty_portal"
 msgstr ""
 
 #: nublado/apps/reading_portal/exceptions.py:46
-msgid "reading_portal.error.no_pending_reading"
+msgid "reading_portal.bot.error.no_pending_reading"
 msgstr ""
 
 #: nublado/apps/reading_portal/models.py:27
