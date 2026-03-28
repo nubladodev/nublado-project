@@ -187,11 +187,11 @@ msgstr ""
 
 #: nublado/apps/reading_portal/bot_messages.py:4
 msgid "reading_portal.bot.error.no_draft_portals"
-msgstr ""
+msgstr "There are no portals to post."
 
 #: nublado/apps/reading_portal/bot_messages.py:5
 msgid "reading_portal.bot.error.no_pending_readings"
-msgstr ""
+msgstr "There are no pending readings."
 
 #: nublado/apps/reading_portal/bot_messages.py:7
 msgid "reading_portal.bot.error.review_no_pending_reading"
@@ -208,7 +208,7 @@ msgstr "Reviewed by {reviewer_name}."
 
 #: nublado/apps/reading_portal/bot_messages.py:11
 msgid "reading_portal.bot.pending_readings"
-msgstr ""
+msgstr "pending readings"
 
 #: nublado/apps/reading_portal/bot_messages.py:12
 msgid "reading_portal.bot.draft_reading_portals"
