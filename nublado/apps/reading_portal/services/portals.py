@@ -29,7 +29,7 @@ async def open_portal_service(
     notify: bool = False,
 ):
     """
-    Open a draft Reading Portal by slug if provided, 
+    Open a draft Reading Portal by slug if provided,
     or open the first Reading Portal in the queue.
     """
     tg_chat = update.effective_chat
