@@ -56,4 +56,4 @@ class TestTelegramChat:
             chat_type=TelegramChat.ChatType.GROUP,
             title="Foo Group",
         )
-        assert str(chat) == f"{chat.telegram_id}: {chat.title}: {chat.chat_type}"
+        assert str(chat) == f"{chat.telegram_id}: {chat.title}"

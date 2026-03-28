@@ -1,0 +1,17 @@
+textarea.vLargeTextField,
+textarea {
+    width: 100%;
+    min-height: 450px;
+    font-size: 20px;
+    line-height: 1.6;
+    padding: 14px;
+}
+
+input.vIntegerField,
+input.vBigIntegerField,
+input.vSmallIntegerField,
+input.vTextField,
+select.vSelect {
+    font-size: 18px;
+    padding: 6px 10px;
+}
