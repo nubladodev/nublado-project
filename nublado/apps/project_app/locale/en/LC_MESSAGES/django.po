@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-03-28 07:47+0000\n"
-"PO-Revision-Date: 2026-03-28 00:51-0700\n"
+"PO-Revision-Date: 2026-03-28 22:11-0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -220,7 +220,7 @@ msgstr ""
 
 #: nublado/apps/reading_portal/exceptions.py:18
 msgid "reading_portal.bot.error.no_open_portal"
-msgstr ""
+msgstr "There is no open Reading Portal."
 
 #: nublado/apps/reading_portal/exceptions.py:22
 msgid "reading_portal.bot.error.no_reply_to_audio"

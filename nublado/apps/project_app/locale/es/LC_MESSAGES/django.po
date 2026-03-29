@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-03-28 07:47+0000\n"
-"PO-Revision-Date: 2026-03-28 00:48-0700\n"
+"PO-Revision-Date: 2026-03-28 22:12-0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -223,10 +223,8 @@ msgid "Reading Portal error"
 msgstr ""
 
 #: nublado/apps/reading_portal/exceptions.py:18
-#, fuzzy
-#| msgid "reading_portal.bot.error.no_draft_portals"
 msgid "reading_portal.bot.error.no_open_portal"
-msgstr "No hay portal listo para publicar."
+msgstr "No hay Portal de Lectura abierto."
 
 #: nublado/apps/reading_portal/exceptions.py:22
 #, fuzzy
