@@ -12,7 +12,7 @@ from ..exceptions import (
 )
 
 
-async def submit_reading_service(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def submit_reading_voice_message_service(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
     Submit a reading to the Reading Portal.
 

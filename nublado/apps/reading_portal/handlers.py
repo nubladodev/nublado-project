@@ -22,7 +22,7 @@ from .services.portals import (
     list_draft_portals_service,
 )
 from .services.reading_submissions import (
-    submit_reading_service,
+    submit_reading_voice_message_service,
     review_reading_service,
     get_pending_readings_service,
 )
@@ -128,12 +128,12 @@ async def list_draft_portals(update: Update, context: ContextTypes.DEFAULT_TYPE)
     )
 
 
-async def handle_voice_submission(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def submit_reading(update: Update, context: ContextTypes.DEFAULT_TYPE):
     tg_chat = update.effective_chat
     tg_message = update.effective_message
 
     try:
-        reading_submission = await submit_reading_service(update, context)
+        reading_submission = await submit_reading_voice_message_service(update, context)
     except ReadingPortalError as e:
         await context.bot.send_message(
             chat_id=tg_chat.id, text=str(e), reply_to_message_id=tg_message.message_id
