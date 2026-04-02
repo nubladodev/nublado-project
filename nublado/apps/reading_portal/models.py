@@ -127,88 +127,11 @@ class ReadingPortal(TimestampModel):
         return await self.portal_readings.aexists()
 
     async def open_portal(self):
-        if not self.has_readings:
+        if not await self.ahas_readings:
             raise ValidationError("A Reading Portal must have at least one reading.")
 
         self.portal_status = self.PortalStatus.OPEN
         await self.asave(update_fields=["portal_status"])
-
-    # def members_incomplete_readings(self):
-    #     """
-    #     Return member readers who submitted at least one reading but not in all languages
-    #     for this Reading Portal session.
-    #     """
-    #     required_count = len(self.REQUIRED_LANGUAGES)
-
-    #     members = (
-    #         TelegramGroupMember.objects.filter(
-    #             chat=self.chat, is_active=True, reading_sessions__reading_portal=self
-    #         )
-    #         .annotate(
-    #             submitted_count=Count(
-    #                 "reading_submissions",
-    #                 filter=Q(reading_submissions__reading_portal=self),
-    #             )
-    #         )
-    #         .filter(submitted_count__lt=required_count, submitted_count__gt=0)
-    #     )
-
-    #     return members
-
-    # def members_complete_readings(self):
-    #     """
-    #     Return members who have submitted all required readings
-    #     for this Reading Portal session.
-    #     """
-    #     required_count = self.portal_readings.count()
-
-    #     members = (
-    #         TelegramGroupMember.objects.filter(
-    #             chat=self.chat,
-    #             is_active=True,
-    #             # Only consider members who have at least one submission in this portal.
-    #             reading_submissions__reading_portal=self,
-    #         )
-    #         .annotate(
-    #             submitted_count=Count(
-    #                 "reading_submissions",
-    #                 # Only count submissions that belong to this session.
-    #                 filter=Q(reading_submissions__reading_portal=self),
-    #             )
-    #         )
-    #         .filter(submitted_count=required_count)
-    #     )
-
-    #     return members
-
-    # def non_participants(self):
-    #     """
-    #     Return active members who haven't submitted any readings for
-    #     this Reading Portal session.
-    #     """
-    #     members = TelegramGroupMember.objects.filter(
-    #         chat=self.chat, is_active=True
-    #     ).exclude(reading_submissions__reading_portal=self)
-
-    #     return members
-
-    # # Queue helpers
-    # def pending_readings(self, language: str):
-    #     """
-    #     Return pending reading submissions for the given language,
-    #     ordered by submission time.
-    #     """
-    #     return self.reading_submissions.filter(
-    #         language=language,
-    #         status=ReadingSubmission.ReadingStatus.PENDING,
-    #         member__is_active=True,
-    #     ).order_by("submitted_at")
-
-    # def next_pending_reading(self, language: str):
-    #     """
-    #     Peek at the next pending submission in the queue for a language.
-    #     """
-    #     return self.pending_readings(language).first()
 
 
 class PortalReading(TimestampModel, LanguageModel):
