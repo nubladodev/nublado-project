@@ -1,5 +1,8 @@
 from django.utils.translation import gettext_lazy as _
 
+from .bot_messages import BOT_MESSAGES
+from .constants import POINTS_NAME
+
 
 class GroupPointsError(Exception):
     """Base exception for Group Points domain."""
@@ -15,8 +18,10 @@ class GroupPointsError(Exception):
 
 
 class BotReceiverError(GroupPointsError):
-    default_message = _("group_points.bot.error.no_send_points_to_bot")
+    default_message = BOT_MESSAGES["error.no_give_points_bot"].format(
+        points_name=_(POINTS_NAME)
+    )
 
 
 class SelfReceiverError(GroupPointsError):
-    default_message = _("group_points.bot.error.no_send_points_to_self")
+    default_message = default_message = BOT_MESSAGES["error.no_give_points_self"]

@@ -12,6 +12,7 @@ from django_telegram.constants import HANDLER_GROUP, MIDDLEWARE_GROUP
 def register_handlers(app):
     from django_telegram.handlers import LanguageHandler
     from reading_portal.handlers import (
+        list_draft_portals,
         pending_readings,
         open_portal,
         close_portal,
@@ -34,7 +35,7 @@ def register_handlers(app):
     app.add_handler(
         CommandHandler(
             "start",
-            with_policies(PrivateOnly())(with_language(start)),
+            with_policies(PrivateOnly)(with_language(start)),
         ),
         group=HANDLER_GROUP,
     )
@@ -42,7 +43,7 @@ def register_handlers(app):
     app.add_handler(
         CommandHandler(
             "hello",
-            with_policies(GroupOnly())(with_language(hello)),
+            with_policies(GroupOnly)(with_language(hello)),
         ),
         group=HANDLER_GROUP,
     )
@@ -50,7 +51,7 @@ def register_handlers(app):
     app.add_handler(
         CommandHandler(
             "set_bot_language",
-            with_policies(GroupOnly())(with_language(set_bot_language)),
+            with_policies(GroupOnly)(with_language(set_bot_language)),
         ),
         group=HANDLER_GROUP,
     )
@@ -58,7 +59,7 @@ def register_handlers(app):
     app.add_handler(
         CommandHandler(
             "open_portal",
-            with_policies(GroupOnly())(with_language(open_portal)),
+            with_policies(GroupOnly)(with_language(open_portal)),
         ),
         group=HANDLER_GROUP,
     )
@@ -66,7 +67,7 @@ def register_handlers(app):
     app.add_handler(
         CommandHandler(
             "close_portal",
-            with_policies(GroupOnly())(with_language(close_portal)),
+            with_policies(GroupOnly)(with_language(close_portal)),
         ),
         group=HANDLER_GROUP,
     )
@@ -74,7 +75,7 @@ def register_handlers(app):
     app.add_handler(
         CommandHandler(
             "pending_readings",
-            with_policies(GroupOnly())(with_language(pending_readings)),
+            with_policies(GroupOnly)(with_language(pending_readings)),
         ),
         group=HANDLER_GROUP,
     )
@@ -82,7 +83,7 @@ def register_handlers(app):
     app.add_handler(
         CommandHandler(
             "show_portals",
-            with_policies(GroupOnly())(with_language(show_portals)),
+            with_policies(GroupOnly)(with_language(list_draft_portals)),
         ),
         group=HANDLER_GROUP,
     )
@@ -90,7 +91,7 @@ def register_handlers(app):
     app.add_handler(
         CommandHandler(
             "reviewed",
-            with_policies(GroupOnly())(with_language(review_reading)),
+            with_policies(GroupOnly)(with_language(review_reading)),
         ),
         group=HANDLER_GROUP,
     )
@@ -103,7 +104,7 @@ def register_handlers(app):
     app.add_handler(
         MessageHandler(
             filters.VOICE & filters.REPLY,
-            with_policies(GroupOnly())(with_language(submit_reading)),
+            with_policies(GroupOnly)(with_language(submit_reading)),
         ),
         group=HANDLER_GROUP,
     )
@@ -111,7 +112,7 @@ def register_handlers(app):
     app.add_handler(
         MessageHandler(
             POINT_FILTER,
-            with_policies(GroupOnly())(with_language(give_points)),
+            with_policies(GroupOnly)(with_language(give_points)),
         ),
         group=HANDLER_GROUP,
     )

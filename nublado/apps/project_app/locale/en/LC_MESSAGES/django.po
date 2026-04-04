@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-28 07:47+0000\n"
-"PO-Revision-Date: 2026-03-28 22:11-0700\n"
+"POT-Creation-Date: 2026-04-04 19:02+0000\n"
+"PO-Revision-Date: 2026-04-04 12:03-0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -70,6 +70,74 @@ msgstr ""
 msgid "owner"
 msgstr ""
 
+#: nublado/apps/group_points/bot_messages.py:5
+#, python-brace-format
+msgid "group_points.bot.error.no_give_points_bot {points_name}"
+msgstr "You can't give {points_name} to a bot."
+
+#: nublado/apps/group_points/bot_messages.py:6
+#, python-brace-format
+msgid "group_points.bot.error.no_take_points_bot {points_name}"
+msgstr "You can't take {points_name} from a bot."
+
+#: nublado/apps/group_points/bot_messages.py:8
+#, python-brace-format
+msgid "group_points.bot.error.no_give_points_self {points_name}"
+msgstr "You can't give {points_name} to yourself."
+
+#: nublado/apps/group_points/bot_messages.py:11
+#, python-brace-format
+msgid "group_points.bot.error.no_take_points_self {points_name}"
+msgstr "You can't take {points_name} from yourself."
+
+#: nublado/apps/group_points/bot_messages.py:14
+#, python-brace-format
+msgid ""
+"group_points.bot.give_point {sender_name} {sender_points} {points_name} "
+"{receiver_name} {receiver_points}"
+msgstr ""
+"{sender_name} ({sender_points}) has given a {points_name} to {receiver_name} "
+"({receiver_points})."
+
+#: nublado/apps/group_points/bot_messages.py:18
+#, python-brace-format
+msgid ""
+"group_points.bot.give_points {sender_name} {sender_points} {num_points} "
+"{points_name} {receiver_name} {receiver_points}"
+msgstr ""
+"{sender_name} ({sender_points}) has given {num_points} {points_name} to "
+"{receiver_name} ({receiver_points})."
+
+#: nublado/apps/group_points/bot_messages.py:22
+#, python-brace-format
+msgid ""
+"group_points.bot.take_point {sender_name} {sender_points} {points_name} "
+"{receiver_name} {receiver_points}"
+msgstr ""
+"{sender_name} ({sender_points}) has taken a {points_name} from "
+"{receiver_name} ({receiver_points})."
+
+#: nublado/apps/group_points/bot_messages.py:26
+#, python-brace-format
+msgid ""
+"group_points.bot.take_points {sender_name} {sender_points} {num_points} "
+"{points_name} {receiver_name} {receiver_points}"
+msgstr ""
+"{sender_name} ({sender_points}) has taken {num_points} {points_name} from "
+"{receiver_name} ({receiver_points})."
+
+#: nublado/apps/group_points/constants.py:7
+msgid "group_points.bot.point_name"
+msgstr "raindrop"
+
+#: nublado/apps/group_points/constants.py:8
+msgid "group_points.bot.points_name"
+msgstr "raindrops"
+
+#: nublado/apps/group_points/exceptions.py:9
+msgid "group_points.bot.error.default"
+msgstr ""
+
 #: nublado/apps/nublado_bot/bot_messages.py:4
 msgid "nublado.bot.start"
 msgstr "Nublado bot has started."
@@ -92,70 +160,6 @@ msgstr "The language {language} is already active."
 #, python-brace-format
 msgid "nublado.bot.error.invalid_language: {language_keys}"
 msgstr "The possible language keys are [{language_keys}]."
-
-#: nublado/apps/nublado_bot/bot_messages.py:11
-#, python-brace-format
-msgid "nublado.bot.error.no_give_points_bot {points_name}"
-msgstr "You can't give {points_name} to a bot."
-
-#: nublado/apps/nublado_bot/bot_messages.py:12
-#, python-brace-format
-msgid "nublado.bot.error.no_take_points_bot {points_name}"
-msgstr "You can't take {points_name} from a bot."
-
-#: nublado/apps/nublado_bot/bot_messages.py:14
-#, python-brace-format
-msgid "nublado.bot.error.no_give_points_self {points_name}"
-msgstr "You can't give {points_name} to yourself."
-
-#: nublado/apps/nublado_bot/bot_messages.py:17
-#, python-brace-format
-msgid "nublado.bot.error.no_take_points_self {points_name}"
-msgstr "You can't take {points_name} from yourself."
-
-#: nublado/apps/nublado_bot/bot_messages.py:20
-#, python-brace-format
-msgid ""
-"nublado.bot.give_point {sender_name} {sender_points} {points_name} "
-"{receiver_name} {receiver_points}"
-msgstr ""
-"{sender_name} ({sender_points}) has given a {points_name} to {receiver_name} "
-"({receiver_points})."
-
-#: nublado/apps/nublado_bot/bot_messages.py:24
-#, python-brace-format
-msgid ""
-"nublado.bot.give_points {sender_name} {sender_points} {num_points} "
-"{points_name} {receiver_name} {receiver_points}"
-msgstr ""
-"{sender_name} ({sender_points}) has given {num_points} {points_name} to "
-"{receiver_name} ({receiver_points})."
-
-#: nublado/apps/nublado_bot/bot_messages.py:28
-#, python-brace-format
-msgid ""
-"nublado.bot.take_point {sender_name} {sender_points} {points_name} "
-"{receiver_name} {receiver_points}"
-msgstr ""
-"{sender_name} ({sender_points}) has taken a {points_name} from "
-"{receiver_name} ({receiver_points})."
-
-#: nublado/apps/nublado_bot/bot_messages.py:32
-#, python-brace-format
-msgid ""
-"nublado.bot.take_points {sender_name} {sender_points} {num_points} "
-"{points_name} {receiver_name} {receiver_points}"
-msgstr ""
-"{sender_name} ({sender_points}) has taken {num_points} {points_name} from "
-"{receiver_name} ({receiver_points})."
-
-#: nublado/apps/nublado_bot/handlers/group_points.py:23
-msgid "nublado.bot.point_name"
-msgstr "raindrop"
-
-#: nublado/apps/nublado_bot/handlers/group_points.py:24
-msgid "nublado.bot.points_name"
-msgstr "raindrops"
 
 #: nublado/apps/nublado_bot/handlers/group_settings.py:22
 msgid "Usage: /set_bot_language <language_code>"
@@ -266,15 +270,15 @@ msgstr ""
 msgid "Closed"
 msgstr ""
 
-#: nublado/apps/reading_portal/models.py:258
+#: nublado/apps/reading_portal/models.py:181
 msgid "Pending"
 msgstr ""
 
-#: nublado/apps/reading_portal/models.py:259
+#: nublado/apps/reading_portal/models.py:182
 msgid "Reviewed"
 msgstr ""
 
-#: nublado/apps/reading_portal/models.py:260
+#: nublado/apps/reading_portal/models.py:183
 msgid "Archived"
 msgstr ""
 
@@ -313,6 +317,54 @@ msgstr ""
 #: nublado/apps/users/models.py:29
 msgid "label_is_admin"
 msgstr ""
+
+#, python-brace-format
+#~ msgid "nublado.bot.error.no_give_points_bot {points_name}"
+#~ msgstr "You can't give {points_name} to a bot."
+
+#, python-brace-format
+#~ msgid "nublado.bot.error.no_take_points_bot {points_name}"
+#~ msgstr "You can't take {points_name} from a bot."
+
+#, python-brace-format
+#~ msgid "nublado.bot.error.no_give_points_self {points_name}"
+#~ msgstr "You can't give {points_name} to yourself."
+
+#, python-brace-format
+#~ msgid "nublado.bot.error.no_take_points_self {points_name}"
+#~ msgstr "You can't take {points_name} from yourself."
+
+#, python-brace-format
+#~ msgid ""
+#~ "nublado.bot.give_point {sender_name} {sender_points} {points_name} "
+#~ "{receiver_name} {receiver_points}"
+#~ msgstr ""
+#~ "{sender_name} ({sender_points}) has given a {points_name} to "
+#~ "{receiver_name} ({receiver_points})."
+
+#, python-brace-format
+#~ msgid ""
+#~ "nublado.bot.give_points {sender_name} {sender_points} {num_points} "
+#~ "{points_name} {receiver_name} {receiver_points}"
+#~ msgstr ""
+#~ "{sender_name} ({sender_points}) has given {num_points} {points_name} to "
+#~ "{receiver_name} ({receiver_points})."
+
+#, python-brace-format
+#~ msgid ""
+#~ "nublado.bot.take_point {sender_name} {sender_points} {points_name} "
+#~ "{receiver_name} {receiver_points}"
+#~ msgstr ""
+#~ "{sender_name} ({sender_points}) has taken a {points_name} from "
+#~ "{receiver_name} ({receiver_points})."
+
+#, python-brace-format
+#~ msgid ""
+#~ "nublado.bot.take_points {sender_name} {sender_points} {num_points} "
+#~ "{points_name} {receiver_name} {receiver_points}"
+#~ msgstr ""
+#~ "{sender_name} ({sender_points}) has taken {num_points} {points_name} from "
+#~ "{receiver_name} ({receiver_points})."
 
 #~ msgid "common.monday"
 #~ msgstr "Monday"

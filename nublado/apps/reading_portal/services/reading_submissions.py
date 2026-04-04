@@ -1,3 +1,4 @@
+import logging
 
 from telegram import Update
 from telegram.ext import ContextTypes
@@ -12,7 +13,7 @@ from ..exceptions import (
     NoPendingReading,
 )
 
-logger.logging.getLogger("django")
+logger = logging.getLogger("django")
 
 
 async def submit_reading_voice_message_service(
