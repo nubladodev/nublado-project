@@ -24,4 +24,6 @@ class BotReceiverError(GroupPointsError):
 
 
 class SelfReceiverError(GroupPointsError):
-    default_message = default_message = BOT_MESSAGES["error.no_give_points_self"]
+    default_message = default_message = BOT_MESSAGES["error.no_give_points_self"].format(
+        points_name=_(POINTS_NAME)
+    )
