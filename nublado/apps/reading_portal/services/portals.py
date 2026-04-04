@@ -1,3 +1,5 @@
+import logging
+
 from telegram import Update
 from telegram.ext import ContextTypes
 from telegram.error import BadRequest
@@ -9,6 +11,8 @@ from ..models import ReadingPortal, PortalReading
 from ..exceptions import NoDraftPortal, NoOpenPortal, OpenPortalExists, EmptyPortal
 from .formatting import format_portal_intro, format_portal_closed
 from ..bot_messages import BOT_MESSAGES
+
+logger = logging.getLogger("django")
 
 
 async def list_draft_portals_service(
@@ -141,8 +145,8 @@ async def close_portal_service(
                 chat_id=tg_chat.id,
                 message_id=old_pin,
             )
-        except BadRequest:
-            pass
+        except BadRequest as e:
+            logger.warning("BadRequest: %s", e)
 
         try:
             closed_message = await bot.send_message(
@@ -150,8 +154,8 @@ async def close_portal_service(
                 text=format_portal_closed(),
                 reply_to_message_id=old_pin,
             )
-        except BadRequest:
-            pass
+        except BadRequest as e:
+            logger.warning("BadRequest: %s", e)
 
     if not closed_message:
         closed_message = await bot.send_message(

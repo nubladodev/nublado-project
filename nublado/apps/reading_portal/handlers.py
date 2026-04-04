@@ -15,7 +15,6 @@ from django_telegram.utils.telegram import delete_command
 from django_telegram.utils.formatting import user_display_name
 from django_telegram.jobs import delete_message_job
 
-from .exceptions import ReadingPortalError, NoPendingReading
 from .services.portals import (
     open_portal_service,
     close_portal_service,
@@ -38,13 +37,8 @@ async def open_portal(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if context.args:
         slug = context.args[0]
-    try:
-        await open_portal_service(update, context, slug, True)
-    except ReadingPortalError as e:
-        await context.bot.send_message(
-            chat_id=tg_chat.id, text=str(e), reply_to_message_id=tg_message.message_id
-        )
-        return
+
+    await open_portal_service(update, context, slug, True)
 
     # Delete the lingering command in the chat.
     await delete_command(update)
@@ -58,26 +52,15 @@ async def open_portal_callback(update: Update, context: ContextTypes.DEFAULT_TYP
     if data.startswith(f"{OPEN_PORTAL_CALLBACK}:"):
         slug = data.split(":", 1)[1]
 
-        try:
-            await open_portal_service(update, context, slug=slug)
-            # Remove the buttons after opening
-            await query.message.delete()
-        except ReadingPortalError as e:
-            # Reply in chat if something goes wrong
-            await query.message.reply_text(str(e))
+        await open_portal_service(update, context, slug=slug)
+        await query.message.delete()
 
 
 async def close_portal(update: Update, context: ContextTypes.DEFAULT_TYPE):
     tg_chat = update.effective_chat
     tg_message = update.effective_message
 
-    try:
-        await close_portal_service(update, context)
-    except ReadingPortalError as e:
-        await context.bot.send_message(
-            chat_id=tg_chat.id, text=str(e), reply_to_message_id=tg_message.message_id
-        )
-        return
+    await close_portal_service(update, context)
 
     # Delete the lingering command in the chat.
     await delete_command(update)
@@ -132,13 +115,7 @@ async def submit_reading(update: Update, context: ContextTypes.DEFAULT_TYPE):
     tg_chat = update.effective_chat
     tg_message = update.effective_message
 
-    try:
-        reading_submission = await submit_reading_voice_message_service(update, context)
-    except ReadingPortalError as e:
-        await context.bot.send_message(
-            chat_id=tg_chat.id, text=str(e), reply_to_message_id=tg_message.message_id
-        )
-        return
+    reading_submission = await submit_reading_voice_message_service(update, context)
 
     if reading_submission:
         tg_user = update.effective_user
@@ -167,13 +144,7 @@ async def pending_readings(update: Update, context: ContextTypes.DEFAULT_TYPE):
     tg_message = update.effective_message
     tg_chat = update.effective_chat
 
-    try:
-        pending_readings = await get_pending_readings_service(update, context)
-    except ReadingPortalError as e:
-        await context.bot.send_message(
-            chat_id=tg_chat.id, text=str(e), reply_to_message_id=tg_message.message_id
-        )
-        return
+    pending_readings = await get_pending_readings_service(update, context)
 
     if not await pending_readings.aexists():
         await context.bot.send_message(
@@ -219,20 +190,7 @@ async def review_reading(update: Update, context: ContextTypes.DEFAULT_TYPE):
     tg_chat = update.effective_chat
     tg_message = update.effective_message
 
-    try:
-        reading_submission = await review_reading_service(update, context)
-    except NoPendingReading:
-        await context.bot.send_message(
-            chat_id=tg_chat.id,
-            text=str(BOT_MESSAGES["error.review_no_pending_reading"]),
-            reply_to_message_id=tg_message.message_id,
-        )
-        return
-    except ReadingPortalError as e:
-        await context.bot.send_message(
-            chat_id=tg_chat.id, text=str(e), reply_to_message_id=tg_message.message_id
-        )
-        return
+    reading_submission = await review_reading_service(update, context)
 
     if reading_submission:
         tg_user = update.effective_user

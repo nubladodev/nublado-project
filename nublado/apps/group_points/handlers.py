@@ -5,92 +5,117 @@ from telegram.ext import ContextTypes, filters
 
 from .services import transfer_points
 from .utils import extract_points
-from .validators import validate_point_transfer
+from .exceptions import BotReceiverError, SelfReceiverError
+
+POINT_FILTER = (
+    filters.TEXT
+    & filters.ChatType.GROUPS
+    & filters.UpdateType.MESSAGE
+    & filters.Regex(rf"^{escaped_symbol}+")
+)
+
+POINT_SYMBOL = re.escape("+")
+
+# Two symbols for 1 point, three symbols for 2 points...
+POINTS_MAP = {
+    2: 1,
+    3: 2,
+    4: 4,
+}
+
+POINT_NAME = _("group_points.bot.point_name")
+POINTS_NAME = _("group_points.bot.points_name")
 
 
-def make_give_points_handler(
-    *,
-    point_symbol: str,
-    points_map: dict,
-    on_success=None,  # async callback(update, context, result)
-    on_error=None,  # async callback(update, context, error)
-):
+async def give_points(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
-    Factory that returns: (POINT_FILTER, give_points_handler)
-    This is an attempt to keep behavior and presentation decoupled.
+    Handler triggered when a valid point-giving message is detected.
     """
+    tg_message = update.effective_message
+    tg_chat = update.effective_chat
+    tg_sender = update.effective_user
 
-    # Escape symbol in case it's regex-special (e.g. "+", "*").
-    escaped_symbol = re.escape(point_symbol)
+    # Do nothing if the message isn't a reply.
+    if not tg_message or not tg_message.reply_to_message:
+        return
 
-    # Filter: message must
-    #  - be text
-    #  - be in a group
-    #  - be a normal message
-    #  - start with one or more of the point symbol
-    POINT_FILTER = (
-        filters.TEXT
-        & filters.ChatType.GROUPS
-        & filters.UpdateType.MESSAGE
-        & filters.Regex(rf"^{escaped_symbol}+")
+    # The telegram user reeiving the points.
+    tg_receiver = tg_message.reply_to_message.from_user
+
+    # Can't send points to self.
+    if tg_sender.id == tg_receiver.id:
+        raise SelfReceiverError()
+
+    # Can't send points to bot.
+    if tg_receiver.is_bot:
+        raise BotReceiverError()
+
+    num_points = extract_points(tg_message.text, POINT_SYMBOL, POINTS_MAP)
+
+    # If symbol count doesn't map to valid value, do nothing.
+    if not num_points:
+        return
+
+    # Fetch ChatMember objects
+    tg_member_sender = await context.bot.get_chat_member(tg_chat.id, tg_sender.id)
+
+    tg_member_receiver = await context.bot.get_chat_member(tg_chat.id, tg_receiver.id)
+
+    # Persist point transferand return sender_member and receiver_member from db.
+    sender_member, receiver_member = await transfer_points(
+        tg_chat,
+        tg_member_sender,
+        tg_member_receiver,
+        num_points,
     )
 
-    async def give_points(update: Update, context: ContextTypes.DEFAULT_TYPE):
-        """
-        Handler triggered when a valid point-giving message is detected.
-        """
-        tg_message = update.effective_message
-        tg_chat = update.effective_chat
-        tg_sender = update.effective_user
+    success_message = _(
+        "group_points.bot.give_points {sender_name} {sender_points} {num_points} "
+        + "{points_name} {receiver_name} {receiver_points}"
+    ).format()
 
-        # Do nothing if the message isn't a reply.
-        if not tg_message or not tg_message.reply_to_message:
-            return
+    await context.bot.send_message(
+        chat_id=tg_chat.id,
+        text=str(success_message),
+    )
 
-        # The telegram user reeiving the points.
-        tg_receiver = tg_message.reply_to_message.from_user
 
-        # Validate point transfer.
-        error = validate_point_transfer(tg_sender, tg_receiver)
+# async def on_success(update: Update, context: ContextTypes.DEFAULT_TYPE, result):
+#     tg_chat = update.effective_chat
+#     tg_message = update.effective_message
+#     tg_sender = result["tg_sender"]
+#     sender_member = result["sender_member"]
+#     tg_receiver = result["tg_receiver"]
+#     receiver_member = result["receiver_member"]
+#     num_points = result["num_points"]
 
-        if error:
-            # Core does NOT decide what to say.
-            if on_error:
-                await on_error(update, context, error)
-            return
+#     sender_name = user_display_name(tg_sender)
+#     receiver_name = user_display_name(tg_receiver)
 
-        num_points = extract_points(tg_message.text, point_symbol, points_map)
-
-        # If symbol count doesn't map to valid value, do nothing.
-        if not num_points:
-            return
-
-        # Fetch ChatMember objects
-        tg_member_sender = await context.bot.get_chat_member(tg_chat.id, tg_sender.id)
-
-        tg_member_receiver = await context.bot.get_chat_member(
-            tg_chat.id, tg_receiver.id
-        )
-
-        # Persist point transferand return sender_member and receiver_member from db.
-        sender_member, receiver_member = await transfer_points(
-            tg_chat,
-            tg_member_sender,
-            tg_member_receiver,
-            num_points,
-        )
-
-        if on_success:
-            await on_success(
-                update,
-                context,
-                {
-                    "tg_sender": tg_sender,
-                    "tg_receiver": tg_receiver,
-                    "sender_member": sender_member,
-                    "receiver_member": receiver_member,
-                    "num_points": num_points,
-                },
-            )
-
-    return POINT_FILTER, give_points
+#     if num_points > 1:
+#         bot_message = BOT_MESSAGES["give_points"].format(
+#             sender_name=sender_name,
+#             sender_points=sender_member.points,
+#             num_points=num_points,
+#             points_name=POINTS_NAME,
+#             receiver_name=receiver_name,
+#             receiver_points=receiver_member.points,
+#         )
+#         await context.bot.send_message(
+#             chat_id=tg_chat.id,
+#             text=str(bot_message),
+#             reply_to_message_id=tg_message.message_id,
+#         )
+#     else:
+#         bot_message = BOT_MESSAGES["give_point"].format(
+#             sender_name=sender_name,
+#             sender_points=sender_member.points,
+#             points_name=_(POINT_NAME),
+#             receiver_name=receiver_name,
+#             receiver_points=receiver_member.points,
+#         )
+#         await context.bot.send_message(
+#             chat_id=tg_chat.id,
+#             text=str(bot_message),
+#             reply_to_message_id=tg_message.message_id,
+#         )

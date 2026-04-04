@@ -3,8 +3,6 @@ from telegram.ext import CommandHandler, MessageHandler, CallbackQueryHandler, f
 from django_telegram.policies import (
     GroupOnly,
     PrivateOnly,
-    AdminOnly,
-    GroupOwnerOnly,
     with_policies,
 )
 from django_telegram.decorators import with_language
@@ -15,83 +13,86 @@ def register_handlers(app):
     from django_telegram.handlers import LanguageHandler
     from reading_portal.handlers import (
         pending_readings,
-        list_draft_portals,
         open_portal,
         close_portal,
         submit_reading,
         review_reading,
         open_portal_callback,
     )
+    from group_points.handlers import give_points, POINT_FILTER
     from .group_settings import set_bot_language
-    from .group_points import give_points, POINT_FILTER
     from .misc import start, hello
+    from .error_handler import error_handler
 
     # middleware
     app.add_handler(LanguageHandler(), group=MIDDLEWARE_GROUP)
 
+    # error handler
+    app.add_error_handler(error_handler)
+
     # commands
     app.add_handler(
         CommandHandler(
-            "start", 
+            "start",
             with_policies(PrivateOnly())(with_language(start)),
         ),
-        group=HANDLER_GROUP
+        group=HANDLER_GROUP,
     )
 
     app.add_handler(
         CommandHandler(
-            "hello", 
+            "hello",
             with_policies(GroupOnly())(with_language(hello)),
         ),
-        group=HANDLER_GROUP
+        group=HANDLER_GROUP,
     )
 
     app.add_handler(
         CommandHandler(
-            "set_bot_language", 
+            "set_bot_language",
             with_policies(GroupOnly())(with_language(set_bot_language)),
         ),
-        group=HANDLER_GROUP
+        group=HANDLER_GROUP,
     )
 
     app.add_handler(
         CommandHandler(
-            "open_portal", 
+            "open_portal",
             with_policies(GroupOnly())(with_language(open_portal)),
         ),
-        group=HANDLER_GROUP
+        group=HANDLER_GROUP,
     )
 
     app.add_handler(
         CommandHandler(
-            "close_portal", 
+            "close_portal",
             with_policies(GroupOnly())(with_language(close_portal)),
         ),
-        group=HANDLER_GROUP
+        group=HANDLER_GROUP,
     )
 
     app.add_handler(
         CommandHandler(
-            "pending_readings", 
+            "pending_readings",
             with_policies(GroupOnly())(with_language(pending_readings)),
         ),
-        group=HANDLER_GROUP
+        group=HANDLER_GROUP,
     )
 
     app.add_handler(
         CommandHandler(
-            "show_portals", 
+            "show_portals",
             with_policies(GroupOnly())(with_language(show_portals)),
         ),
-        group=HANDLER_GROUP
+        group=HANDLER_GROUP,
     )
 
     app.add_handler(
         CommandHandler(
-            "reviewed", 
+            "reviewed",
             with_policies(GroupOnly())(with_language(review_reading)),
         ),
-        group=HANDLER_GROUP
+        group=HANDLER_GROUP,
     )
 
     app.add_handler(
@@ -104,7 +105,7 @@ def register_handlers(app):
             filters.VOICE & filters.REPLY,
             with_policies(GroupOnly())(with_language(submit_reading)),
         ),
-        group=HANDLER_GROUP
+        group=HANDLER_GROUP,
     )
 
     app.add_handler(
@@ -112,5 +113,5 @@ def register_handlers(app):
             POINT_FILTER,
             with_policies(GroupOnly())(with_language(give_points)),
         ),
-        group=HANDLER_GROUP
+        group=HANDLER_GROUP,
     )

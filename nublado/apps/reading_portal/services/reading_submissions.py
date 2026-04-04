@@ -1,3 +1,4 @@
+
 from telegram import Update
 from telegram.ext import ContextTypes
 from telegram.error import BadRequest
@@ -10,6 +11,8 @@ from ..exceptions import (
     NoReplyToReading,
     NoPendingReading,
 )
+
+logger.logging.getLogger("django")
 
 
 async def submit_reading_voice_message_service(
@@ -73,9 +76,9 @@ async def submit_reading_voice_message_service(
             await bot.delete_message(
                 chat_id=tg_chat.id, message_id=old_submission.message_id
             )
-        except BadRequest:
+        except BadRequest as e:
             # Message may already be deleted.
-            pass
+            logger.warning("BadRequest: %s", e)
 
         # Delete the old reading submissions bot reply if it exists.
         if old_submission.reply_message_id:
@@ -83,8 +86,8 @@ async def submit_reading_voice_message_service(
                 await bot.delete_message(
                     chat_id=tg_chat.id, message_id=old_submission.reply_message_id
                 )
-            except BadRequest:
-                pass
+            except BadRequest as e:
+                logger.warning("BadRequest: %s", e)
 
         # Hard delete the old submission from the db.
         await old_submission.adelete()
