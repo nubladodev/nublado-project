@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-04 19:02+0000\n"
+"POT-Creation-Date: 2026-04-05 07:26+0000\n"
 "PO-Revision-Date: 2026-04-04 12:03-0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -70,27 +70,12 @@ msgstr ""
 msgid "owner"
 msgstr ""
 
-#: nublado/apps/group_points/bot_messages.py:5
-#, python-brace-format
-msgid "group_points.bot.error.no_give_points_bot {points_name}"
-msgstr "No puedes regalarle {points_name} a un bot."
-
-#: nublado/apps/group_points/bot_messages.py:6
-#, python-brace-format
-msgid "group_points.bot.error.no_take_points_bot {points_name}"
-msgstr "No puedes quitarle {points_name} a un bot."
-
+#. Translators: Message when giving exactly 1 point to a group member.
+#. {sender_name}, {receiver_name} = usernames.
+#. {sender_points}, {receiver_points} = updated point totals for sender and receiver.
+#. {points_name} = singular form of the points name (e.g., point, karma point, raindrop).
+#. Example: @foo (10) has given a karma point to @fee (5).
 #: nublado/apps/group_points/bot_messages.py:8
-#, python-brace-format
-msgid "group_points.bot.error.no_give_points_self {points_name}"
-msgstr "No puedes regalarte {points_name} a ti mismo/a."
-
-#: nublado/apps/group_points/bot_messages.py:11
-#, python-brace-format
-msgid "group_points.bot.error.no_take_points_self {points_name}"
-msgstr "No puedes quitarte {points_name} a ti mismo/a."
-
-#: nublado/apps/group_points/bot_messages.py:14
 #, python-brace-format
 msgid ""
 "group_points.bot.give_point {sender_name} {sender_points} {points_name} "
@@ -99,7 +84,13 @@ msgstr ""
 "{sender_name} ({sender_points}) le ha regalado {points_name} a "
 "{receiver_name} ({receiver_points})."
 
-#: nublado/apps/group_points/bot_messages.py:18
+#. Translators: Message when giving more than 1 point to a group member.
+#. {sender_name}, {receiver_name} = usernames.
+#. {sender_points}, {receiver_points} = updated point totals for sender and receiver.
+#. {num_points} = number of points given.
+#. {points_name} = plural form of the points name (e.g., points, karma points, raindrops).
+#. Example: @foo (10) has given 3 karma points to @fee (5).
+#: nublado/apps/group_points/bot_messages.py:17
 #, python-brace-format
 msgid ""
 "group_points.bot.give_points {sender_name} {sender_points} {num_points} "
@@ -108,7 +99,12 @@ msgstr ""
 "{sender_name} ({sender_points}) le ha regalado {num_points} {points_name} a "
 "{receiver_name} ({receiver_points})."
 
-#: nublado/apps/group_points/bot_messages.py:22
+#. Translators: Message when taking exactly 1 point from a group member.
+#. {sender_name}, {receiver_name} = usernames.
+#. {sender_points}, {receiver_points} = updated point totals for sender and receiver.
+#. {points_name} = singular form of the points name (e.g., point, karma point, raindrop).
+#. Example: @foo (10) has taken a karma point from @fee (5).
+#: nublado/apps/group_points/bot_messages.py:25
 #, python-brace-format
 msgid ""
 "group_points.bot.take_point {sender_name} {sender_points} {points_name} "
@@ -117,7 +113,13 @@ msgstr ""
 "{sender_name} ({sender_points}) le ha quitado {points_name} a "
 "{receiver_name} ({receiver_points})."
 
-#: nublado/apps/group_points/bot_messages.py:26
+#. Translators: Message when taking more than 1 point from a group member.
+#. {sender_name}, {receiver_name} = usernames.
+#. {sender_points}, {receiver_points} = updated point totals for sender and receiver.
+#. {num_points} = number of points taken.
+#. {points_name} = singular form of the points name (e.g., point, karma point, raindrop).
+#. Example: @foo (10) has taken a karma point from @fee (5).
+#: nublado/apps/group_points/bot_messages.py:34
 #, python-brace-format
 msgid ""
 "group_points.bot.take_points {sender_name} {sender_points} {num_points} "
@@ -125,6 +127,38 @@ msgid ""
 msgstr ""
 "{sender_name} ({sender_points}) le ha quitado {num_points} {points_name} a "
 "{receiver_name} ({receiver_points})."
+
+#. Translators: Message when attempting to give points to a bot.
+#. {points_name} = plural form of the points name (e.g., points, karma points, raindrops).
+#. Example: You can't give karma points to a bot.
+#: nublado/apps/group_points/bot_messages.py:40
+#, python-brace-format
+msgid "group_points.bot.error.no_give_points_bot {points_name}"
+msgstr "No puedes regalarle {points_name} a un bot."
+
+#. Translators: Message when attempting to take points from a bot.
+#. {points_name} = plural form of the points name (e.g., points, karma points, raindrops).
+#. Example: You can't take karma points from a bot.
+#: nublado/apps/group_points/bot_messages.py:45
+#, python-brace-format
+msgid "group_points.bot.error.no_take_points_bot {points_name}"
+msgstr "No puedes quitarle {points_name} a un bot."
+
+#. Translators: Message when attempting to give points to self.
+#. {points_name} = plural form of the points name (e.g., points, karma points, raindrops).
+#. Example: You can't give karma points to yourself.
+#: nublado/apps/group_points/bot_messages.py:50
+#, python-brace-format
+msgid "group_points.bot.error.no_give_points_self {points_name}"
+msgstr "No puedes regalarte {points_name} a ti mismo/a."
+
+#. Translators: Message when attempting to take points from self.
+#. {points_name} = plural form of the points name (e.g., points, karma points, raindrops).
+#. Example: You can't take karma points from yourself.
+#: nublado/apps/group_points/bot_messages.py:55
+#, python-brace-format
+msgid "group_points.bot.error.no_take_points_self {points_name}"
+msgstr "No puedes quitarte {points_name} a ti mismo/a."
 
 #: nublado/apps/group_points/constants.py:7
 msgid "group_points.bot.point_name"
@@ -138,25 +172,38 @@ msgstr "unas gotas de lluvia"
 msgid "group_points.bot.error.default"
 msgstr ""
 
-#: nublado/apps/nublado_bot/bot_messages.py:4
+#. Translators: Message when the bot has started.
+#. Example: Nublado bot has started.
+#: nublado/apps/nublado_bot/bot_messages.py:5
 msgid "nublado.bot.start"
 msgstr "El bot Nublado se ha iniciado."
 
-#: nublado/apps/nublado_bot/bot_messages.py:5
+#. Translators: Message to greet the group.
+#. Example: Hello, everybody.
+#: nublado/apps/nublado_bot/bot_messages.py:9
 msgid "nublado.bot.hello"
 msgstr "Hola a todos."
 
-#: nublado/apps/nublado_bot/bot_messages.py:7
+#. Translators: Message when the bot language has been changed.
+#. {language} = native name of the language (e.g., español, English, Deutsch).
+#. Example: The bot's language has been set to English.
+#: nublado/apps/nublado_bot/bot_messages.py:14
 #, python-brace-format
 msgid "nublado.bot.language_set {language}"
 msgstr "El idioma del bot ha sido cambiado al {language}."
 
-#: nublado/apps/nublado_bot/bot_messages.py:8
+#. Translators: Message when attempting to change the bot's language to one that's already active.
+#. {language} = native name of the language (e.g., español, English, Deutsch).
+#. Example: The bot's language is already set to English.
+#: nublado/apps/nublado_bot/bot_messages.py:19
 #, python-brace-format
 msgid "nublado.bot.error.language_active {language}"
 msgstr "El idioma  {language} ya está activo."
 
-#: nublado/apps/nublado_bot/bot_messages.py:9
+#. Translators: Message when attempting to change the bot's language to an invalid or unsupported language.
+#. {language_keys} = a list of the supported language keys (e.g., en, es, de).
+#. Example: Invalid language key. Valid language keys are [en, es, de].
+#: nublado/apps/nublado_bot/bot_messages.py:24
 #, python-brace-format
 msgid "nublado.bot.error.invalid_language: {language_keys}"
 msgstr "Error: Las posibles claves de idioma son [{language_keys}]."
@@ -335,54 +382,6 @@ msgstr ""
 #: nublado/apps/users/models.py:29
 msgid "label_is_admin"
 msgstr ""
-
-#, python-brace-format
-#~ msgid "nublado.bot.error.no_give_points_bot {points_name}"
-#~ msgstr "No puedes regalarle {points_name} a un bot."
-
-#, python-brace-format
-#~ msgid "nublado.bot.error.no_take_points_bot {points_name}"
-#~ msgstr "No puedes quitarle {points_name} a un bot."
-
-#, python-brace-format
-#~ msgid "nublado.bot.error.no_give_points_self {points_name}"
-#~ msgstr "No puedes regalarte {points_name} a ti mismo/a."
-
-#, python-brace-format
-#~ msgid "nublado.bot.error.no_take_points_self {points_name}"
-#~ msgstr "No puedes quitarte {points_name} a ti mismo/a."
-
-#, python-brace-format
-#~ msgid ""
-#~ "nublado.bot.give_point {sender_name} {sender_points} {points_name} "
-#~ "{receiver_name} {receiver_points}"
-#~ msgstr ""
-#~ "{sender_name} ({sender_points}) le ha regalado {points_name} a "
-#~ "{receiver_name} ({receiver_points})."
-
-#, python-brace-format
-#~ msgid ""
-#~ "nublado.bot.give_points {sender_name} {sender_points} {num_points} "
-#~ "{points_name} {receiver_name} {receiver_points}"
-#~ msgstr ""
-#~ "{sender_name} ({sender_points}) le ha regalado {num_points} {points_name} "
-#~ "a {receiver_name} ({receiver_points})."
-
-#, python-brace-format
-#~ msgid ""
-#~ "nublado.bot.take_point {sender_name} {sender_points} {points_name} "
-#~ "{receiver_name} {receiver_points}"
-#~ msgstr ""
-#~ "{sender_name} ({sender_points}) le ha quitado {points_name} a "
-#~ "{receiver_name} ({receiver_points})."
-
-#, python-brace-format
-#~ msgid ""
-#~ "nublado.bot.take_points {sender_name} {sender_points} {num_points} "
-#~ "{points_name} {receiver_name} {receiver_points}"
-#~ msgstr ""
-#~ "{sender_name} ({sender_points}) le ha quitado {num_points} {points_name} "
-#~ "a {receiver_name} ({receiver_points})."
 
 #~ msgid "common.monday"
 #~ msgstr "lunes"

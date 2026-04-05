@@ -14,12 +14,15 @@ class GroupPointsError(Exception):
         super().__init__(self.message)
 
     def __str__(self):
+        # For lazy translations with placeholders.
         return str(self.message).format(**self.kwargs)
 
 
 class BotReceiverError(GroupPointsError):
+    # placeholder: points_name
     default_message = BOT_MESSAGES["error.no_give_points_bot"]
 
 
 class SelfReceiverError(GroupPointsError):
+    # placeholder: points_name
     default_message = default_message = BOT_MESSAGES["error.no_give_points_self"]
