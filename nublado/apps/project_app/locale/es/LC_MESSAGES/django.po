@@ -267,7 +267,7 @@ msgstr "lecturas pendientes"
 #, fuzzy
 #| msgid "reading_portal.bot.error.no_draft_portals"
 msgid "reading_portal.bot.draft_reading_portals"
-msgstr "No hay portal listo para publicar."
+msgstr "portales de lectura"
 
 #: nublado/apps/reading_portal/exceptions.py:7
 msgid "Reading Portal error"

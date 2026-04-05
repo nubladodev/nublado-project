@@ -97,7 +97,7 @@ async def list_draft_portals(update: Update, context: ContextTypes.DEFAULT_TYPE)
 
     portals_message = await context.bot.send_message(
         chat_id=update.effective_chat.id,
-        text=str(bot_message).upper(),
+        text=str(bot_message).title(),
         reply_markup=keyboard,
     )
 
@@ -159,7 +159,7 @@ async def pending_readings(update: Update, context: ContextTypes.DEFAULT_TYPE):
     async for pending_reading in pending_readings:
         readings_by_member[pending_reading.member].append(pending_reading)
 
-    readings_list = [str(BOT_MESSAGES["pending_readings"])]
+    readings_list = [f"{str(BOT_MESSAGES["pending_readings"]).title()} \n"]
 
     for member, readings in readings_by_member.items():
         language_links = []

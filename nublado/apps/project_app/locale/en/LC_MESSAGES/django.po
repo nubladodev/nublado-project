@@ -81,7 +81,7 @@ msgid ""
 "group_points.bot.give_point {sender_name} {sender_points} {points_name} "
 "{receiver_name} {receiver_points}"
 msgstr ""
-"{sender_name} ({sender_points}) has taken a {points_name} from "
+"{sender_name} ({sender_points}) has given a {points_name} to "
 "{receiver_name} ({receiver_points})."
 
 #. Translators: Message when giving more than 1 point to a group member.
@@ -263,7 +263,7 @@ msgstr "pending readings"
 
 #: nublado/apps/reading_portal/bot_messages.py:12
 msgid "reading_portal.bot.draft_reading_portals"
-msgstr ""
+msgstr "reading portals"
 
 #: nublado/apps/reading_portal/exceptions.py:7
 msgid "Reading Portal error"

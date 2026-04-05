@@ -9,7 +9,7 @@ from .services import transfer_points
 from .utils import extract_points
 from .exceptions import BotReceiverError, SelfReceiverError
 from .bot_messages import BOT_MESSAGES
-from .constants import POINT_SYMBOL, POINT_NAME, POINTS_NAME, POINTS_MAP
+from .constants import POINT_SYMBOL, POINTS_MAP
 
 POINT_FILTER = (
     filters.TEXT
@@ -69,7 +69,7 @@ async def give_points(update: Update, context: ContextTypes.DEFAULT_TYPE):
             sender_name=sender_name,
             sender_points=sender_member.points,
             num_points=num_points,
-            points_name=POINTS_NAME,
+            points_name=BOT_MESSAGES["points_name"],
             receiver_name=receiver_name,
             receiver_points=receiver_member.points,
         )
@@ -82,7 +82,7 @@ async def give_points(update: Update, context: ContextTypes.DEFAULT_TYPE):
         bot_message = BOT_MESSAGES["give_point"].format(
             sender_name=sender_name,
             sender_points=sender_member.points,
-            points_name=_(POINT_NAME),
+            points_name=BOT_MESSAGES["point_name"],
             receiver_name=receiver_name,
             receiver_points=receiver_member.points,
         )
