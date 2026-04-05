@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-05 07:26+0000\n"
+"POT-Creation-Date: 2026-04-05 21:24+0000\n"
 "PO-Revision-Date: 2026-04-04 12:03-0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -160,11 +160,13 @@ msgstr "No puedes regalarte {points_name} a ti mismo/a."
 msgid "group_points.bot.error.no_take_points_self {points_name}"
 msgstr "No puedes quitarte {points_name} a ti mismo/a."
 
-#: nublado/apps/group_points/constants.py:7
+#. Translators: Singular form of the points name (e.g., points, karma points, raindrops).
+#: nublado/apps/group_points/bot_messages.py:58
 msgid "group_points.bot.point_name"
 msgstr "una gota de lluvia"
 
-#: nublado/apps/group_points/constants.py:8
+#. Translators: Plural form of the points name (e.g., points, karma points, raindrops).
+#: nublado/apps/group_points/bot_messages.py:61
 msgid "group_points.bot.points_name"
 msgstr "unas gotas de lluvia"
 
@@ -236,38 +238,37 @@ msgstr ""
 msgid "label_logout"
 msgstr ""
 
-#: nublado/apps/reading_portal/bot_messages.py:4
+#. Translators: Message when there are no draft portals in the queue to be posted.
+#. Example: There are no portals ready to be posted.
+#: nublado/apps/reading_portal/bot_messages.py:5
 msgid "reading_portal.bot.error.no_draft_portals"
 msgstr "No hay portal listo para publicar."
 
-#: nublado/apps/reading_portal/bot_messages.py:5
+#. Translators: Message when there are no readings submissions pending review.
+#. Example: There are no pending readings. There are no pending reading submissions.
+#: nublado/apps/reading_portal/bot_messages.py:9
 msgid "reading_portal.bot.error.no_pending_readings"
 msgstr "No hay lecturas pendientes."
 
-#: nublado/apps/reading_portal/bot_messages.py:7
+#. Translators: Message when...
+#. Example: ...
+#: nublado/apps/reading_portal/bot_messages.py:13
 msgid "reading_portal.bot.error.review_no_pending_reading"
 msgstr ""
 
-#: nublado/apps/reading_portal/bot_messages.py:9
-#, fuzzy
-#| msgid "reading_portal.bot.error.no_draft_portals"
-msgid "reading_portal.bot.error.portal_not_found"
-msgstr "No hay portal listo para publicar."
-
-#: nublado/apps/reading_portal/bot_messages.py:10
+#. Translators: Message when a reading is reviewed by a user.
+#. {reviewer_name} = username of user who reviewed the reading.
+#. Example: Reviewed by @fooman.
+#: nublado/apps/reading_portal/bot_messages.py:22
 #, python-brace-format
 msgid "reading_portal.bot.reading_reviewed {reviewer_name}"
 msgstr "Revisado por {reviewer_name}."
 
-#: nublado/apps/reading_portal/bot_messages.py:11
+#. Translators: Message header when listing pending reading submissions.
+#. Example: Pending Reading Submissions:
+#: nublado/apps/reading_portal/bot_messages.py:26
 msgid "reading_portal.bot.pending_readings"
 msgstr "lecturas pendientes"
-
-#: nublado/apps/reading_portal/bot_messages.py:12
-#, fuzzy
-#| msgid "reading_portal.bot.error.no_draft_portals"
-msgid "reading_portal.bot.draft_reading_portals"
-msgstr "portales de lectura"
 
 #: nublado/apps/reading_portal/exceptions.py:7
 msgid "Reading Portal error"
@@ -276,48 +277,6 @@ msgstr ""
 #: nublado/apps/reading_portal/exceptions.py:18
 msgid "reading_portal.bot.error.no_open_portal"
 msgstr "No hay Portal de Lectura abierto."
-
-#: nublado/apps/reading_portal/exceptions.py:22
-#, fuzzy
-#| msgid "reading_portal.bot.error.no_draft_portals"
-msgid "reading_portal.bot.error.no_reply_to_audio"
-msgstr "No hay portal listo para publicar."
-
-#: nublado/apps/reading_portal/exceptions.py:26
-#, fuzzy
-#| msgid "reading_portal.bot.error.no_pending_readings"
-msgid "reading_portal.bot.error.no_reply_to_reading"
-msgstr "No hay lecturas pendientes."
-
-#: nublado/apps/reading_portal/exceptions.py:30
-#, fuzzy
-#| msgid "reading_portal.bot.error.no_draft_portals"
-msgid "reading_portal.bot.error.no_reply_to_text"
-msgstr "No hay portal listo para publicar."
-
-#: nublado/apps/reading_portal/exceptions.py:34
-#, fuzzy
-#| msgid "reading_portal.bot.error.no_draft_portals"
-msgid "reading_portal.bot.error.no_draft_portal"
-msgstr "No hay portal listo para publicar."
-
-#: nublado/apps/reading_portal/exceptions.py:38
-#, fuzzy
-#| msgid "reading_portal.bot.error.no_draft_portals"
-msgid "reading_portal.bot.error.open_portal_exists"
-msgstr "No hay portal listo para publicar."
-
-#: nublado/apps/reading_portal/exceptions.py:42
-#, fuzzy
-#| msgid "reading_portal.bot.error.no_draft_portals"
-msgid "reading_portal.bot.error.empty_portal"
-msgstr "No hay portal listo para publicar."
-
-#: nublado/apps/reading_portal/exceptions.py:46
-#, fuzzy
-#| msgid "reading_portal.bot.error.no_pending_readings"
-msgid "reading_portal.bot.error.no_pending_reading"
-msgstr "No hay lecturas pendientes."
 
 #: nublado/apps/reading_portal/models.py:27
 msgid "Draft"
@@ -527,11 +486,6 @@ msgstr ""
 
 #~ msgid "bot.message.note_no_args"
 #~ msgstr "Una nota necesita una etiqueta y contenido."
-
-#, fuzzy, python-brace-format
-#~| msgid "bot.message.note_no_exist {note_tag}"
-#~ msgid "bot.message.note_not_in_repo {note_tag}"
-#~ msgstr "La nota *{note_tag}* no existe."
 
 #~| msgid "bot.point_name"
 #~ msgid "bot.point_name"

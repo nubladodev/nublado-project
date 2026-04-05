@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-05 07:26+0000\n"
+"POT-Creation-Date: 2026-04-05 21:24+0000\n"
 "PO-Revision-Date: 2026-04-04 12:03-0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -81,8 +81,8 @@ msgid ""
 "group_points.bot.give_point {sender_name} {sender_points} {points_name} "
 "{receiver_name} {receiver_points}"
 msgstr ""
-"{sender_name} ({sender_points}) has given a {points_name} to "
-"{receiver_name} ({receiver_points})."
+"{sender_name} ({sender_points}) has given a {points_name} to {receiver_name} "
+"({receiver_points})."
 
 #. Translators: Message when giving more than 1 point to a group member.
 #. {sender_name}, {receiver_name} = usernames.
@@ -160,11 +160,13 @@ msgstr "You can't give {points_name} to yourself."
 msgid "group_points.bot.error.no_take_points_self {points_name}"
 msgstr "You can't take {points_name} from yourself."
 
-#: nublado/apps/group_points/constants.py:7
+#. Translators: Singular form of the points name (e.g., points, karma points, raindrops).
+#: nublado/apps/group_points/bot_messages.py:58
 msgid "group_points.bot.point_name"
 msgstr "raindrop"
 
-#: nublado/apps/group_points/constants.py:8
+#. Translators: Plural form of the points name (e.g., points, karma points, raindrops).
+#: nublado/apps/group_points/bot_messages.py:61
 msgid "group_points.bot.points_name"
 msgstr "raindrops"
 
@@ -236,32 +238,47 @@ msgstr ""
 msgid "label_logout"
 msgstr ""
 
-#: nublado/apps/reading_portal/bot_messages.py:4
+#. Translators: Message when there are no draft portals in the queue to be posted.
+#. Example: There are no portals ready to be posted.
+#: nublado/apps/reading_portal/bot_messages.py:5
 msgid "reading_portal.bot.error.no_draft_portals"
 msgstr "There are no portals to post."
 
-#: nublado/apps/reading_portal/bot_messages.py:5
+#. Translators: Message when there are no readings submissions pending review.
+#. Example: There are no pending readings. There are no pending reading submissions.
+#: nublado/apps/reading_portal/bot_messages.py:9
 msgid "reading_portal.bot.error.no_pending_readings"
 msgstr "There are no pending readings."
 
-#: nublado/apps/reading_portal/bot_messages.py:7
+#. Translators: Message when...
+#. Example: ...
+#: nublado/apps/reading_portal/bot_messages.py:13
 msgid "reading_portal.bot.error.review_no_pending_reading"
 msgstr ""
 
-#: nublado/apps/reading_portal/bot_messages.py:9
+#. Translators: Message when a portal isn't found.
+#. Example: Reading Portal not found.
+#: nublado/apps/reading_portal/bot_messages.py:17
 msgid "reading_portal.bot.error.portal_not_found"
 msgstr ""
 
-#: nublado/apps/reading_portal/bot_messages.py:10
+#. Translators: Message when a reading is reviewed by a user.
+#. {reviewer_name} = username of user who reviewed the reading.
+#. Example: Reviewed by @fooman.
+#: nublado/apps/reading_portal/bot_messages.py:22
 #, python-brace-format
 msgid "reading_portal.bot.reading_reviewed {reviewer_name}"
 msgstr "Reviewed by {reviewer_name}."
 
-#: nublado/apps/reading_portal/bot_messages.py:11
+#. Translators: Message header when listing pending reading submissions.
+#. Example: Pending Reading Submissions:
+#: nublado/apps/reading_portal/bot_messages.py:26
 msgid "reading_portal.bot.pending_readings"
 msgstr "pending readings"
 
-#: nublado/apps/reading_portal/bot_messages.py:12
+#. Translators: Message header when listing portals in the queue ready to be posted.
+#. Example: Reading Portals:
+#: nublado/apps/reading_portal/bot_messages.py:30
 msgid "reading_portal.bot.draft_reading_portals"
 msgstr "reading portals"
 
