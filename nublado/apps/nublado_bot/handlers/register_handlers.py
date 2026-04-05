@@ -29,7 +29,7 @@ def register_handlers(app):
     app.add_handler(LanguageHandler(), group=MIDDLEWARE_GROUP)
 
     # error handler
-    app.add_error_handler(error_handler)
+    app.add_error_handler(with_language(error_handler))
 
     # commands
     app.add_handler(
