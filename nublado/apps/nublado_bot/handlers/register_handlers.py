@@ -2,6 +2,7 @@ from telegram.ext import CommandHandler, MessageHandler, CallbackQueryHandler, f
 
 from django_telegram.policies import (
     GroupOnly,
+    GroupOwnerOnly,
     PrivateOnly,
     with_policies,
 )
@@ -23,6 +24,7 @@ def register_handlers(app):
     from group_points.handlers import give_points, POINT_FILTER
     from .group_settings import set_bot_language
     from .misc import start, hello
+    from .admin import list_groups, broadcast_message
     from .error_handler import error_handler
 
     # middleware
@@ -32,6 +34,22 @@ def register_handlers(app):
     app.add_error_handler(with_language(error_handler))
 
     # commands
+    app.add_handler(
+        CommandHandler(
+            "groups",
+            with_language(list_groups),
+        ),
+        group=HANDLER_GROUP,
+    )
+
+    app.add_handler(
+        CommandHandler(
+            "broadcast",
+            with_language(broadcast_message),
+        ),
+        group=HANDLER_GROUP,
+    )
+
     app.add_handler(
         CommandHandler(
             "start",
