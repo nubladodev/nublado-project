@@ -179,6 +179,7 @@ DJANGO_TELEGRAM_BOT_MODE = BOT_MODE_WEBHOOK
 
 NUBLADO_BOT = "nublado"
 NUBLADO_BOT_TOKEN = get_env_variable("NUBLADO_BOT_TOKEN")
+NUBLADO_BOT_OWNER_ID = 8009983006
 NUBLADO_BOT_WEBHOOK_URL = "https://nublado-project.onrender.com/bot/nublado/webhook/"
 NUBLADO_BOT_WEBHOOK_SECRET = "supersecretnubladowebhooktoken"
 
@@ -193,13 +194,13 @@ BOTS = {
 # Third-party settings
 JAZZMIN_SETTINGS = {
     # title of the window (Will default to current_admin_site.site_title if absent or None)
-    "site_title": "Library Admin",
+    "site_title": "Nublado Admin",
     # Title on the login screen (19 chars max) (defaults to current_admin_site.site_header if absent or None)
-    "site_header": "Library",
+    "site_header": "Nublado",
     # Title on the brand (19 chars max) (defaults to current_admin_site.site_header if absent or None)
-    "site_brand": "Library",
+    "site_brand": "Nublado",
     # Logo to use for your site, must be present in static files, used for brand on top left
-    "site_logo": "books/img/logo.png",
+    # "site_logo": "books/img/logo.png",
     # Logo to use for your site, must be present in static files, used for login form logo (defaults to site_logo)
     "login_logo": None,
     # Logo to use for login form in dark themes (defaults to login_logo)

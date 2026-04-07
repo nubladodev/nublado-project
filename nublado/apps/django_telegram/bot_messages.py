@@ -5,4 +5,5 @@ BOT_MESSAGES = {
     "error.private_only": _("django_telegram.bot.error.private_only"),
     "error.admin_access": _("django_telegram.bot.error.admin_access"),
     "error.group_owner_access": _("django_telegram.bot.error.group_owner_access"),
+    "error.bot_owner_access": _("django_telegram.bot.error.bot_owner_access"),
 }

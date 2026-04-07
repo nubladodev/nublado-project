@@ -1,6 +1,7 @@
 from telegram.ext import CommandHandler, MessageHandler, CallbackQueryHandler, filters
 
 from django_telegram.policies import (
+    BotOwnerOnly,
     GroupOnly,
     GroupOwnerOnly,
     PrivateOnly,
@@ -37,7 +38,7 @@ def register_handlers(app):
     app.add_handler(
         CommandHandler(
             "groups",
-            with_language(list_groups),
+            with_policies(BotOwnerOnly)(with_language(list_groups)),
         ),
         group=HANDLER_GROUP,
     )
@@ -45,7 +46,7 @@ def register_handlers(app):
     app.add_handler(
         CommandHandler(
             "broadcast",
-            with_language(broadcast_message),
+            with_policies(BotOwnerOnly)(with_language(broadcast_message)),
         ),
         group=HANDLER_GROUP,
     )
