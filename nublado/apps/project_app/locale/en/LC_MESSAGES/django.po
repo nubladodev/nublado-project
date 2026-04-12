@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-05 21:24+0000\n"
+"POT-Creation-Date: 2026-04-12 20:19+0000\n"
 "PO-Revision-Date: 2026-04-04 12:03-0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -42,19 +42,23 @@ msgstr ""
 msgid "django_telegram.bot.error.group_owner_access"
 msgstr ""
 
-#: nublado/apps/django_telegram/models.py:50
+#: nublado/apps/django_telegram/bot_messages.py:8
+msgid "django_telegram.bot.error.bot_owner_access"
+msgstr ""
+
+#: nublado/apps/django_telegram/models.py:49
 msgid "private"
 msgstr ""
 
-#: nublado/apps/django_telegram/models.py:51
+#: nublado/apps/django_telegram/models.py:50
 msgid "group"
 msgstr ""
 
-#: nublado/apps/django_telegram/models.py:52
+#: nublado/apps/django_telegram/models.py:51
 msgid "supergroup"
 msgstr ""
 
-#: nublado/apps/django_telegram/models.py:53
+#: nublado/apps/django_telegram/models.py:52
 msgid "channel"
 msgstr ""
 
@@ -238,48 +242,54 @@ msgstr ""
 msgid "label_logout"
 msgstr ""
 
-#. Translators: Message when there are no draft portals in the queue to be posted.
-#. Example: There are no portals ready to be posted.
+#. Translators: Message when there are no draft portals.
+#. Example: There are no draft portals.
 #: nublado/apps/reading_portal/bot_messages.py:5
 msgid "reading_portal.bot.error.no_draft_portals"
 msgstr "There are no portals to post."
 
+#. Translators: Message when there are no portals in the queue ready to be posted.
+#. Example: There are no portals ready to be posted.
+#: nublado/apps/reading_portal/bot_messages.py:9
+msgid "reading_portal.bot.error.no_ready_portals"
+msgstr "There are no portals ready to be posted."
+
 #. Translators: Message when there are no readings submissions pending review.
 #. Example: There are no pending readings. There are no pending reading submissions.
-#: nublado/apps/reading_portal/bot_messages.py:9
+#: nublado/apps/reading_portal/bot_messages.py:13
 msgid "reading_portal.bot.error.no_pending_readings"
 msgstr "There are no pending readings."
 
 #. Translators: Message when...
 #. Example: ...
-#: nublado/apps/reading_portal/bot_messages.py:13
+#: nublado/apps/reading_portal/bot_messages.py:17
 msgid "reading_portal.bot.error.review_no_pending_reading"
 msgstr ""
 
 #. Translators: Message when a portal isn't found.
 #. Example: Reading Portal not found.
-#: nublado/apps/reading_portal/bot_messages.py:17
+#: nublado/apps/reading_portal/bot_messages.py:21
 msgid "reading_portal.bot.error.portal_not_found"
 msgstr ""
 
 #. Translators: Message when a reading is reviewed by a user.
 #. {reviewer_name} = username of user who reviewed the reading.
 #. Example: Reviewed by @fooman.
-#: nublado/apps/reading_portal/bot_messages.py:22
+#: nublado/apps/reading_portal/bot_messages.py:26
 #, python-brace-format
 msgid "reading_portal.bot.reading_reviewed {reviewer_name}"
 msgstr "Reviewed by {reviewer_name}."
 
 #. Translators: Message header when listing pending reading submissions.
 #. Example: Pending Reading Submissions:
-#: nublado/apps/reading_portal/bot_messages.py:26
+#: nublado/apps/reading_portal/bot_messages.py:30
 msgid "reading_portal.bot.pending_readings"
 msgstr "pending readings"
 
 #. Translators: Message header when listing portals in the queue ready to be posted.
 #. Example: Reading Portals:
-#: nublado/apps/reading_portal/bot_messages.py:30
-msgid "reading_portal.bot.draft_reading_portals"
+#: nublado/apps/reading_portal/bot_messages.py:34
+msgid "reading_portal.bot.ready_reading_portals"
 msgstr "reading portals"
 
 #: nublado/apps/reading_portal/exceptions.py:7
@@ -287,34 +297,38 @@ msgid "Reading Portal error"
 msgstr ""
 
 #: nublado/apps/reading_portal/exceptions.py:18
-msgid "reading_portal.bot.error.no_open_portal"
-msgstr "There is no open Reading Portal."
-
-#: nublado/apps/reading_portal/exceptions.py:22
 msgid "reading_portal.bot.error.no_reply_to_audio"
 msgstr ""
 
-#: nublado/apps/reading_portal/exceptions.py:26
+#: nublado/apps/reading_portal/exceptions.py:22
 msgid "reading_portal.bot.error.no_reply_to_reading"
 msgstr ""
 
-#: nublado/apps/reading_portal/exceptions.py:30
+#: nublado/apps/reading_portal/exceptions.py:26
 msgid "reading_portal.bot.error.no_reply_to_text"
 msgstr ""
 
-#: nublado/apps/reading_portal/exceptions.py:34
+#: nublado/apps/reading_portal/exceptions.py:30
 msgid "reading_portal.bot.error.no_draft_portal"
 msgstr ""
 
+#: nublado/apps/reading_portal/exceptions.py:34
+msgid "reading_portal.bot.error.no_ready_portal"
+msgstr "There are no portals to post."
+
 #: nublado/apps/reading_portal/exceptions.py:38
+msgid "reading_portal.bot.error.no_open_portal"
+msgstr "There is no open Reading Portal."
+
+#: nublado/apps/reading_portal/exceptions.py:42
 msgid "reading_portal.bot.error.open_portal_exists"
 msgstr ""
 
-#: nublado/apps/reading_portal/exceptions.py:42
+#: nublado/apps/reading_portal/exceptions.py:46
 msgid "reading_portal.bot.error.empty_portal"
 msgstr ""
 
-#: nublado/apps/reading_portal/exceptions.py:46
+#: nublado/apps/reading_portal/exceptions.py:50
 msgid "reading_portal.bot.error.no_pending_reading"
 msgstr ""
 
@@ -327,22 +341,26 @@ msgid "Scheduled"
 msgstr ""
 
 #: nublado/apps/reading_portal/models.py:29
-msgid "Open"
+msgid "Ready"
 msgstr ""
 
 #: nublado/apps/reading_portal/models.py:30
+msgid "Open"
+msgstr ""
+
+#: nublado/apps/reading_portal/models.py:31
 msgid "Closed"
 msgstr ""
 
-#: nublado/apps/reading_portal/models.py:181
+#: nublado/apps/reading_portal/models.py:182
 msgid "Pending"
 msgstr ""
 
-#: nublado/apps/reading_portal/models.py:182
+#: nublado/apps/reading_portal/models.py:183
 msgid "Reviewed"
 msgstr ""
 
-#: nublado/apps/reading_portal/models.py:183
+#: nublado/apps/reading_portal/models.py:184
 msgid "Archived"
 msgstr ""
 
