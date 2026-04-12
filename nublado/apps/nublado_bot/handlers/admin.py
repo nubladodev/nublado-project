@@ -11,7 +11,11 @@ async def register_chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
     tg_chat = update.effective_chat
     chat, created = await TelegramChat.objects.aget_or_create_from_telegram_chat(tg_chat)
 
-    bot_message = f"{chat.title} has been registered."
+    if created:
+        bot_message = f"{chat.title} has been registered."
+    else:
+        bot_message = f"{chat.title} is already registered."
+
     await context.bot.send_message(
         chat_id=tg_chat.id,
         text=bot_message
