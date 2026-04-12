@@ -41,7 +41,7 @@ async def submit_reading_voice_message_service(
     if tg_reply_to_message.from_user.id != context.bot.id:
         return None
 
-    chat = await TelegramChat.objects.aget_or_create_from_telegram_chat(tg_chat)
+    chat, created = await TelegramChat.objects.aget_or_create_from_telegram_chat(tg_chat)
 
     try:
         portal = await ReadingPortal.objects.aget_open(chat=chat)
@@ -108,7 +108,7 @@ async def review_reading_service(update: Update, context: ContextTypes.DEFAULT_T
     tg_chat = update.effective_chat
     tg_message = update.effective_message
 
-    chat = await TelegramChat.objects.aget_or_create_from_telegram_chat(tg_chat)
+    chat, created = await TelegramChat.objects.aget_or_create_from_telegram_chat(tg_chat)
 
     # Check if there is an open Reading Portal in the group.
     try:
@@ -154,7 +154,7 @@ async def get_pending_readings_service(
     """
     tg_chat = update.effective_chat
 
-    chat = await TelegramChat.objects.aget_or_create_from_telegram_chat(tg_chat)
+    chat, created = await TelegramChat.objects.aget_or_create_from_telegram_chat(tg_chat)
 
     # Get reading submissions from currently upen Reading Portal.
     try:

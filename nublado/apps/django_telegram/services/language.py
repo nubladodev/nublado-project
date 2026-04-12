@@ -23,7 +23,7 @@ async def resolve_chat_language(
 
     tg_chat = update.effective_chat
 
-    chat = await TelegramChat.objects.aget_or_create_from_telegram_chat(tg_chat)
+    chat, created = await TelegramChat.objects.aget_or_create_from_telegram_chat(tg_chat)
 
     group_settings = (
         await TelegramGroupSettings.objects.filter(chat=chat).only("language").afirst()
@@ -47,7 +47,7 @@ async def set_chat_language(
 ) -> None:
     tg_chat = update.effective_chat
 
-    chat = await TelegramChat.objects.aget_or_create_from_telegram_chat(tg_chat)
+    chat, created = await TelegramChat.objects.aget_or_create_from_telegram_chat(tg_chat)
     group_settings, created = await TelegramGroupSettings.objects.aget_or_create(
         chat=chat
     )

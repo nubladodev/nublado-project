@@ -4,8 +4,21 @@ from telegram.error import BadRequest
 
 from django_telegram.models import TelegramChat
 
+async def register_chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """
+    Register chat in the db.
+    """
+    tg_chat = update.effective_chat
+    chat, created = await TelegramChat.objects.aget_or_create_from_telegram_chat(tg_chat)
 
-async def list_groups(update:Update, context: ContextTypes.DEFAULT_TYPE):
+    bot_message = f"{chat.title} has been registered."
+    await context.bot.send_message(
+        chat_id=tg_chat.id,
+        text=bot_message
+    )
+
+
+async def list_groups(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
     List the groups the bot is active in.
     """

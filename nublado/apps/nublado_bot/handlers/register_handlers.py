@@ -24,7 +24,7 @@ def register_handlers(app):
     from group_points.handlers import give_points, POINT_FILTER
     from .group_settings import set_bot_language
     from .misc import start, hello
-    from .admin import list_groups, broadcast_message
+    from .admin import list_groups, broadcast_message, register_chat
     from .error_handler import error_handler
 
     # middleware
@@ -46,6 +46,14 @@ def register_handlers(app):
         CommandHandler(
             "broadcast",
             with_policies(BotOwnerOnly)(with_language(broadcast_message)),
+        ),
+        group=HANDLER_GROUP,
+    )
+
+    app.add_handler(
+        CommandHandler(
+            "register_chat",
+            with_policies(BotOwnerOnly)(with_language(register_chat)),
         ),
         group=HANDLER_GROUP,
     )

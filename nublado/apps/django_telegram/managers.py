@@ -95,7 +95,7 @@ class TelegramChatManager(models.Manager.from_queryset(TelegramChatQuerySet)):
 
             if updated_fields:
                 await chat.asave(update_fields=updated_fields)
-        return chat
+        return chat, created
 
 
 class TelegramGroupMemberQuerySet(models.QuerySet):
@@ -129,7 +129,7 @@ class TelegramGroupMemberManager(
 
         # This updates snapshot fields in the ORM.
         user = await TelegramUser.objects.aget_or_create_from_telegram_user(tg_user)
-        chat = await TelegramChat.objects.aget_or_create_from_telegram_chat(tg_chat)
+        chat, created = await TelegramChat.objects.aget_or_create_from_telegram_chat(tg_chat)
 
         member, created = await self.aget_or_create(
             user=user,
