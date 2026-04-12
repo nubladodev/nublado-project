@@ -3,7 +3,6 @@ from telegram.ext import CommandHandler, MessageHandler, CallbackQueryHandler, f
 from django_telegram.policies import (
     BotOwnerOnly,
     GroupOnly,
-    GroupOwnerOnly,
     PrivateOnly,
     with_policies,
 )
@@ -14,7 +13,7 @@ from django_telegram.constants import HANDLER_GROUP, MIDDLEWARE_GROUP
 def register_handlers(app):
     from django_telegram.handlers import LanguageHandler
     from reading_portal.handlers import (
-        list_draft_portals,
+        list_ready_portals,
         pending_readings,
         open_portal,
         close_portal,
@@ -102,7 +101,7 @@ def register_handlers(app):
     app.add_handler(
         CommandHandler(
             "show_portals",
-            with_policies(GroupOnly)(with_language(list_draft_portals)),
+            with_policies(GroupOnly)(with_language(list_ready_portals)),
         ),
         group=HANDLER_GROUP,
     )

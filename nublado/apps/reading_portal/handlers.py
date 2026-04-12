@@ -18,7 +18,7 @@ from django_telegram.jobs import delete_message_job
 from .services.portals import (
     open_portal_service,
     close_portal_service,
-    list_draft_portals_service,
+    list_ready_portals_service,
 )
 from .services.reading_submissions import (
     submit_reading_voice_message_service,
@@ -66,21 +66,21 @@ async def close_portal(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await delete_command(update)
 
 
-async def list_draft_portals(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def list_ready_portals(update: Update, context: ContextTypes.DEFAULT_TYPE):
     tg_chat = update.effective_chat
     tg_message = update.effective_message
 
-    portals = await list_draft_portals_service(update, context)
+    portals = await list_ready_portals_service(update, context)
 
     if not await portals.aexists():
         await context.bot.send_message(
             chat_id=tg_chat.id,
-            text=str(BOT_MESSAGES["error.no_draft_portals"]),
+            text=str(BOT_MESSAGES["error.no_ready_portals"]),
             reply_to_message_id=tg_message.message_id,
         )
         return
 
-    bot_message = BOT_MESSAGES["draft_reading_portals"]
+    bot_message = BOT_MESSAGES["ready_reading_portals"]
     buttons = []
 
     async for portal in portals:

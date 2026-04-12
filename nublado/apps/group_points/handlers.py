@@ -36,11 +36,11 @@ async def give_points(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # Can't send points to self.
     if tg_sender.id == tg_receiver.id:
-        raise SelfReceiverError(points_name=_(POINTS_NAME))
+        raise SelfReceiverError(points_name=_(BOT_MESSAGES["points_name"]))
 
     # Can't send points to bot.
     if tg_receiver.is_bot:
-        raise BotReceiverError(points_name=_(POINTS_NAME))
+        raise BotReceiverError(points_name=_(BOT_MESSAGES["points_name"]))
 
     num_points = extract_points(tg_message.text, POINT_SYMBOL, POINTS_MAP)
 

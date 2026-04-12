@@ -8,20 +8,20 @@ from telegram.error import BadRequest
 from django_telegram.models import TelegramChat
 
 from ..models import ReadingPortal, PortalReading
-from ..exceptions import NoDraftPortal, NoOpenPortal, OpenPortalExists, EmptyPortal
+from ..exceptions import NoReadyPortal, NoOpenPortal, OpenPortalExists, EmptyPortal
 from .formatting import format_portal_intro, format_portal_closed
 from ..bot_messages import BOT_MESSAGES
 
 logger = logging.getLogger("django")
 
 
-async def list_draft_portals_service(
+async def list_ready_portals_service(
     update: Update, context: ContextTypes.DEFAULT_TYPE
 ):
     tg_chat = update.effective_chat
 
     chat = await TelegramChat.objects.aget_or_create_from_telegram_chat(tg_chat)
-    portals = ReadingPortal.objects.draft().from_chat(chat)
+    portals = ReadingPortal.objects.ready().from_chat(chat)
 
     return portals
 
@@ -33,7 +33,7 @@ async def open_portal_service(
     notify: bool = False,
 ):
     """
-    Open a draft Reading Portal by slug if provided,
+    Open a ready Reading Portal by slug if provided,
     or open the first Reading Portal in the queue.
     """
     tg_chat = update.effective_chat
@@ -53,7 +53,7 @@ async def open_portal_service(
     # If a slug is provided, attempt to open a Reading Portal with the coresponding slug.
     if slug:
         try:
-            portal = await ReadingPortal.objects.draft().from_chat(chat).aget(slug=slug)
+            portal = await ReadingPortal.objects.ready().from_chat(chat).aget(slug=slug)
         except ReadingPortal.DoesNotExist:
             await context.bot.send_message(
                 chat_id=tg_chat.id,
@@ -62,12 +62,12 @@ async def open_portal_service(
             )
             return
     else:
-        # If no slug is provided, ger the next draft Reading Portal in the queue.
-        portal = await ReadingPortal.objects.anext_draft(chat=chat)
+        # If no slug is provided, ger the next ready Reading Portal in the queue.
+        portal = await ReadingPortal.objects.anext_ready(chat=chat)
 
     if not portal:
-        # There are no draft portals ready to be posted.
-        raise NoDraftPortal()
+        # There are no portals ready to be posted.
+        raise NoReadyPortal()
 
     if not await portal.ahas_readings():
         # The portal has no readings.

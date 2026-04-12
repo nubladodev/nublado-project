@@ -14,10 +14,6 @@ class ReadingPortalError(Exception):
         return str(self.message)
 
 
-class NoOpenPortal(ReadingPortalError):
-    default_message = _("reading_portal.bot.error.no_open_portal")
-
-
 class NoReplyToAudio(ReadingPortalError):
     default_message = _("reading_portal.bot.error.no_reply_to_audio")
 
@@ -32,6 +28,14 @@ class NoAudioReplyToText(ReadingPortalError):
 
 class NoDraftPortal(ReadingPortalError):
     default_message = _("reading_portal.bot.error.no_draft_portal")
+
+
+class NoReadyPortal(ReadingPortalError):
+    default_message = _("reading_portal.bot.error.no_ready_portal")
+
+
+class NoOpenPortal(ReadingPortalError):
+    default_message = _("reading_portal.bot.error.no_open_portal")
 
 
 class OpenPortalExists(ReadingPortalError):

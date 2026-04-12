@@ -16,9 +16,8 @@ class TelegramUser(TimestampModel):
     """
     Model for a Telegram user.
     """
-
-    telegram_id = models.BigIntegerField(primary_key=True)
-
+    # Telegram id
+    id = models.BigIntegerField(primary_key=True)
     username = models.CharField(max_length=255, null=True, blank=True)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255, null=True, blank=True)
@@ -27,7 +26,7 @@ class TelegramUser(TimestampModel):
     objects = TelegramUserManager()
 
     def __str__(self):
-        return f"{self.display_name} : {str(self.telegram_id)}"
+        return f"{self.display_name} : {str(self.id)}"
 
     @property
     def display_name(self):
@@ -52,7 +51,8 @@ class TelegramChat(TimestampModel):
         SUPERGROUP = ChatType.SUPERGROUP, _("supergroup")
         CHANNEL = ChatType.CHANNEL, _("channel")
 
-    telegram_id = models.BigIntegerField(primary_key=True)
+    # Telegram id
+    id = models.BigIntegerField(primary_key=True)
 
     # These fields are "snapshots" of their respective values derived from Telegram.
     chat_type = models.CharField(max_length=20, choices=ChatType)
@@ -62,7 +62,7 @@ class TelegramChat(TimestampModel):
     objects = TelegramChatManager()
 
     def __str__(self):
-        return f"{self.telegram_id}: {self.title}"
+        return f"{self.id}: {self.title}"
 
 
 class TelegramGroupSettings(LanguageModel, TimestampModel):
@@ -128,4 +128,4 @@ class TelegramGroupMember(TimestampModel):
     @property
     def mention_html(self):
         display_name = escape(self.user.display_name)
-        return f'<a href="tg://user?id={self.user.telegram_id}">{display_name}</a>'
+        return f'<a href="tg://user?id={self.user.id}">{display_name}</a>'

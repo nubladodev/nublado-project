@@ -26,6 +26,7 @@ class ReadingPortal(TimestampModel):
     class PortalStatus(models.TextChoices):
         DRAFT = "draft", _("Draft")
         SCHEDULED = "scheduled", _("Scheduled")
+        READY = "ready", _("Ready")
         OPEN = PORTAL_OPEN, _("Open")
         CLOSED = "closed", _("Closed")
 

@@ -12,7 +12,7 @@ from .models import (
 class TelegramChatAdmin(admin.ModelAdmin):
 
     list_display = (
-        "telegram_id",
+        "id",
         "title",
         "username",
         "chat_type",
@@ -20,13 +20,13 @@ class TelegramChatAdmin(admin.ModelAdmin):
     )
 
     search_fields = (
-        "telegram_id",
+        "id",
         "title",
         "username",
     )
 
     readonly_fields = (
-        "telegram_id",
+        "id",
         "chat_type",
         "date_created",
         "title",
@@ -39,7 +39,7 @@ class TelegramChatAdmin(admin.ModelAdmin):
 @admin.register(TelegramUser)
 class TelegramUserAdmin(admin.ModelAdmin):
     list_display = [
-        "telegram_id",
+        "id",
         "username",
         "first_name",
         "last_name",
@@ -49,14 +49,14 @@ class TelegramUserAdmin(admin.ModelAdmin):
     ]
 
     search_fields = (
-        "telegram_id",
+        "id",
         "username",
         "first_name",
         "last_name",
     )
 
     readonly_fields = (
-        "telegram_id",
+        "id",
         "is_bot",
         "date_created",
         "date_updated",
@@ -75,7 +75,7 @@ class TelegramGroupSettingsAdmin(admin.ModelAdmin):
     list_editable = ("language",)
 
     search_fields = (
-        "chat__telegram_id",
+        "chat__id",
         "chat__title",
     )
 
@@ -94,7 +94,7 @@ class TelegramGroupMemberAdmin(admin.ModelAdmin):
     search_fields = (
         "chat__title",
         "user__username",
-        "user__telegram_id",
+        "user__id",
     )
 
     ordering = ("-points",)

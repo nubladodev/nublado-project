@@ -12,7 +12,7 @@ from django_telegram.models import (
 @pytest.fixture
 def telegram_user():
     return TelegramUser.objects.create(
-        telegram_id=123,
+        id=123,
         username="fooman",
     )
 
@@ -20,7 +20,7 @@ def telegram_user():
 @pytest.fixture
 def telegram_chat():
     return TelegramChat.objects.create(
-        telegram_id=456,
+        id=456,
         chat_type=TelegramChat.ChatType.GROUP,
         title="Foo Test Group",
     )

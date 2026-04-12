@@ -9,7 +9,7 @@ from django_telegram.models import TelegramChat, TelegramGroupSettings
 @pytest.fixture
 def telegram_chat():
     return TelegramChat.objects.create(
-        telegram_id=456,
+        id=456,
         chat_type=TelegramChat.ChatType.GROUP,
         title="Foo Test Group",
     )

@@ -12,9 +12,9 @@ class TestTelegramChat:
 
     def test_pk(self):
         """
-        telegram_id is the primary key
+        id is the primary key
         """
-        assert TelegramChat._meta.pk.name == "telegram_id"
+        assert TelegramChat._meta.pk.name == "id"
 
     @pytest.mark.parametrize(
         "chat_type",
@@ -26,7 +26,7 @@ class TestTelegramChat:
         The ChatType enum values can be saved and retrieved correctly.
         """
         chat = TelegramChat.objects.create(
-            telegram_id=1,
+            id=1,
             chat_type=chat_type,
         )
         chat.refresh_from_db()
@@ -37,11 +37,11 @@ class TestTelegramChat:
         Create a TelegramChat object and check its attribute values.
         """
         chat = TelegramChat.objects.create(
-            telegram_id=456,
+            id=456,
             chat_type=TelegramChat.ChatType.GROUP,
             title="Foo Group",
         )
-        assert chat.telegram_id == 456
+        assert chat.id == 456
         assert chat.title == "Foo Group"
         assert chat.chat_type == TelegramChat.ChatType.GROUP
         assert chat.date_created is not None
@@ -49,11 +49,11 @@ class TestTelegramChat:
 
     def test_str_representation(self):
         """
-        __str__ returns "chat_type: telegram_id".
+        __str__ returns "chat_type: id".
         """
         chat = TelegramChat.objects.create(
-            telegram_id=456,
+            id=456,
             chat_type=TelegramChat.ChatType.GROUP,
             title="Foo Group",
         )
-        assert str(chat) == f"{chat.telegram_id}: {chat.title}"
+        assert str(chat) == f"{chat.id}: {chat.title}"

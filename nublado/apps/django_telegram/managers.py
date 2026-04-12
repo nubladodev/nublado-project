@@ -19,7 +19,7 @@ class TelegramUserManager(models.Manager.from_queryset(TelegramUserQuerySet)):
         Get or create a TelegramUser object from telegram.User.
         """
         user, created = await self.aget_or_create(
-            telegram_id=tg_user.id,
+            id=tg_user.id,
             defaults={
                 "username": tg_user.username,
                 "first_name": tg_user.first_name,
@@ -70,7 +70,7 @@ class TelegramChatManager(models.Manager.from_queryset(TelegramChatQuerySet)):
         """
 
         chat, created = await self.aget_or_create(
-            telegram_id=tg_chat.id,
+            id=tg_chat.id,
             defaults={
                 "chat_type": tg_chat.type,
                 "title": tg_chat.title,
