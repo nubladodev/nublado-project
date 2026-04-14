@@ -57,10 +57,6 @@ class ReadingPortal(TimestampModel):
         null=True, blank=True, help_text="Maximum number of corrections per submission."
     )
 
-    # Lifecycle.
-    opens_at = models.DateTimeField(null=True, blank=True)
-    closes_at = models.DateTimeField(null=True, blank=True)
-
     objects = ReadingPortalManager()
 
     class Meta:
@@ -94,11 +90,6 @@ class ReadingPortal(TimestampModel):
                 # TODO: Redirect user to the curreently opened Reading Portal.
                 raise ValidationError("There is already an open Reading Portal.")
 
-        # The opens_at timestamp must be before the closes_at timestamp.
-        if self.opens_at and self.closes_at:
-            if self.opens_at >= self.closes_at:
-                raise ValidationError("opens_at must be earlier than closes_at.")
-
     def save(self, *args, **kwargs):
         if not self.slug:
             base_slug = slugify(self.title)
@@ -113,18 +104,27 @@ class ReadingPortal(TimestampModel):
         super().save(*args, **kwargs)
 
     @property
+    def is_draft(self):
+        return self.portal_status == self.PortalStatus.DRAFT
+
+    @property
+    def is_ready(self):
+        return self.portal_status == self.PortalStatus.READY
+
+    @property
     def is_open(self):
-        now = timezone.now()
+        return self.portal_satus == self.PortalStatus.OPEN
 
-        if not self.opens_at or not self.closes_at:
-            return False
-
-        return (
-            self.portal_status == self.PortalStatus.OPEN
-            and self.opens_at <= now <= self.closes_at
-        )
+    async def has_readings(self):
+        """
+        Check if portal has at least one reading.
+        """
+        return self.portal_readings.exists()
 
     async def ahas_readings(self):
+        """
+        async: Check if portal has at least one reading.
+        """
         return await self.portal_readings.aexists()
 
     async def open_portal(self):
@@ -133,6 +133,38 @@ class ReadingPortal(TimestampModel):
 
         self.portal_status = self.PortalStatus.OPEN
         await self.asave(update_fields=["portal_status"])
+
+    def mark_draft(self):
+        # Don't do anything if status is already draft.
+        if self.portal_status == self.PortalStatus.DRAFT:
+            return
+
+        if self.portal_status == self.PortalStatus.OPEN:
+            raise ValidationError("Can't mark an open portal as draft. Close it first.")
+
+        self.portal_status = self.PortalStatus.DRAFT
+        self.save(update_fields=["portal_status"])
+
+    def mark_ready(self):
+        # Don't do anything if status is already ready.
+        if self.portal_status == self.PortalStatus.READY:
+            return
+
+        if self.portal_status == self.PortalStatus.OPEN:
+            raise ValidationError("Can't mark an open portal as ready. Close it first.")
+
+        if not self.has_readings():
+            raise ValidationError("Portal must have at least one reading.")
+
+        # Optional: enforce required languages
+        # languages = set(self.portal_readings.values_list("language", flat=True))
+        # required = {"en", "es"} 
+
+        # if not required.issubset(languages):
+        #     raise ValidationError("Missing required languages.")
+
+        self.portal_status = self.PortalStatus.READY
+        self.save(update_fields=["portal_status"])
 
 
 class PortalReading(TimestampModel, LanguageModel):

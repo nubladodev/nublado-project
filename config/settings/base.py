@@ -200,7 +200,7 @@ JAZZMIN_SETTINGS = {
     # Title on the brand (19 chars max) (defaults to current_admin_site.site_header if absent or None)
     "site_brand": "Nublado",
     # Logo to use for your site, must be present in static files, used for brand on top left
-    # "site_logo": "books/img/logo.png",
+    "site_logo": "images/nublado-logo.png",
     # Logo to use for your site, must be present in static files, used for login form logo (defaults to site_logo)
     "login_logo": None,
     # Logo to use for login form in dark themes (defaults to login_logo)
@@ -230,8 +230,6 @@ JAZZMIN_SETTINGS = {
         },
         # model admin to link to (Permissions checked against model)
         {"model": "auth.User"},
-        # App with dropdown menu to all its models pages (Permissions checked against models)
-        {"app": "books"},
     ],
     # Additional links to include in the user menu on the top right ("app" url type is not allowed)
     "usermenu_links": [
@@ -250,19 +248,6 @@ JAZZMIN_SETTINGS = {
     "hide_apps": [],
     # Hide these models when generating side menu (e.g auth.user)
     "hide_models": [],
-    # List of apps (and/or models) to base side menu ordering off of (does not need to contain all apps/models)
-    "order_with_respect_to": ["auth", "books", "books.author", "books.book"],
-    # Custom links to append to app groups, keyed on app name
-    "custom_links": {
-        "books": [
-            {
-                "name": "Make Messages",
-                "url": "make_messages",
-                "icon": "fas fa-comments",
-                "permissions": ["books.view_book"],
-            }
-        ]
-    },
     "icons": {
         "auth": "fas fa-users-cog",
         "auth.user": "fas fa-user",
