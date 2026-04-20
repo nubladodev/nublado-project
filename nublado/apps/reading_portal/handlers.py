@@ -1,3 +1,5 @@
+from html import escape
+
 from collections import defaultdict
 
 from telegram import (
@@ -9,7 +11,6 @@ from telegram import (
 from telegram.error import BadRequest
 from telegram.ext import ContextTypes
 
-
 from django_telegram.utils.helpers import message_link
 from django_telegram.utils.telegram import delete_command
 from django_telegram.utils.formatting import user_display_name
@@ -19,12 +20,14 @@ from .services.portals import (
     open_portal_service,
     close_portal_service,
     list_ready_portals_service,
+    edit_reading_service,
 )
 from .services.reading_submissions import (
     submit_reading_voice_message_service,
     review_reading_service,
     get_pending_readings_service,
 )
+from .utils.formatting import format_reading
 from .bot_messages import BOT_MESSAGES
 
 OPEN_PORTAL_CALLBACK = "open_portal"
@@ -222,3 +225,51 @@ async def review_reading(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # Delete the lingering command in the chat.
     await delete_command(update)
+
+
+async def edit_reading(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """
+    Edit an open Reading Portal's reading by language from text in the chat.
+    """
+    tg_chat = update.effective_chat
+    tg_message = update.effective_message
+
+    # Command must be a reply to a text message. 
+    if not tg_message.reply_to_message:
+        await tg_message.reply_text("Error: must be reply")
+        return
+
+    source_message = tg_message.reply_to_message
+
+    if not source_message.text:
+        await tg_message.reply_text("Error: must be a reply to a text message.")
+        return
+
+    # Parse args
+    if not context.args:
+        await tg_message.reply_text(escape("Usage: /edit_reading <language>"))
+        return
+
+    language = context.args[0].lower()
+
+    reading = await edit_reading_service(update, context, language=language, text=source_message.text)
+    reading_text = format_reading(reading)
+
+    try:
+        await context.bot.edit_message_text(
+            chat_id=tg_chat.id,
+            message_id=reading.message_id,
+            text=reading_text,
+            parse_mode="HTML",
+        )
+    except Exception as e:
+        await tg_message.reply_text(
+            f"Updated DB, but failed to edit message: {e}"
+        )
+        return
+
+    await tg_message.reply_text(
+        f"Updated reading ({language.upper()})."
+    )
+
+

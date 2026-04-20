@@ -48,3 +48,11 @@ class EmptyPortal(ReadingPortalError):
 
 class NoPendingReading(ReadingPortalError):
     default_message = _("reading_portal.bot.error.no_pending_reading")
+
+
+class NoExistingReading(ReadingPortalError):
+    default_message = _("reading_portal.bot.error.no_existing_reading")
+
+
+class NoReadingMessageId(ReadingPortalError):
+    default_message = _("reading_portal.bot.error.no_reading_message_id")

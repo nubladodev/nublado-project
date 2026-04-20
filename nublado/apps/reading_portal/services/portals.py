@@ -4,12 +4,18 @@ from telegram import Update
 from telegram.ext import ContextTypes
 from telegram.error import BadRequest
 
-
 from django_telegram.models import TelegramChat
 
 from ..models import ReadingPortal, PortalReading
-from ..exceptions import NoReadyPortal, NoOpenPortal, OpenPortalExists, EmptyPortal
-from .formatting import format_portal_intro, format_portal_closed
+from ..exceptions import (
+    NoReadyPortal,
+    NoOpenPortal,
+    OpenPortalExists,
+    EmptyPortal,
+    NoExistingReading,
+    NoReadingMessageId,
+)
+from ..utils.formatting import format_portal_intro, format_portal_closed, format_reading
 from ..bot_messages import BOT_MESSAGES
 
 logger = logging.getLogger("django")
@@ -24,6 +30,41 @@ async def list_ready_portals_service(
     portals = ReadingPortal.objects.ready().from_chat(chat)
 
     return portals
+
+
+async def edit_reading_service(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
+    *,
+    language: str,
+    text: str
+):
+    tg_chat = update.effective_chat
+
+    chat, created = await TelegramChat.objects.aget_or_create_from_telegram_chat(tg_chat)
+
+    # Get open portal.
+    try:
+        portal = await ReadingPortal.objects.aget_open(chat=chat)
+    except ReadingPortal.DoesNotExist:
+        raise NoOpenPortal()
+
+    # Get existing reading.
+    try:
+        reading = await PortalReading.objects.aget(
+            reading_portal=portal,
+            language=language,
+        )
+    except PortalReading.DoesNotExist:
+        raise NoExistingReading()
+
+    reading.message_text = text.strip()
+    await reading.asave(update_fields=["message_text"])
+
+    if not reading.message_id:
+        raise NoReadingMessageId()
+
+    return reading
 
 
 async def open_portal_service(
@@ -86,11 +127,7 @@ async def open_portal_service(
 
     # Post the portal readings.
     async for reading in readings:
-
-        language_label = reading.language.upper()
-        header = f"🌧 <b>Reading: {language_label}</b>"
-        reading_text = f"{header}\n\n{reading.message_text}"
-
+        reading_text = format_reading(reading)
         reading_message = await bot.send_message(
             chat_id=tg_chat.id,
             text=reading_text,

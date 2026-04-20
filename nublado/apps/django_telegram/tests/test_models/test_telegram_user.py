@@ -27,18 +27,21 @@ class TestTelegramUser:
         assert user.date_updated is not None
 
     def test_display_name(self):
-        user = TelegramUser.objects.create(id=111, first_name="firstname1")
-        assert user.display_name == user.first_name
-
+        # With username.
         user = TelegramUser.objects.create(
             id=222, username="username2", first_name="firstname2"
         )
         assert user.display_name == f"@{user.username}"
 
+        # No username, with first_name and last_name
         user = TelegramUser.objects.create(
             id=333, first_name="firstname3", last_name="lastname3"
         )
         assert user.display_name == f"{user.first_name} {user.last_name}"
+
+        # No username, with first_name and no last_name.
+        user = TelegramUser.objects.create(id=444, first_name="firstname4")
+        assert user.display_name == user.first_name
 
     def test_str_representation(self):
         """

@@ -22,3 +22,4 @@ async def hello(update: Update, context: ContextTypes.DEFAULT_TYPE):
         chat_id=tg_chat.id,
         text=str(BOT_MESSAGES["hello"]),
     )
+

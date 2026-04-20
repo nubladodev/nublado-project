@@ -4,6 +4,7 @@ from django_telegram.policies import (
     BotOwnerOnly,
     GroupOnly,
     PrivateOnly,
+    GroupOwnerOnly,
     with_policies,
 )
 from django_telegram.decorators import with_language
@@ -11,6 +12,7 @@ from django_telegram.constants import HANDLER_GROUP, MIDDLEWARE_GROUP
 
 
 def register_handlers(app):
+    # import modules that use models here to avoid "app not ready" errors.
     from django_telegram.handlers import LanguageHandler
     from reading_portal.handlers import (
         list_ready_portals,
@@ -20,6 +22,7 @@ def register_handlers(app):
         submit_reading,
         review_reading,
         open_portal_callback,
+        edit_reading,
     )
     from group_points.handlers import give_points, POINT_FILTER
     from .group_settings import set_bot_language
@@ -118,6 +121,14 @@ def register_handlers(app):
         CommandHandler(
             "reviewed",
             with_policies(GroupOnly)(with_language(review_reading)),
+        ),
+        group=HANDLER_GROUP,
+    )
+
+    app.add_handler(
+        CommandHandler(
+            "edit_reading",
+            with_policies(GroupOwnerOnly)(with_language(edit_reading)),
         ),
         group=HANDLER_GROUP,
     )

@@ -5,26 +5,26 @@ from django.conf import settings
 
 
 # Helper functions
-def _is_group(tg_chat: Chat):
+def is_group(tg_chat: Chat):
     return tg_chat.type in {ChatType.GROUP, ChatType.SUPERGROUP}
 
 
-def _is_private(tg_chat: Chat):
+def is_private(tg_chat: Chat):
     return tg_chat.type == ChatType.PRIVATE
 
 
-def _is_admin(tg_member: ChatMember):
+def is_admin(tg_member: ChatMember):
     return tg_member.status in [
         ChatMemberStatus.ADMINISTRATOR,
         ChatMemberStatus.OWNER,
     ]
 
 
-def _is_group_owner(tg_member: ChatMember):
+def is_group_owner(tg_member: ChatMember):
     return tg_member.status == ChatMemberStatus.OWNER
 
 
-def _is_bot_owner(tg_user: User):
+def is_bot_owner(tg_user: User):
     return tg_user.id == settings.NUBLADO_BOT_OWNER_ID
 
 
