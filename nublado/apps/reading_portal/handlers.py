@@ -27,7 +27,7 @@ from .services.reading_submissions import (
     review_reading_service,
     get_pending_readings_service,
 )
-from .utils.formatting import format_reading
+from .utils.formatting import format_reading, format_edited_reading
 from .bot_messages import BOT_MESSAGES
 
 OPEN_PORTAL_CALLBACK = "open_portal"
@@ -253,7 +253,7 @@ async def edit_reading(update: Update, context: ContextTypes.DEFAULT_TYPE):
     language = context.args[0].lower()
 
     reading = await edit_reading_service(update, context, language=language, text=source_message.text)
-    reading_text = format_reading(reading)
+    reading_text = format_edited_reading(reading)
 
     try:
         await context.bot.edit_message_text(

@@ -1,5 +1,7 @@
 from html import escape
 
+from django.utils.timezone import now
+
 from ..models import ReadingPortal, PortalReading
 
 
@@ -15,6 +17,13 @@ def format_reading(reading: PortalReading):
     header = f"🌧 <b>Reading: {language}</b>"
     
     return f"{header}\n\n{escape(reading.message_text)}"
+
+
+def format_edited_reading(reading: PortalReading):
+    reading_text = format_reading(reading)
+    timestamp = now().strftime("%b %d, %H:%M")
+    footer = f"\n\n<i>Edited {timestamp} UTC</i>"
+    return f"{reading_text}{footer}"
 
 
 def format_portal_closed():
