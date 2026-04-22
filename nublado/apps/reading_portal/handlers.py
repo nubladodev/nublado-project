@@ -27,7 +27,7 @@ from .services.reading_submissions import (
     review_reading_service,
     get_pending_readings_service,
 )
-from .utils.formatting import format_reading, format_edited_reading
+from .utils.formatting import format_edited_reading
 from .bot_messages import BOT_MESSAGES
 
 OPEN_PORTAL_CALLBACK = "open_portal"
