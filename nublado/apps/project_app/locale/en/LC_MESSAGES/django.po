@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-12 20:19+0000\n"
+"POT-Creation-Date: 2026-04-25 20:38+0000\n"
 "PO-Revision-Date: 2026-04-04 12:03-0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -18,13 +18,25 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.4.2\n"
 
-#: config/settings/base.py:108
+#: config/settings/base.py:109
 msgid "common.language.en"
 msgstr "English"
 
-#: config/settings/base.py:109
+#: config/settings/base.py:110
 msgid "common.language.es"
 msgstr "Spanish"
+
+#. Translators: Message when a chat note is saved and copied to the repo.
+#. {key} = normalized key for the note
+#. Example: Note pizza_fractal_gif has been saved to the repo.
+#: nublado/apps/chat_notes/bot_messages.py:6
+#, python-brace-format
+msgid "chat_notes.bot.note_saved {key}"
+msgstr "The note {key} has been saved to the repo."
+
+#: nublado/apps/chat_notes/exceptions.py:9
+msgid "chat_notes.bot.error.default"
+msgstr ""
 
 #: nublado/apps/django_telegram/bot_messages.py:4
 msgid "django_telegram.bot.error.group_only"
@@ -46,31 +58,35 @@ msgstr ""
 msgid "django_telegram.bot.error.bot_owner_access"
 msgstr ""
 
-#: nublado/apps/django_telegram/models.py:49
+#: nublado/apps/django_telegram/models.py:77
+msgid "Unknown"
+msgstr ""
+
+#: nublado/apps/django_telegram/models.py:78
 msgid "private"
 msgstr ""
 
-#: nublado/apps/django_telegram/models.py:50
+#: nublado/apps/django_telegram/models.py:79
 msgid "group"
 msgstr ""
 
-#: nublado/apps/django_telegram/models.py:51
+#: nublado/apps/django_telegram/models.py:80
 msgid "supergroup"
 msgstr ""
 
-#: nublado/apps/django_telegram/models.py:52
+#: nublado/apps/django_telegram/models.py:81
 msgid "channel"
 msgstr ""
 
-#: nublado/apps/django_telegram/models.py:85
+#: nublado/apps/django_telegram/models.py:137
 msgid "member"
 msgstr ""
 
-#: nublado/apps/django_telegram/models.py:86
+#: nublado/apps/django_telegram/models.py:138
 msgid "admin"
 msgstr ""
 
-#: nublado/apps/django_telegram/models.py:87
+#: nublado/apps/django_telegram/models.py:139
 msgid "owner"
 msgstr ""
 
@@ -332,35 +348,43 @@ msgstr ""
 msgid "reading_portal.bot.error.no_pending_reading"
 msgstr ""
 
-#: nublado/apps/reading_portal/models.py:27
+#: nublado/apps/reading_portal/exceptions.py:54
+#, fuzzy
+#| msgid "reading_portal.bot.error.no_pending_readings"
+msgid "reading_portal.bot.error.no_existing_reading"
+msgstr "There are no pending readings."
+
+#: nublado/apps/reading_portal/exceptions.py:58
+#, fuzzy
+#| msgid "reading_portal.bot.error.no_pending_readings"
+msgid "reading_portal.bot.error.no_reading_message_id"
+msgstr "There are no pending readings."
+
+#: nublado/apps/reading_portal/models.py:26
 msgid "Draft"
 msgstr ""
 
-#: nublado/apps/reading_portal/models.py:28
-msgid "Scheduled"
-msgstr ""
-
-#: nublado/apps/reading_portal/models.py:29
+#: nublado/apps/reading_portal/models.py:27
 msgid "Ready"
 msgstr ""
 
-#: nublado/apps/reading_portal/models.py:30
+#: nublado/apps/reading_portal/models.py:28
 msgid "Open"
 msgstr ""
 
-#: nublado/apps/reading_portal/models.py:31
+#: nublado/apps/reading_portal/models.py:29
 msgid "Closed"
 msgstr ""
 
-#: nublado/apps/reading_portal/models.py:182
+#: nublado/apps/reading_portal/models.py:212
 msgid "Pending"
 msgstr ""
 
-#: nublado/apps/reading_portal/models.py:183
+#: nublado/apps/reading_portal/models.py:213
 msgid "Reviewed"
 msgstr ""
 
-#: nublado/apps/reading_portal/models.py:184
+#: nublado/apps/reading_portal/models.py:214
 msgid "Archived"
 msgstr ""
 
