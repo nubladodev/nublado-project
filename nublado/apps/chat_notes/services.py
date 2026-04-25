@@ -89,7 +89,7 @@ async def list_repo_items_service(update: Update, context: ContextTypes.DEFAULT_
     if not repo:
         raise RepoNotFound("repo not found")
 
-    qs = RepoItem.objects.filter(repo=repo)
+    qs = RepoItem.objects.filter(repo=repo).order_by("key")
 
     if search_key:
         qs = qs.filter(
