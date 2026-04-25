@@ -25,7 +25,12 @@ def register_handlers(app):
         edit_reading,
     )
     from group_points.handlers import give_points, POINT_FILTER
-    from chat_notes.handlers import save_repo_item, get_repo_item, HASHTAG_FILTER
+    from chat_notes.handlers import (
+        save_repo_item,
+        get_repo_item,
+        list_repo_items,
+        HASHTAG_FILTER,
+    )
     from .group_settings import set_bot_language
     from .misc import start, hello
     from .admin import list_groups, broadcast_message, register_chat
@@ -164,6 +169,14 @@ def register_handlers(app):
         CommandHandler(
             "save_note",
             with_policies(GroupOnly)(with_language(save_repo_item)),
+        ),
+        group=HANDLER_GROUP,
+    )
+
+    app.add_handler(
+        CommandHandler(
+            "notes",
+            with_policies(GroupOnly)(with_language(list_repo_items)),
         ),
         group=HANDLER_GROUP,
     )

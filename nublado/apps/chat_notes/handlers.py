@@ -3,7 +3,7 @@ from telegram.ext import ContextTypes, filters
 
 
 from .utils import normalize_key
-from .services import save_repo_item_service, get_repo_item_service
+from .services import save_repo_item_service, get_repo_item_service, list_repo_items_service
 from .bot_messages import BOT_MESSAGES
 
 
@@ -65,3 +65,27 @@ async def get_repo_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
         message_id=tg_message.message_id,
         reaction=[ReactionTypeEmoji("✍️")],
     )
+
+
+async def list_repo_items(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    tg_chat = update.effective_chat
+    search_key = normalize_key(" ".join(context.args)) if context.args else None
+
+    repo_items = await list_repo_items_service(update, context, search_key)
+
+    if repo_items:
+        header = (
+            f"Notes with '<b>{search_key}</b>':\n\n"
+            if search_key else "Notes:\n\n"
+        )
+        body = "\n".join(f"#{item.key}" for item in repo_items)
+
+        await context.bot.send_message(
+            chat_id=tg_chat.id,
+            text=f"{header}{body}"
+        )
+    else:
+        await context.bot.send_message(
+            chat_id=tg_chat.id,
+            text="No notes found."
+        )

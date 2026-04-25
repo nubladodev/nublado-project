@@ -1,6 +1,8 @@
 from telegram import Update
 from telegram.ext import ContextTypes
 
+from django.db.models import Q
+
 from django_telegram.models import TelegramChat
 
 from .models import GroupRepo, RepoItem
@@ -57,7 +59,9 @@ async def get_repo_item_service(
     tg_chat = update.effective_chat
 
     source_chat, created = await TelegramChat.objects.aget_or_create_from_chat(tg_chat)
-    repo = await GroupRepo.objects.filter(group_chat=source_chat).afirst()
+    repo = await GroupRepo.objects.filter(
+        group_chat=source_chat
+    ).select_related("repo_chat").afirst()
 
     if not repo:
         raise RepoNotFound("repo not found")
@@ -72,3 +76,26 @@ async def get_repo_item_service(
     ).afirst()
 
     return repo_item
+
+
+async def list_repo_items_service(update: Update, context: ContextTypes.DEFAULT_TYPE, search_key: str = None):
+    tg_chat = update.effective_chat
+
+    source_chat, created = await TelegramChat.objects.aget_or_create_from_chat(tg_chat)
+    repo = await GroupRepo.objects.filter(
+        group_chat=source_chat
+    ).select_related("repo_chat").afirst()
+
+    if not repo:
+        raise RepoNotFound("repo not found")
+
+    qs = RepoItem.objects.filter(repo=repo)
+
+    if search_key:
+        qs = qs.filter(
+            Q(key__startswith=search_key) | Q(key__icontains=search_key)
+        )
+
+    results = [item async for item in qs[:20]]
+
+    return results
