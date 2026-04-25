@@ -5,6 +5,7 @@ from telegram.ext import ContextTypes
 
 from reading_portal.exceptions import ReadingPortalError
 from group_points.exceptions import GroupPointsError
+from chat_notes.exceptions import ChatNotesError
 
 logger = logging.getLogger("django")
 
@@ -14,7 +15,7 @@ async def error_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     tg_chat = update.effective_chat if update else None
     tg_message = update.effective_message if update else None
 
-    if isinstance(error, (ReadingPortalError, GroupPointsError)):
+    if isinstance(error, (ReadingPortalError, GroupPointsError, ChatNotesError)):
         if tg_chat:
             await context.bot.send_message(
                 chat_id=tg_chat.id,

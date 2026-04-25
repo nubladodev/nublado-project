@@ -25,6 +25,7 @@ def register_handlers(app):
         edit_reading,
     )
     from group_points.handlers import give_points, POINT_FILTER
+    from chat_notes.handlers import save_repo_item, get_repo_item, HASHTAG_FILTER
     from .group_settings import set_bot_language
     from .misc import start, hello
     from .admin import list_groups, broadcast_message, register_chat
@@ -36,7 +37,7 @@ def register_handlers(app):
     # error handler
     app.add_error_handler(with_language(error_handler))
 
-    # commands
+    # admin
     app.add_handler(
         CommandHandler(
             "groups",
@@ -61,6 +62,7 @@ def register_handlers(app):
         group=HANDLER_GROUP,
     )
 
+    # misc
     app.add_handler(
         CommandHandler(
             "start",
@@ -77,6 +79,7 @@ def register_handlers(app):
         group=HANDLER_GROUP,
     )
 
+    # group_settings
     app.add_handler(
         CommandHandler(
             "set_bot_language",
@@ -85,6 +88,7 @@ def register_handlers(app):
         group=HANDLER_GROUP,
     )
 
+    # reading_portal
     app.add_handler(
         CommandHandler(
             "open_portal",
@@ -146,10 +150,28 @@ def register_handlers(app):
         group=HANDLER_GROUP,
     )
 
+    # group_points
     app.add_handler(
         MessageHandler(
             POINT_FILTER,
             with_policies(GroupOnly)(with_language(give_points)),
+        ),
+        group=HANDLER_GROUP,
+    )
+
+    # chat_notes
+    app.add_handler(
+        CommandHandler(
+            "save_note",
+            with_policies(GroupOnly)(with_language(save_repo_item)),
+        ),
+        group=HANDLER_GROUP,
+    )
+
+    app.add_handler(
+        MessageHandler(
+            HASHTAG_FILTER,
+            with_policies(GroupOnly)(with_language(get_repo_item)),
         ),
         group=HANDLER_GROUP,
     )

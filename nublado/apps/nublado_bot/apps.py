@@ -36,7 +36,7 @@ class NubladoBotConfig(AppConfig):
 
         app = create_app(BOT_TOKEN, post_init=post_init, defaults=defaults)
         app.bot_data["language_resolver"] = resolve_chat_language
-
+        app.bot_data["repo_chat_id"] = settings.NUBLADO_REPO_ID
         register_handlers(app)
 
         bot = TelegramBot(

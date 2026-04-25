@@ -14,7 +14,7 @@ class TelegramUserManager(models.Manager.from_queryset(TelegramUserQuerySet)):
     Manager for TelegramUser
     """
 
-    async def aget_or_create_from_telegram_user(self, tg_user: User):
+    async def aget_or_create_from_user(self, tg_user: User):
         """
         Get or create a TelegramUser object from telegram.User.
         """
@@ -29,28 +29,9 @@ class TelegramUserManager(models.Manager.from_queryset(TelegramUserQuerySet)):
         )
         if not created:
             # Update snapshot fields in db.
-            updated_fields = []
+            updated_fields = await user.aupdate_snapshot(tg_user)
 
-            if user.username != tg_user.username:
-                user.username = tg_user.username
-                updated_fields.append("username")
-
-            if user.first_name != tg_user.first_name:
-                user.first_name = tg_user.first_name
-                updated_fields.append("first_name")
-
-            if user.last_name != tg_user.last_name:
-                user.last_name = tg_user.last_name
-                updated_fields.append("last_name")
-
-            if user.is_bot != tg_user.is_bot:
-                user.is_bot = tg_user.is_bot
-                updated_fields.append("is_bot")
-
-            if updated_fields:
-                await user.asave(update_fields=updated_fields)
-
-        return user
+        return user, created
 
 
 class TelegramChatQuerySet(models.QuerySet):
@@ -64,7 +45,7 @@ class TelegramChatManager(models.Manager.from_queryset(TelegramChatQuerySet)):
     Manager for TelegramChat
     """
 
-    async def aget_or_create_from_telegram_chat(self, tg_chat: Chat):
+    async def aget_or_create_from_chat(self, tg_chat: Chat):
         """
         Get or create a TelegramChat object from telegram.Chat.
         """
@@ -79,22 +60,24 @@ class TelegramChatManager(models.Manager.from_queryset(TelegramChatQuerySet)):
         )
         if not created:
             # Update snapshot fields in db.
-            updated_fields = []
+            updated_fields = await chat.aupdate_snapshot(tg_chat)
 
-            if chat.chat_type != tg_chat.type:
-                chat.chat_type = tg_chat.type
-                updated_fields.append("chat_type")
+        return chat, created
 
-            if chat.title != tg_chat.title:
-                chat.title = tg_chat.title
-                updated_fields.append("title")
 
-            if chat.username != tg_chat.username:
-                chat.username = tg_chat.username
-                updated_fields.append("username")
+    async def aget_or_create_from_chat_id(self, chat_id: int):
+        """
+        Get or create a TelegramChat object from a chat_id.
+        """
 
-            if updated_fields:
-                await chat.asave(update_fields=updated_fields)
+        chat, created = await self.aget_or_create(
+            id=chat_id,
+            defaults={
+                "chat_type": self.model.ChatType.UNKNOWN,
+                "title": None,
+                "username": None,
+            },
+        )
         return chat, created
 
 
@@ -128,8 +111,8 @@ class TelegramGroupMemberManager(
         tg_user = tg_member.user
 
         # This updates snapshot fields in the ORM.
-        user = await TelegramUser.objects.aget_or_create_from_telegram_user(tg_user)
-        chat, created = await TelegramChat.objects.aget_or_create_from_telegram_chat(tg_chat)
+        user, created = await TelegramUser.objects.aget_or_create_from_user(tg_user)
+        chat, created = await TelegramChat.objects.aget_or_create_from_chat(tg_chat)
 
         member, created = await self.aget_or_create(
             user=user,
@@ -142,28 +125,10 @@ class TelegramGroupMemberManager(
 
         # Update snapshot fields.
         if not created:
-            updated_fields = []
+            updated_fields = await member.aupdate_snapshot(tg_member)
 
-            if member.role != role:
-                member.role = role
-                updated_fields.append("role")
+        return member, created
 
-            if member.is_active != is_active:
-                member.is_active = is_active
-                updated_fields.append("is_active")
-
-                if not is_active and member.left_at is None:
-                    member.left_at = timezone.now()
-                    updated_fields.append("left_at")
-
-                if is_active:
-                    member.left_at = None
-                    updated_fields.append("left_at")
-
-            if updated_fields:
-                await member.asave(update_fields=updated_fields)
-
-        return member
 
     async def ensure_membership(
         self,

@@ -7,11 +7,11 @@ async def transfer_points(tg_chat, tg_member_sender, tg_member_receiver, num_poi
     Returns sender_member, receiver_member group member objects from the ORM.
     """
 
-    sender_member = await TelegramGroupMember.objects.aget_or_create_from_chat_member(
+    sender_member, created = await TelegramGroupMember.objects.aget_or_create_from_chat_member(
         tg_member_sender, tg_chat
     )
 
-    receiver_member = await TelegramGroupMember.objects.aget_or_create_from_chat_member(
+    receiver_member, created = await TelegramGroupMember.objects.aget_or_create_from_chat_member(
         tg_member_receiver, tg_chat
     )
 

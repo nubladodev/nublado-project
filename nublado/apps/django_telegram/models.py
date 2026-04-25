@@ -1,4 +1,5 @@
 from html import escape
+from telegram import User, Chat, ChatMember
 from telegram.constants import ChatType, ChatMemberStatus
 
 from django.db import models
@@ -39,6 +40,33 @@ class TelegramUser(TimestampModel):
                 name = self.first_name
         return name
 
+    async def aupdate_snapshot(self, tg_user: User):
+        """
+        Update fields derived from telegram user.
+        """
+        updated_fields = []
+
+        if self.username != tg_user.username:
+            self.username = tg_user.username
+            updated_fields.append("username")
+
+        if self.first_name != tg_user.first_name:
+            self.first_name = tg_user.first_name
+            updated_fields.append("first_name")
+
+        if self.last_name != tg_user.last_name:
+            self.last_name = tg_user.last_name
+            updated_fields.append("last_name")
+
+        if self.is_bot != tg_user.is_bot:
+            self.is_bot = tg_user.is_bot
+            updated_fields.append("is_bot")
+
+        if updated_fields:
+            await self.asave(update_fields=updated_fields)
+
+        return updated_fields
+
 
 class TelegramChat(TimestampModel):
     """
@@ -46,6 +74,7 @@ class TelegramChat(TimestampModel):
     """
 
     class ChatType(models.TextChoices):
+        UNKNOWN = "unknown", _("Unknown")
         PRIVATE = ChatType.PRIVATE, _("private")
         GROUP = ChatType.GROUP, _("group")
         SUPERGROUP = ChatType.SUPERGROUP, _("supergroup")
@@ -63,6 +92,29 @@ class TelegramChat(TimestampModel):
 
     def __str__(self):
         return f"{self.title}: {self.id}"
+
+    async def aupdate_snapshot(self, tg_chat: Chat):
+        """
+        Update fields derived from telegram chat.
+        """
+        updated_fields = []
+
+        if self.chat_type != tg_chat.type:
+            self.chat_type = tg_chat.type
+            updated_fields.append("chat_type")
+
+        if self.title != tg_chat.title:
+            self.title = tg_chat.title
+            updated_fields.append("title")
+
+        if self.username != tg_chat.username:
+            self.username = tg_chat.username
+            updated_fields.append("username")
+
+        if updated_fields:
+            await self.asave(update_fields=updated_fields)
+
+        return updated_fields
 
 
 class TelegramGroupSettings(LanguageModel, TimestampModel):
@@ -129,3 +181,35 @@ class TelegramGroupMember(TimestampModel):
     def mention_html(self):
         display_name = escape(self.user.display_name)
         return f'<a href="tg://user?id={self.user.id}">{display_name}</a>'
+
+
+    async def aupdate_snapshot(self, tg_member: ChatMember):
+        updated_fields = []
+
+        role = tg_member.status
+        is_active = True
+
+        if role not in self.GroupRole.values:
+            is_active = False
+            role = self.GroupRole.MEMBER
+
+        if self.role != role:
+            self.role = role
+            updated_fields.append("role")
+
+        if self.is_active != is_active:
+            self.is_active = is_active
+            updated_fields.append("is_active")
+
+            if not is_active and self.left_at is None:
+                self.left_at = timezone.now()
+                updated_fields.append("left_at")
+
+            if is_active:
+                self.left_at = None
+                updated_fields.append("left_at")
+
+        if updated_fields:
+            await self.asave(update_fields=updated_fields)
+
+        return updated_fields

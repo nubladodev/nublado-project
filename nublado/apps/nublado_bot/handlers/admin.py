@@ -9,7 +9,7 @@ async def register_chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
     Register chat in the db.
     """
     tg_chat = update.effective_chat
-    chat, created = await TelegramChat.objects.aget_or_create_from_telegram_chat(tg_chat)
+    chat, created = await TelegramChat.objects.aget_or_create_from_chat(tg_chat)
 
     if created:
         bot_message = f"{chat.title} has been registered."

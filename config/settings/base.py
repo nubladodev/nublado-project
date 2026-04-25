@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "django_telegram.apps.DjangoTelegramConfig",
     "reading_portal.apps.ReadingPortalConfig",
     "group_points.apps.GroupPointsConfig",
+    "chat_notes.apps.ChatNotesConfig",
     "nublado_bot.apps.NubladoBotConfig",
     "project_app.apps.ProjectAppConfig",
     "import_export",
@@ -182,7 +183,7 @@ NUBLADO_BOT_TOKEN = get_env_variable("NUBLADO_BOT_TOKEN")
 NUBLADO_BOT_OWNER_ID = 8009983006
 NUBLADO_BOT_WEBHOOK_URL = "https://nublado-project.onrender.com/bot/nublado/webhook/"
 NUBLADO_BOT_WEBHOOK_SECRET = "supersecretnubladowebhooktoken"
-
+NUBLADO_REPO_ID = get_env_variable("NUBLADO_REPO_ID")
 BOTS = {
     NUBLADO_BOT: (
         NUBLADO_BOT_TOKEN,
@@ -201,10 +202,6 @@ JAZZMIN_SETTINGS = {
     "site_brand": "Nublado",
     # Logo to use for your site, must be present in static files, used for brand on top left
     "site_logo": "images/nublado-logo.png",
-    # Logo to use for your site, must be present in static files, used for login form logo (defaults to site_logo)
-    "login_logo": None,
-    # Logo to use for login form in dark themes (defaults to login_logo)
-    "login_logo_dark": None,
     # CSS classes that are applied to the logo above
     "site_logo_classes": "img-circle",
     # Relative path to a favicon for your site, will default to site_logo if absent (ideally 32x32 px)
@@ -222,22 +219,11 @@ JAZZMIN_SETTINGS = {
     "topmenu_links": [
         # Url that gets reversed (Permissions can be added)
         {"name": "Home", "url": "admin:index", "permissions": ["auth.view_user"]},
-        # external url that opens in a new window (Permissions can be added)
-        {
-            "name": "Support",
-            "url": "https://github.com/farridav/django-jazzmin/issues",
-            "new_window": True,
-        },
         # model admin to link to (Permissions checked against model)
         {"model": "auth.User"},
     ],
     # Additional links to include in the user menu on the top right ("app" url type is not allowed)
     "usermenu_links": [
-        {
-            "name": "Support",
-            "url": "https://github.com/farridav/django-jazzmin/issues",
-            "new_window": True,
-        },
         {"model": "auth.user"},
     ],
     # Whether to display the side menu
