@@ -1,10 +1,8 @@
 from telegram import Update, ReactionTypeEmoji
 from telegram.ext import ContextTypes, filters
 
-from django.utils.translation import gettext_lazy as _
 
 from .utils import normalize_key
-from .exceptions import RepoNotConfigured
 from .services import save_repo_item_service, get_repo_item_service
 from .bot_messages import BOT_MESSAGES
 
