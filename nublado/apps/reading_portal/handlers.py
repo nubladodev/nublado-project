@@ -143,9 +143,23 @@ async def submit_reading(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await reading_submission.asave(update_fields=["reply_message_id"])
 
 
+# async def readings(update: Update, context: ConteextTypes.DEFAULT_TYPE):
+#     """
+#     Display all the reading submissions for the currently open Reading Portal.
+#     """
+#     tg_chat = update.effective_chat
+#     tg_message = update.effective_message
+
+#     readings = await get_readings_service(update, context)
+
+
 async def pending_readings(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    tg_message = update.effective_message
+    """
+    Display the pending (pending review) reading submissions for the
+    currently open Reading Portal.
+    """
     tg_chat = update.effective_chat
+    tg_message = update.effective_message
 
     pending_readings = await get_pending_readings_service(update, context)
 
