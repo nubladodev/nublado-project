@@ -17,6 +17,9 @@ class ReadingPortalQuerySet(models.QuerySet):
     def open(self):
         return self.filter(portal_status=self.model.PortalStatus.OPEN)
 
+    def closed(self):
+        return self.filter(portal_status=self.model.PortalStatus.CLOSED)
+
     def from_chat(self, chat):
         return self.filter(chat=chat)
 
@@ -35,6 +38,24 @@ class ReadingPortalManager(models.Manager.from_queryset(ReadingPortalQuerySet)):
             .from_chat(chat)
             .aget()
         )
+
+    async def acurrent(self, chat):
+        """
+        Get currently open portal or fall back to last closed portal.
+        """
+        qs = (
+            self.get_queryset()
+            .select_related("chat")
+            .prefetch_related("portal_readings")
+            .from_chat(chat)
+        )
+
+        portal = await qs.open().afirst() 
+
+        if not portal:
+            portal =  await qs.closed().order_by("-closed_at", "-id").afirst()
+
+        return portal
 
     async def anext_ready(self, chat: TelegramChat):
         return await (

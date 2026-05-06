@@ -143,9 +143,9 @@ class ReadingPortal(TimestampModel):
         if not await self.ais_ready():
             raise PortalNotReady()
 
-        self.portal_status = self.PortalStatus.OPEN
         self.opened_at = timezone.now()
         self.closed_at = None
+        self.portal_status = self.PortalStatus.OPEN
         self.pinned_message_id = pinned_message_id
 
         await self.asave(
@@ -158,14 +158,12 @@ class ReadingPortal(TimestampModel):
         )
 
     async def aclose(self):
-        self.portal_status = self.PortalStatus.CLOSED
-        self.pinned_message_id = None
         self.closed_at = timezone.now()
+        self.portal_status = self.PortalStatus.CLOSED
 
         await self.asave(
             update_fields=[
                 "portal_status",
-                "pinned_message_id",
                 "closed_at",
             ]
         )

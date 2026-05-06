@@ -164,33 +164,30 @@ async def close_portal_service(
     except ReadingPortal.DoesNotExist:
         raise NoOpenPortal()
 
-    # A copy of the old pinned message id.
-    old_pin = portal.pinned_message_id
+    pinned_message_id = portal.pinned_message_id
 
-    portal.portal_status = portal.PortalStatus.CLOSED
-    portal.pinned_message_id = None
-    await portal.asave(update_fields=["portal_status", "pinned_message_id"])
+    await portal.aclose()
 
-    closed_message = None
-
-    # Unpin intro message if it exists.
-    if old_pin:
+    # Unpin portal intro and pin closing message.
+    if pinned_message_id:
         try:
             await bot.unpin_chat_message(
                 chat_id=tg_chat.id,
-                message_id=old_pin,
+                message_id=pinned_message_id,
             )
         except BadRequest as e:
             logger.warning("BadRequest: %s", e)
 
-        try:
-            closed_message = await bot.send_message(
-                chat_id=tg_chat.id,
-                text=format_portal_closed(),
-                reply_to_message_id=old_pin,
-            )
-        except BadRequest as e:
-            logger.warning("BadRequest: %s", e)
+    closed_message = None
+
+    try:
+        closed_message = await bot.send_message(
+            chat_id=tg_chat.id,
+            text=format_portal_closed(),
+            reply_to_message_id=pinned_message_id
+        )
+    except BadRequest as e:
+        logger.warning("BadRequest: %s", e)
 
     if not closed_message:
         closed_message = await bot.send_message(
@@ -198,8 +195,11 @@ async def close_portal_service(
             text=format_portal_closed(),
         )
 
-    await bot.pin_chat_message(
-        chat_id=tg_chat.id,
-        message_id=closed_message.message_id,
-        disable_notification=not notify,
-    )
+    try:
+        await bot.pin_chat_message(
+            chat_id=tg_chat.id,
+            message_id=closed_message.message_id,
+            disable_notification=not notify,
+        )
+    except BadRequest as e:
+        logger.warning("Failed to pin closed message: %s", e)

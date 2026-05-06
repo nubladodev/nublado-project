@@ -23,6 +23,7 @@ class PortalNotReady(ReadingPortalError):
 class PortalAlreadyOpen(ReadingPortalError):
     default_message = _("reading_portal.bot.error.portal_already_open")
 
+
 class NoReplyToAudio(ReadingPortalError):
     default_message = _("reading_portal.bot.error.no_reply_to_audio")
 
@@ -33,6 +34,10 @@ class NoReplyToReading(ReadingPortalError):
 
 class NoAudioReplyToText(ReadingPortalError):
     default_message = _("reading_portal.bot.error.no_reply_to_text")
+
+
+class NoPortal(ReadingPortalError):
+    default_message = _("reading_portal.bot.error.no_portal")
 
 
 class NoDraftPortal(ReadingPortalError):

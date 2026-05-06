@@ -25,7 +25,7 @@ from .services.portals import (
 from .services.reading_submissions import (
     submit_reading_voice_message_service,
     review_reading_service,
-    get_pending_readings_service,
+    get_portal_pending_readings_service,
 )
 from .utils.formatting import format_edited_reading
 from .bot_messages import BOT_MESSAGES
@@ -161,9 +161,9 @@ async def pending_readings(update: Update, context: ContextTypes.DEFAULT_TYPE):
     tg_chat = update.effective_chat
     tg_message = update.effective_message
 
-    pending_readings = await get_pending_readings_service(update, context)
+    portal, pending_readings = await get_portal_pending_readings_service(update, context)
 
-    if not await pending_readings.aexists():
+    if not pending_readings:
         await context.bot.send_message(
             chat_id=tg_chat.id,
             text=str(BOT_MESSAGES["error.no_pending_readings"]),
@@ -176,7 +176,7 @@ async def pending_readings(update: Update, context: ContextTypes.DEFAULT_TYPE):
     async for pending_reading in pending_readings:
         readings_by_member[pending_reading.member].append(pending_reading)
 
-    readings_list = [f"{str(BOT_MESSAGES["pending_readings"]).title()} \n"]
+    readings_list = [f"{str(BOT_MESSAGES['pending_readings']).title()} \n"]
 
     for member, readings in readings_by_member.items():
         language_links = []

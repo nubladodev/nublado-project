@@ -8,6 +8,7 @@ from django_telegram.models import TelegramChat, TelegramGroupMember
 
 from ..models import ReadingPortal, PortalReading, ReadingSubmission
 from ..exceptions import (
+    NoPortal,
     NoOpenPortal,
     NoReplyToReading,
     NoPendingReading,
@@ -172,22 +173,22 @@ async def review_reading_service(update: Update, context: ContextTypes.DEFAULT_T
 
 
 
-async def get_pending_readings_service(
+async def get_portal_pending_readings_service(
     update: Update, context: ContextTypes.DEFAULT_TYPE
 ):
     """
-    Return pending reading submissions for the currently open
-    Reading Portal.
+    Return current portal (currently open or last closed) and its 
+    pending readings submissions.
     """
     tg_chat = update.effective_chat
 
     chat, created = await TelegramChat.objects.aget_or_create_from_chat(tg_chat)
 
-    # Get pending reading submissions from currently upen Reading Portal.
-    try:
-        portal = await ReadingPortal.objects.aget_open(chat=chat)
-    except ReadingPortal.DoesNotExist:
-        raise NoOpenPortal()
+    # Get pending reading submissions from currently open
+    # or the last closed Reading Portal if none is open.
+    portal = await ReadingPortal.objects.acurrent(chat=chat)
+    if not portal:
+        raise NoPortal()
 
     pending_readings = (
         ReadingSubmission.objects.with_portal()
@@ -196,4 +197,5 @@ async def get_pending_readings_service(
         .filter(portal_reading__reading_portal_id=portal.id)
     )
 
-    return pending_readings
+    return portal, pending_readings
+
