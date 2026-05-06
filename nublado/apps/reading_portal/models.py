@@ -116,7 +116,17 @@ class ReadingPortal(TimestampModel):
 
     @property
     def is_open(self):
-        return self.portal_satus == self.PortalStatus.OPEN
+        return (
+            self.portal_status == self.PortalStatus.OPEN
+            and self.opened_at is not None
+        )
+
+    @property
+    def is_closed(self):
+        return (
+            self.portal_status == self.PortalStatus.CLOSED
+            and self.closed_at is not None
+        )
 
     async def has_readings(self):
         """

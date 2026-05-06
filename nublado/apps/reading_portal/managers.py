@@ -15,10 +15,16 @@ class ReadingPortalQuerySet(models.QuerySet):
         return self.filter(portal_status=self.model.PortalStatus.READY)
 
     def open(self):
-        return self.filter(portal_status=self.model.PortalStatus.OPEN)
+        return self.filter(
+            portal_status=self.model.PortalStatus.OPEN,
+            opened_at__isnull=False,
+        )
 
     def closed(self):
-        return self.filter(portal_status=self.model.PortalStatus.CLOSED)
+        return self.filter(
+            portal_status=self.model.PortalStatus.CLOSED,
+            closed_at__isnull=False,
+        )
 
     def from_chat(self, chat):
         return self.filter(chat=chat)
@@ -43,19 +49,18 @@ class ReadingPortalManager(models.Manager.from_queryset(ReadingPortalQuerySet)):
         """
         Get currently open portal or fall back to last closed portal.
         """
-        qs = (
+        queryset = (
             self.get_queryset()
             .select_related("chat")
             .prefetch_related("portal_readings")
             .from_chat(chat)
         )
 
-        portal = await qs.open().afirst() 
+        portal = await queryset.open().afirst() 
 
         if not portal:
             portal =  await (
-                qs.closed()
-                .filter(closed_at__isnull=False)
+                queryset.closed()
                 .order_by("-closed_at", "-id")
                 .afirst()
             )
@@ -74,11 +79,7 @@ class ReadingPortalManager(models.Manager.from_queryset(ReadingPortalQuerySet)):
         )
 
     async def aexisting_open(self, chat: TelegramChat):
-        queryset = self.get_queryset().filter(
-            chat=chat,
-            portal_status=ReadingPortal.PortalStatus.OPEN,
-        )
-
+        queryset = self.get_queryset().open().from_chat(chat)
         return await queryset.aexists()
 
 
@@ -128,3 +129,4 @@ class ReadingSubmissionManager(models.Manager.from_queryset(ReadingSubmissionQue
     """
     Manager for ReadingSubmission
     """
+    pass
