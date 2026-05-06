@@ -111,11 +111,10 @@ async def review_reading_service(update: Update, context: ContextTypes.DEFAULT_T
 
     chat, created = await TelegramChat.objects.aget_or_create_from_chat(tg_chat)
 
-    # Check if there is an open Reading Portal in the group.
-    try:
-        portal = await ReadingPortal.objects.aget_open(chat=chat)
-    except ReadingPortal.DoesNotExist:
-        raise NoOpenPortal()
+    # Current reading portal (open or last closed)
+    portal = ReadingPortal.objects.acurrent(chat=chat)
+    if not portal:
+        raise NoPortal()
 
     if not tg_message or not tg_message.reply_to_message:
         return None
