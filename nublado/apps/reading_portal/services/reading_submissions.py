@@ -112,7 +112,7 @@ async def review_reading_service(update: Update, context: ContextTypes.DEFAULT_T
     chat, created = await TelegramChat.objects.aget_or_create_from_chat(tg_chat)
 
     # Current reading portal (open or last closed)
-    portal = ReadingPortal.objects.acurrent(chat=chat)
+    portal = await ReadingPortal.objects.acurrent(chat=chat)
     if not portal:
         raise NoPortal()
 
