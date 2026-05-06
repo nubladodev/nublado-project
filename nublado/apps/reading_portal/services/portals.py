@@ -5,6 +5,7 @@ from telegram.ext import ContextTypes
 from telegram.error import BadRequest
 
 from django_telegram.models import TelegramChat
+from django_telegram.utils.telegram import safe_delete_message
 
 from ..models import ReadingPortal, PortalReading
 from ..exceptions import (
@@ -14,6 +15,7 @@ from ..exceptions import (
     EmptyPortal,
     NoExistingReading,
     NoReadingMessageId,
+    ReadingPortalError,
 )
 from ..utils.formatting import format_portal_intro, format_portal_closed, format_reading
 from ..bot_messages import BOT_MESSAGES
@@ -83,12 +85,8 @@ async def open_portal_service(
 
     chat, created = await TelegramChat.objects.aget_or_create_from_chat(tg_chat)
 
-    # Check if an open portal already exists in the group.
-    existing_open = await ReadingPortal.objects.filter(
-        chat=chat, portal_status=ReadingPortal.PortalStatus.OPEN
-    ).aexists()
-
-    if existing_open:
+    # Make sure an open portal doesn't already exist.
+    if await ReadingPortal.objects.aexisting_open(chat=chat):
         raise OpenPortalExists()
 
     # If a slug is provided, attempt to open a Reading Portal with the coresponding slug.
@@ -110,22 +108,34 @@ async def open_portal_service(
         # There are no portals ready to be posted.
         raise NoReadyPortal()
 
-    if not await portal.ahas_readings():
-        # The portal has no readings.
-        raise EmptyPortal()
-
-    # The intro message (e.d., "Welcome to the Reading Portal.")
+    # intro message
     intro_text = format_portal_intro(portal)
-
     intro_message = await bot.send_message(
         chat_id=tg_chat.id,
         text=intro_text,
         parse_mode="HTML",
     )
 
-    readings = PortalReading.objects.for_portal(portal)
+    try:
+        await portal.aopen(pinned_message_id=intro_message.message_id)
+    except ReadingPortalError:
+        await safe_delete_message(intro_message)
+        raise
+
+    # Pin the intro message.
+    try:
+        await bot.pin_chat_message(
+            chat_id=tg_chat.id,
+            message_id=intro_message.message_id,
+            disable_notification=not notify,
+        )
+    except Exception:
+        # log only, do NOT rollback portal
+        logger.warning("Failed to pin intro message for portal %s", portal.slug)
 
     # Post the portal readings.
+    readings = PortalReading.objects.for_portal(portal)
+
     async for reading in readings:
         reading_text = format_reading(reading)
         reading_message = await bot.send_message(
@@ -137,18 +147,6 @@ async def open_portal_service(
         # Update the PortalReading message_id for reference in the chat.
         reading.message_id = reading_message.message_id
         await reading.asave(update_fields=["message_id"])
-
-    # Pin the intro message.
-    await bot.pin_chat_message(
-        chat_id=tg_chat.id,
-        message_id=intro_message.message_id,
-        disable_notification=not notify,
-    )
-
-    portal.pinned_message_id = intro_message.message_id
-    portal.portal_status = ReadingPortal.PortalStatus.OPEN
-
-    await portal.asave(update_fields=["portal_status", "pinned_message_id"])
 
     return portal
 

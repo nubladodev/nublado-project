@@ -47,6 +47,14 @@ class ReadingPortalManager(models.Manager.from_queryset(ReadingPortalQuerySet)):
             .afirst()
         )
 
+    async def aexisting_open(self, chat: TelegramChat):
+        queryset = self.get_queryset().filter(
+            chat=chat,
+            portal_status=ReadingPortal.PortalStatus.OPEN,
+        )
+
+        return await queryset.aexists()
+
 
 class PortalReadingQuerySet(models.QuerySet):
     """

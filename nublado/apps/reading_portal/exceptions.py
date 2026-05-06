@@ -13,6 +13,15 @@ class ReadingPortalError(Exception):
     def __str__(self):
         return str(self.message)
 
+class PortalNotReady(ReadingPortalError):
+    """
+    Exception raised when a portal is required to be ready, and it isn't.
+    """
+    default_message = _("reading_portal.bot.error.portal_not_ready")
+
+
+class PortalAlreadyOpen(ReadingPortalError):
+    default_message = _("reading_portal.bot.error.portal_already_open")
 
 class NoReplyToAudio(ReadingPortalError):
     default_message = _("reading_portal.bot.error.no_reply_to_audio")
@@ -31,6 +40,9 @@ class NoDraftPortal(ReadingPortalError):
 
 
 class NoReadyPortal(ReadingPortalError):
+    """
+    Exception raised when there is no ready portal.
+    """
     default_message = _("reading_portal.bot.error.no_ready_portal")
 
 

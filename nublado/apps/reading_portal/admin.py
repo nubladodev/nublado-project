@@ -10,6 +10,8 @@ class ReadingPortalAdmin(admin.ModelAdmin):
         "chat",
         "is_ready_display",
         "portal_status",
+        "opened_at",
+        "closed_at",
     )
     list_filter = ("portal_status", "chat")
     search_fields = ("title",)

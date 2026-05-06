@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models import Q
+from django.utils import timezone
 from django.utils.text import slugify
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
@@ -12,6 +13,8 @@ from .managers import (
     PortalReadingManager,
     ReadingSubmissionManager,
 )
+from .exceptions import EmptyPortal, OpenPortalExists, PortalNotReady, PortalAlreadyOpen
+
 
 # Constant to keep the "open" value consistent in the meta constraint and in the choices enum.
 PORTAL_OPEN = "open"
@@ -54,6 +57,8 @@ class ReadingPortal(TimestampModel):
     max_mistakes = models.PositiveSmallIntegerField(
         null=True, blank=True, help_text="Maximum number of corrections per submission."
     )
+    opened_at = models.DateTimeField(null=True, blank=True)
+    closed_at = models.DateTimeField(null=True, blank=True)
 
     objects = ReadingPortalManager()
 
@@ -125,12 +130,46 @@ class ReadingPortal(TimestampModel):
         """
         return await self.portal_readings.aexists()
 
-    async def open_portal(self):
-        if not await self.ahas_readings:
-            raise ValidationError("A Reading Portal must have at least one reading.")
+    async def ais_ready(self):
+        return (
+            self.portal_status == self.PortalStatus.READY
+            and await self.ahas_readings()
+        )
+
+    async def aopen(self, pinned_message_id: int = None):
+        if self.is_open:
+            raise PortalAlreadyOpen()
+
+        if not await self.ais_ready():
+            raise PortalNotReady()
 
         self.portal_status = self.PortalStatus.OPEN
-        await self.asave(update_fields=["portal_status"])
+        self.opened_at = timezone.now()
+        self.closed_at = None
+        self.pinned_message_id = pinned_message_id
+
+        await self.asave(
+            update_fields=[
+                "portal_status",
+                "opened_at",
+                "closed_at",
+                "pinned_message_id",
+            ]
+        )
+
+    async def aclose(self):
+        self.portal_status = self.PortalStatus.CLOSED
+        self.pinned_message_id = None
+        self.closed_at = timezone.now()
+
+        await self.asave(
+            update_fields=[
+                "portal_status",
+                "pinned_message_id",
+                "closed_at",
+            ]
+        )
+
 
     def mark_draft(self):
         # Don't do anything if status is already draft.

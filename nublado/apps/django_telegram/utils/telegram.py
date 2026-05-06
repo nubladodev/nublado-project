@@ -1,5 +1,12 @@
-from telegram import Update
-from telegram.error import BadRequest
+from telegram import Update, Message
+from telegram.error import BadRequest, Forbidden
+
+
+async def safe_delete_message(message: Message):
+    try:
+        await message.delete()
+    except (BadRequest, Forbidden):
+        pass
 
 
 async def delete_command(update: Update):
@@ -8,7 +15,9 @@ async def delete_command(update: Update):
     This is typically called at the  end of a handler once it has done its work
     and the lingering command isn't desired in the chat.
     """
-    try:
-        await update.effective_message.delete()
-    except BadRequest:
-        pass
+
+    await safe_delete_message(update.effective_message)
+
+
+
+
