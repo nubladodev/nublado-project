@@ -163,7 +163,7 @@ async def pending_readings(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     portal, pending_readings = await get_portal_pending_readings_service(update, context)
 
-    if not pending_readings:
+    if not await pending_readings.aexists():
         await context.bot.send_message(
             chat_id=tg_chat.id,
             text=str(BOT_MESSAGES["error.no_pending_readings"]),
