@@ -192,7 +192,7 @@ async def pending_readings(update: Update, context: ContextTypes.DEFAULT_TYPE):
         chat_id=tg_chat.id,
         text="\n".join(readings_list),
     )
-
+  
     context.job_queue.run_once(
         delete_message_job,
         30,

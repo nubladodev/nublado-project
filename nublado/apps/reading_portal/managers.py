@@ -53,7 +53,12 @@ class ReadingPortalManager(models.Manager.from_queryset(ReadingPortalQuerySet)):
         portal = await qs.open().afirst() 
 
         if not portal:
-            portal =  await qs.closed().order_by("-closed_at", "-id").afirst()
+            portal =  await (
+                qs.closed()
+                .filter(closed_at__isnull=False)
+                .order_by("-closed_at", "-id")
+                .afirst()
+            )
 
         return portal
 
