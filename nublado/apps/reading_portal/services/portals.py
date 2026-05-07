@@ -77,7 +77,7 @@ async def open_portal_service(
 ):
     """
     Open a ready Reading Portal by slug if provided,
-    or open the first Reading Portal in the queue.
+    or open the first ready Reading Portal in the queue.
     """
     tg_chat = update.effective_chat
     tg_message = update.effective_message
@@ -122,17 +122,6 @@ async def open_portal_service(
         await safe_delete_message(intro_message)
         raise
 
-    # Pin the intro message.
-    try:
-        await bot.pin_chat_message(
-            chat_id=tg_chat.id,
-            message_id=intro_message.message_id,
-            disable_notification=not notify,
-        )
-    except Exception:
-        # log only, do NOT rollback portal
-        logger.warning("Failed to pin intro message for portal %s", portal.slug)
-
     # Post the portal readings.
     readings = PortalReading.objects.for_portal(portal)
 
@@ -147,6 +136,17 @@ async def open_portal_service(
         # Update the PortalReading message_id for reference in the chat.
         reading.message_id = reading_message.message_id
         await reading.asave(update_fields=["message_id"])
+
+    # Pin the intro message.
+    try:
+        await bot.pin_chat_message(
+            chat_id=tg_chat.id,
+            message_id=intro_message.message_id,
+            disable_notification=not notify,
+        )
+    except Exception:
+        # log only, do NOT rollback portal
+        logger.warning("Failed to pin intro message for portal %s", portal.slug)
 
     return portal
 
