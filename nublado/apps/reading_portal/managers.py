@@ -74,7 +74,7 @@ class ReadingPortalManager(models.Manager.from_queryset(ReadingPortalQuerySet)):
             .prefetch_related("portal_readings")
             .ready()
             .from_chat(chat)
-            .order_by("date_created")
+            .order_by("created_at")
             .afirst()
         )
 

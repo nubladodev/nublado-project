@@ -29,12 +29,12 @@ class TestTelegramGroupSettings:
         group_settings = TelegramGroupSettings.objects.create(chat=telegram_chat)
 
         assert group_settings.chat == telegram_chat
-        assert group_settings.date_created is not None
-        assert group_settings.date_updated is not None
+        assert group_settings.created_at is not None
+        assert group_settings.updated_at is not None
         assert group_settings.language == django_settings.LANGUAGE_CODE
 
         group_settings.refresh_from_db()
-        assert group_settings.date_updated >= group_settings.date_created
+        assert group_settings.updated_at >= group_settings.created_at
 
     def test_one_to_one_constraint(self, telegram_chat):
         """

@@ -49,8 +49,8 @@ class TestTelegramGroupMember:
         assert member.points == 0
         assert member.joined_at is not None
         assert member.left_at is None
-        assert member.date_created is not None
-        assert member.date_updated is not None
+        assert member.created_at is not None
+        assert member.updated_at is not None
 
     @pytest.mark.parametrize(
         "role",

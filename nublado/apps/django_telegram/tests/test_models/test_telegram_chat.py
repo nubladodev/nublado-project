@@ -44,8 +44,8 @@ class TestTelegramChat:
         assert chat.id == 456
         assert chat.title == "Foo Group"
         assert chat.chat_type == TelegramChat.ChatType.GROUP
-        assert chat.date_created is not None
-        assert chat.date_updated is not None
+        assert chat.created_at is not None
+        assert chat.updated_at is not None
 
     def test_str_representation(self):
         """

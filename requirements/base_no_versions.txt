@@ -12,6 +12,7 @@ diff-match-patch
 Django
 django-debug-toolbar
 django-import-export
+django-jazzmin
 django-nublado-core
 djangorestframework
 et_xmlfile

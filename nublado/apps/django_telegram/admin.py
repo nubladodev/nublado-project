@@ -18,7 +18,7 @@ class TelegramChatAdmin(ImportExportModelAdmin):
         "title",
         "username",
         "chat_type",
-        "date_created",
+        "created_at",
     )
 
     search_fields = (
@@ -30,12 +30,12 @@ class TelegramChatAdmin(ImportExportModelAdmin):
     readonly_fields = (
         "id",
         "chat_type",
-        "date_created",
+        "created_at",
         "title",
         "username",
     )
 
-    ordering = ("-date_created",)
+    ordering = ("-created_at",)
 
 
 @admin.register(TelegramUser)
@@ -46,8 +46,8 @@ class TelegramUserAdmin(ImportExportModelAdmin):
         "first_name",
         "last_name",
         "is_bot",
-        "date_created",
-        "date_updated",
+        "created_at",
+        "updated_at",
     ]
 
     search_fields = (
@@ -60,8 +60,8 @@ class TelegramUserAdmin(ImportExportModelAdmin):
     readonly_fields = (
         "id",
         "is_bot",
-        "date_created",
-        "date_updated",
+        "created_at",
+        "updated_at",
     )
 
     list_filter = ("is_bot",)
@@ -88,7 +88,7 @@ class TelegramGroupMemberAdmin(ImportExportModelAdmin):
         "chat",
         "user",
         "points",
-        "date_created",
+        "created_at",
     )
 
     list_filter = ("chat",)

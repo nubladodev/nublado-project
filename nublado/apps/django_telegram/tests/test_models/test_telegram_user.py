@@ -23,8 +23,8 @@ class TestTelegramUser:
         user = TelegramUser.objects.create(id=1)
         assert user.id == 1
         assert user.is_bot is False
-        assert user.date_created is not None
-        assert user.date_updated is not None
+        assert user.created_at is not None
+        assert user.updated_at is not None
 
     def test_display_name(self):
         # With username.
