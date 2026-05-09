@@ -34,11 +34,12 @@ async def submit_reading_voice_message_service(
     if not tg_message or not tg_message.voice:
         return None
 
-    # Must reply to a reading
+    # Voice message must be a reply to a text message.
     tg_reply_to_message = tg_message.reply_to_message
     if not tg_reply_to_message or not tg_reply_to_message.text:
         return None
 
+    # Readings are posted by the bot, so ignore text messages from other sources.
     if tg_reply_to_message.from_user.id != context.bot.id:
         return None
 
@@ -47,7 +48,7 @@ async def submit_reading_voice_message_service(
     try:
         portal = await ReadingPortal.objects.aget_open(chat=chat)
     except ReadingPortal.DoesNotExist:
-        raise NoOpenPortal()
+        return None
 
     try:
         reading = await PortalReading.objects.with_portal().aget(
@@ -55,7 +56,7 @@ async def submit_reading_voice_message_service(
             message_id=tg_reply_to_message.message_id,
         )
     except PortalReading.DoesNotExist:
-        raise NoReplyToReading()
+        return None
 
     tg_member = await bot.get_chat_member(tg_chat.id, tg_user.id)
     member, created = await TelegramGroupMember.objects.aget_or_create_from_chat_member(
