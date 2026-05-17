@@ -1,3 +1,5 @@
+from asgiref.sync import sync_to_async
+
 from django.db import models
 from django.db.models import Q
 from django.utils import timezone
@@ -128,32 +130,35 @@ class ReadingPortal(TimestampModel):
             and self.closed_at is not None
         )
 
-    async def has_readings(self):
+    def has_readings(self):
         """
         Check if portal has at least one reading.
         """
         return self.portal_readings.exists()
 
-    async def ahas_readings(self):
-        """
-        async: Check if portal has at least one reading.
-        """
-        return await self.portal_readings.aexists()
+    # async def ahas_readings(self):
+    #     """
+    #     async: Check if portal has at least one reading.
+    #     """
+    #     return await self.portal_readings.aexists()
 
-    async def acan_open(self):
+    def can_open(self):
         return (
             self.portal_status in [
                 self.PortalStatus.READY,
                 self.PortalStatus.CLOSED,
             ]
-            and await self.ahas_readings()
+            and self.has_readings()
         )
 
-    async def aopen(self, pinned_message_id: int = None):
+    async def acan_open(self):
+        return await sync_to_async(self.can_open)()
+
+    def open(self, pinned_message_id=None):
         if self.is_open:
             raise PortalAlreadyOpen()
 
-        if not await self.acan_open():
+        if not self.can_open():
             raise PortalNotReady()
 
         self.opened_at = timezone.now()
@@ -161,7 +166,7 @@ class ReadingPortal(TimestampModel):
         self.portal_status = self.PortalStatus.OPEN
         self.pinned_message_id = pinned_message_id
 
-        await self.asave(
+        self.save(
             update_fields=[
                 "portal_status",
                 "opened_at",
@@ -170,16 +175,24 @@ class ReadingPortal(TimestampModel):
             ]
         )
 
-    async def aclose(self):
+    async def aopen(self, pinned_message_id=None):
+        await sync_to_async(self.open)(
+            pinned_message_id=pinned_message_id
+        )
+
+    def close(self):
         self.closed_at = timezone.now()
         self.portal_status = self.PortalStatus.CLOSED
 
-        await self.asave(
+        self.save(
             update_fields=[
                 "portal_status",
                 "closed_at",
             ]
         )
+
+    async def aclose(self):
+        await sync_to_async(self.close)()
 
     def mark_draft(self):
         # Don't do anything if status is already draft.
