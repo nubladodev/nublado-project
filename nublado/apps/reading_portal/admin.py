@@ -1,5 +1,3 @@
-import asyncio
-
 from django.contrib import admin
 from django.core.exceptions import ValidationError
 
@@ -43,7 +41,7 @@ class ReadingPortalAdmin(admin.ModelAdmin):
     def reopen(modeladmin, request, queryset):
         for portal in queryset:
             try:
-                asyncio.run(portal.aopen())
+                portal.aopen()
                 modeladmin.message_user(
                     request,
                     f"Reopened: {portal.title}",
