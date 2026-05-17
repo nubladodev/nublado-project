@@ -1,4 +1,7 @@
+import asyncio
+
 from django.contrib import admin
+from django.core.exceptions import ValidationError
 
 from .models import ReadingPortal, PortalReading, ReadingSubmission
 
@@ -15,7 +18,7 @@ class ReadingPortalAdmin(admin.ModelAdmin):
     )
     list_filter = ("portal_status", "chat")
     search_fields = ("title",)
-    actions = ["mark_ready", "mark_draft"]
+    actions = ["mark_ready", "mark_draft", "reopen"]
 
     @admin.display(boolean=True, description="Ready?")
     def is_ready_display(self, obj):
@@ -35,6 +38,22 @@ class ReadingPortalAdmin(admin.ModelAdmin):
             except ValidationError as e:
                 self.message_user(request, str(e), level="error")
 
+
+    @admin.action(description="🔓 Reopen selected portal")
+    def reopen(modeladmin, request, queryset):
+        for portal in queryset:
+            try:
+                asyncio.run(portal.aopen())
+                modeladmin.message_user(
+                    request,
+                    f"Reopened: {portal.title}",
+                )
+            except Exception as e:
+                modeladmin.message_user(
+                    request,
+                    f"{portal.title}: {e}",
+                    level="error",
+                )
 
 @admin.register(PortalReading)
 class PortalReadingAdmin(admin.ModelAdmin):

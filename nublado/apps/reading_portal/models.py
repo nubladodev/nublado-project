@@ -140,14 +140,14 @@ class ReadingPortal(TimestampModel):
         """
         return await self.portal_readings.aexists()
 
-    async def ais_ready(self):
+    async def acan_open(self):
         return (
-            self.portal_status == self.PortalStatus.READY
+            self.portal_status in [
+                self.PortalStatus.READY,
+                self.PortalStatus.CLOSED,
+            ]
             and await self.ahas_readings()
         )
-
-    async def acan_open(self):
-        return await self.ais_ready() or self.is_closed
 
     async def aopen(self, pinned_message_id: int = None):
         if self.is_open:
@@ -181,23 +181,24 @@ class ReadingPortal(TimestampModel):
             ]
         )
 
-
     def mark_draft(self):
         # Don't do anything if status is already draft.
         if self.portal_status == self.PortalStatus.DRAFT:
             return
 
         if self.is_open:
-            raise ValidationError("Close portal before changing state.")
+            raise ValidationError("Cannot mark an open portal as draft. Close it first.")
 
         self.portal_status = self.PortalStatus.DRAFT
         self.opened_at = None
         self.closed_at = None
+        self.pinned_message_id = None
 
         self.save(update_fields=[
             "portal_status",
             "opened_at",
             "closed_at",
+            "pinned_message_id",
         ])
 
     def mark_ready(self):
@@ -206,7 +207,7 @@ class ReadingPortal(TimestampModel):
             return
 
         if self.is_open:
-            raise ValidationError("Close portal before changing state.")
+            raise ValidationError("Cannot mark an open portal as ready. Close it first.")
 
         if not self.has_readings():
             raise ValidationError("Portal must have at least one reading.")
@@ -214,11 +215,13 @@ class ReadingPortal(TimestampModel):
         self.portal_status = self.PortalStatus.READY
         self.opened_at = None
         self.closed_at = None
+        self.pinned_message_id = None
 
         self.save(update_fields=[
             "portal_status",
             "opened_at",
             "closed_at",
+            "pinned_message_id",
         ])
 
 
