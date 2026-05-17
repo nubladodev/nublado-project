@@ -146,11 +146,14 @@ class ReadingPortal(TimestampModel):
             and await self.ahas_readings()
         )
 
+    async def acan_open(self):
+        return await self.ais_ready() or self.is_closed
+
     async def aopen(self, pinned_message_id: int = None):
         if self.is_open:
             raise PortalAlreadyOpen()
 
-        if not await self.ais_ready():
+        if not await self.acan_open():
             raise PortalNotReady()
 
         self.opened_at = timezone.now()
@@ -184,32 +187,39 @@ class ReadingPortal(TimestampModel):
         if self.portal_status == self.PortalStatus.DRAFT:
             return
 
-        if self.portal_status == self.PortalStatus.OPEN:
-            raise ValidationError("Can't mark an open portal as draft. Close it first.")
+        if self.is_open:
+            raise ValidationError("Close portal before changing state.")
 
         self.portal_status = self.PortalStatus.DRAFT
-        self.save(update_fields=["portal_status"])
+        self.opened_at = None
+        self.closed_at = None
+
+        self.save(update_fields=[
+            "portal_status",
+            "opened_at",
+            "closed_at",
+        ])
 
     def mark_ready(self):
         # Don't do anything if status is already ready.
-        if self.portal_status == self.PortalStatus.READY:
+        if self.is_ready:
             return
 
-        if self.portal_status == self.PortalStatus.OPEN:
-            raise ValidationError("Can't mark an open portal as ready. Close it first.")
+        if self.is_open:
+            raise ValidationError("Close portal before changing state.")
 
         if not self.has_readings():
             raise ValidationError("Portal must have at least one reading.")
 
-        # Optional: enforce required languages
-        # languages = set(self.portal_readings.values_list("language", flat=True))
-        # required = {"en", "es"} 
-
-        # if not required.issubset(languages):
-        #     raise ValidationError("Missing required languages.")
-
         self.portal_status = self.PortalStatus.READY
-        self.save(update_fields=["portal_status"])
+        self.opened_at = None
+        self.closed_at = None
+
+        self.save(update_fields=[
+            "portal_status",
+            "opened_at",
+            "closed_at",
+        ])
 
 
 class PortalReading(TimestampModel, LanguageModel):
