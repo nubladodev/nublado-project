@@ -151,8 +151,8 @@ class ReadingPortal(TimestampModel):
             and self.has_readings()
         )
 
-    async def acan_open(self):
-        return await sync_to_async(self.can_open)()
+    # async def acan_open(self):
+    #     return await sync_to_async(self.can_open)()
 
     def open(self, pinned_message_id=None):
         if self.is_open:
