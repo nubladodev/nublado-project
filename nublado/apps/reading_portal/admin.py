@@ -41,7 +41,7 @@ class ReadingPortalAdmin(admin.ModelAdmin):
     def reopen(modeladmin, request, queryset):
         for portal in queryset:
             try:
-                portal.aopen()
+                portal.open()
                 modeladmin.message_user(
                     request,
                     f"Reopened: {portal.title}",
