@@ -136,12 +136,6 @@ class ReadingPortal(TimestampModel):
         """
         return self.portal_readings.exists()
 
-    # async def ahas_readings(self):
-    #     """
-    #     async: Check if portal has at least one reading.
-    #     """
-    #     return await self.portal_readings.aexists()
-
     def can_open(self):
         return (
             self.portal_status in [
@@ -150,9 +144,6 @@ class ReadingPortal(TimestampModel):
             ]
             and self.has_readings()
         )
-
-    # async def acan_open(self):
-    #     return await sync_to_async(self.can_open)()
 
     def open(self, pinned_message_id=None):
         if self.is_open:
