@@ -1,4 +1,5 @@
 from django_telegram.models import TelegramGroupMember
+from django_telegram.utils.async_utils import async_call
 
 
 async def transfer_points(tg_chat, tg_member_sender, tg_member_receiver, num_points):
@@ -7,12 +8,17 @@ async def transfer_points(tg_chat, tg_member_sender, tg_member_receiver, num_poi
     Returns sender_member, receiver_member group member objects from the ORM.
     """
 
-    sender_member, created = await TelegramGroupMember.objects.aget_or_create_from_chat_member(
-        tg_member_sender, tg_chat
+    sender_member, created = await async_call(
+        TelegramGroupMember.objects.get_or_create_from_chat_member,
+        tg_member_sender,
+        tg_chat
     )
+    
 
-    receiver_member, created = await TelegramGroupMember.objects.aget_or_create_from_chat_member(
-        tg_member_receiver, tg_chat
+    receiver_member, created = await async_call(
+        TelegramGroupMember.objects.get_or_create_from_chat_member,
+        tg_member_receiver,
+        tg_chat
     )
 
     # Increment points

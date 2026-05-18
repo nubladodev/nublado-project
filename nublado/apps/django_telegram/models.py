@@ -40,7 +40,7 @@ class TelegramUser(TimestampModel):
                 name = self.first_name
         return name
 
-    async def aupdate_snapshot(self, tg_user: User):
+    def update_snapshot(self, tg_user: User):
         """
         Update fields derived from telegram user.
         """
@@ -63,7 +63,7 @@ class TelegramUser(TimestampModel):
             updated_fields.append("is_bot")
 
         if updated_fields:
-            await self.asave(update_fields=updated_fields)
+            self.save(update_fields=updated_fields)
 
         return updated_fields
 
@@ -93,7 +93,7 @@ class TelegramChat(TimestampModel):
     def __str__(self):
         return f"{self.title}: {self.id}"
 
-    async def aupdate_snapshot(self, tg_chat: Chat):
+    def update_snapshot(self, tg_chat: Chat):
         """
         Update fields derived from telegram chat.
         """
@@ -112,7 +112,7 @@ class TelegramChat(TimestampModel):
             updated_fields.append("username")
 
         if updated_fields:
-            await self.asave(update_fields=updated_fields)
+            self.save(update_fields=updated_fields)
 
         return updated_fields
 
@@ -183,7 +183,7 @@ class TelegramGroupMember(TimestampModel):
         return f'<a href="tg://user?id={self.user.id}">{display_name}</a>'
 
 
-    async def aupdate_snapshot(self, tg_member: ChatMember):
+    def update_snapshot(self, tg_member: ChatMember):
         updated_fields = []
 
         role = tg_member.status
@@ -210,6 +210,6 @@ class TelegramGroupMember(TimestampModel):
                 updated_fields.append("left_at")
 
         if updated_fields:
-            await self.asave(update_fields=updated_fields)
+            self.save(update_fields=updated_fields)
 
         return updated_fields

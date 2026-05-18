@@ -1,5 +1,3 @@
-from asgiref.sync import sync_to_async
-
 from django.db import models
 from django.db.models import Q
 from django.utils import timezone
@@ -9,6 +7,7 @@ from django.utils.translation import gettext_lazy as _
 
 from django_nublado_core.models import TimestampModel, LanguageModel
 from django_telegram.models import TelegramChat, TelegramGroupMember
+from django_telegram.utils.async_utils import async_call
 
 from .managers import (
     ReadingPortalManager,
@@ -167,7 +166,8 @@ class ReadingPortal(TimestampModel):
         )
 
     async def aopen(self, pinned_message_id=None):
-        await sync_to_async(self.open)(
+        await async_call(
+            self.open,
             pinned_message_id=pinned_message_id
         )
 
@@ -183,7 +183,7 @@ class ReadingPortal(TimestampModel):
         )
 
     async def aclose(self):
-        await sync_to_async(self.close)()
+        await async_call(self.close)
 
     def mark_draft(self):
         # Don't do anything if status is already draft.

@@ -5,6 +5,7 @@ from django.conf import settings
 
 from ..models import TelegramChat, TelegramGroupSettings
 from ..utils.language import get_context_language, set_context_language
+from ..utils.async_utils import async_call
 from ..constants import CONTEXT_LANGUAGE_KEY
 
 
@@ -23,7 +24,7 @@ async def resolve_chat_language(
 
     tg_chat = update.effective_chat
 
-    chat, created = await TelegramChat.objects.aget_or_create_from_chat(tg_chat)
+    chat, created = await async_call(TelegramChat.objects.get_or_create_from_chat, tg_chat)
 
     group_settings = (
         await TelegramGroupSettings.objects.filter(chat=chat).only("language").afirst()
@@ -47,7 +48,7 @@ async def set_chat_language(
 ) -> None:
     tg_chat = update.effective_chat
 
-    chat, created = await TelegramChat.objects.aget_or_create_from_chat(tg_chat)
+    chat, created = await async_call(TelegramChat.objects.get_or_create_from_chat, tg_chat)
     group_settings, created = await TelegramGroupSettings.objects.aget_or_create(
         chat=chat
     )

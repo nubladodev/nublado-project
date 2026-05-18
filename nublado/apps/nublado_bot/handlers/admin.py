@@ -3,13 +3,15 @@ from telegram.ext import ContextTypes
 from telegram.error import BadRequest
 
 from django_telegram.models import TelegramChat
+from django_telegram.utils.async_utils import async_call
+
 
 async def register_chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
     Register chat in the db.
     """
     tg_chat = update.effective_chat
-    chat, created = await TelegramChat.objects.aget_or_create_from_chat(tg_chat)
+    chat, created = await async_call(TelegramChat.objects.get_or_create_from_chat, tg_chat)
 
     if created:
         bot_message = f"{chat.title} has been registered."

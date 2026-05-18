@@ -44,7 +44,7 @@ async def submit_reading_voice_message_service(
     if tg_reply_to_message.from_user.id != context.bot.id:
         return None
 
-    chat, created = await TelegramChat.objects.aget_or_create_from_chat(tg_chat)
+    chat, created = await TelegramChat.objects.get_or_create_from_chat(tg_chat)
 
     try:
         portal = await async_call(ReadingPortal.objects.get_open, chat=chat)
@@ -60,8 +60,10 @@ async def submit_reading_voice_message_service(
         return None
 
     tg_member = await bot.get_chat_member(tg_chat.id, tg_user.id)
-    member, created = await TelegramGroupMember.objects.aget_or_create_from_chat_member(
-        tg_member, tg_chat
+    member, created = await async_call(
+        TelegramGroupMember.objects.get_or_create_from_chat_member,
+        tg_member,
+        tg_chat
     )
 
     # Delete old reading submission if this is a resubmission.
@@ -111,7 +113,7 @@ async def review_reading_service(update: Update, context: ContextTypes.DEFAULT_T
     tg_chat = update.effective_chat
     tg_message = update.effective_message
 
-    chat, created = await TelegramChat.objects.aget_or_create_from_chat(tg_chat)
+    chat, created = await async_call(TelegramChat.objects.get_or_create_from_chat, tg_chat)
 
     # Current reading portal (open or last closed)
     portal = await async_call(ReadingPortal.objects.current, chat=chat)
@@ -155,7 +157,7 @@ async def get_portal_pending_readings_service(
     """
     tg_chat = update.effective_chat
 
-    chat, created = await TelegramChat.objects.aget_or_create_from_chat(tg_chat)
+    chat, created = await async_call(TelegramChat.objects.get_or_create_from_chat, tg_chat)
 
     # Get pending reading submissions from currently open
     # or the last closed Reading Portal if none is open.

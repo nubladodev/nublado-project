@@ -29,7 +29,7 @@ async def list_ready_portals_service(
 ):
     tg_chat = update.effective_chat
 
-    chat, created = await TelegramChat.objects.aget_or_create_from_chat(tg_chat)
+    chat, created = await async_call(TelegramChat.objects.get_or_create_from_chat, tg_chat)
     portals = ReadingPortal.objects.ready().from_chat(chat)
 
     return portals
@@ -44,7 +44,7 @@ async def edit_reading_service(
 ):
     tg_chat = update.effective_chat
 
-    chat, created = await TelegramChat.objects.aget_or_create_from_chat(tg_chat)
+    chat, created = await async_call(TelegramChat.objects.get_or_create_from_chat, tg_chat)
 
     # Get open portal.
     try:
@@ -84,7 +84,7 @@ async def open_portal_service(
     tg_message = update.effective_message
     bot = context.bot
 
-    chat, created = await TelegramChat.objects.aget_or_create_from_chat(tg_chat)
+    chat, created = await async_call(TelegramChat.objects.get_or_create_from_chat, tg_chat)
 
     # Make sure an open portal doesn't already exist.
     if await async_call(ReadingPortal.objects.existing_open, chat=chat):
@@ -158,7 +158,7 @@ async def close_portal_service(
     tg_chat = update.effective_chat
     bot = context.bot
 
-    chat, created = await TelegramChat.objects.aget_or_create_from_chat(tg_chat)
+    chat, created = await async_call(TelegramChat.objects.get_or_create_from_chat, tg_chat)
 
     try:
         portal = await async_call(ReadingPortal.objects.get_open, chat=chat)

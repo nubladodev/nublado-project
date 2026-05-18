@@ -4,6 +4,7 @@ from telegram.ext import ContextTypes
 from django.db.models import Q
 
 from django_telegram.models import TelegramChat
+from django_telegram.utils.async_utils import async_call
 
 from .models import GroupRepo, RepoItem
 from .utils import normalize_key
@@ -25,10 +26,10 @@ async def save_repo_item_service(
     if not repo_chat_id:
         raise RepoNotConfigured("repo_chat_id not set in bot_data")
 
-    repo_chat, created = await TelegramChat.objects.aget_or_create_from_chat_id(
-        repo_chat_id
+    repo_chat, created = await async_call(
+        TelegramChat.objects.get_or_create_from_chat_id, repo_chat_id
     )
-    source_chat, created = await TelegramChat.objects.aget_or_create_from_chat(tg_chat)
+    source_chat, created = await async_call(TelegramChat.objects.get_or_create_from_chat, tg_chat)
     repo, created = await GroupRepo.objects.aget_or_create(
         group_chat=source_chat,
         defaults={"repo_chat": repo_chat},
@@ -58,7 +59,7 @@ async def get_repo_item_service(
 ):
     tg_chat = update.effective_chat
 
-    source_chat, created = await TelegramChat.objects.aget_or_create_from_chat(tg_chat)
+    source_chat, created = await async_call(TelegramChat.objects.get_or_create_from_chat, tg_chat)
     repo = await GroupRepo.objects.filter(
         group_chat=source_chat
     ).select_related("repo_chat").afirst()
@@ -81,7 +82,7 @@ async def get_repo_item_service(
 async def list_repo_items_service(update: Update, context: ContextTypes.DEFAULT_TYPE, search_key: str = None):
     tg_chat = update.effective_chat
 
-    source_chat, created = await TelegramChat.objects.aget_or_create_from_chat(tg_chat)
+    source_chat, created = await async_call(TelegramChat.objects.get_or_create_from_chat, tg_chat)
     repo = await GroupRepo.objects.filter(
         group_chat=source_chat
     ).select_related("repo_chat").afirst()

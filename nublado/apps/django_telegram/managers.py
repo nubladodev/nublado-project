@@ -13,12 +13,11 @@ class TelegramUserManager(models.Manager.from_queryset(TelegramUserQuerySet)):
     """
     Manager for TelegramUser
     """
-
-    async def aget_or_create_from_user(self, tg_user: User):
+    def get_or_create_from_user(self, tg_user: User):
         """
         Get or create a TelegramUser object from telegram.User.
         """
-        user, created = await self.aget_or_create(
+        user, created = self.get_or_create(
             id=tg_user.id,
             defaults={
                 "username": tg_user.username,
@@ -29,7 +28,7 @@ class TelegramUserManager(models.Manager.from_queryset(TelegramUserQuerySet)):
         )
         if not created:
             # Update snapshot fields in db.
-            updated_fields = await user.aupdate_snapshot(tg_user)
+            updated_fields = user.update_snapshot(tg_user)
 
         return user, created
 
@@ -44,13 +43,12 @@ class TelegramChatManager(models.Manager.from_queryset(TelegramChatQuerySet)):
     """
     Manager for TelegramChat
     """
-
-    async def aget_or_create_from_chat(self, tg_chat: Chat):
+    def get_or_create_from_chat(self, tg_chat: Chat):
         """
         Get or create a TelegramChat object from telegram.Chat.
         """
 
-        chat, created = await self.aget_or_create(
+        chat, created = self.get_or_create(
             id=tg_chat.id,
             defaults={
                 "chat_type": tg_chat.type,
@@ -60,17 +58,17 @@ class TelegramChatManager(models.Manager.from_queryset(TelegramChatQuerySet)):
         )
         if not created:
             # Update snapshot fields in db.
-            updated_fields = await chat.aupdate_snapshot(tg_chat)
+            updated_fields = chat.update_snapshot(tg_chat)
 
         return chat, created
 
 
-    async def aget_or_create_from_chat_id(self, chat_id: int):
+    def get_or_create_from_chat_id(self, chat_id: int):
         """
         Get or create a TelegramChat object from a chat_id.
         """
 
-        chat, created = await self.aget_or_create(
+        chat, created = self.get_or_create(
             id=chat_id,
             defaults={
                 "chat_type": self.model.ChatType.UNKNOWN,
@@ -93,8 +91,7 @@ class TelegramGroupMemberManager(
     """
     Manager for TelegramGroupMember
     """
-
-    async def aget_or_create_from_chat_member(self, tg_member, tg_chat):
+    def get_or_create_from_chat_member(self, tg_member, tg_chat):
         from django_telegram.models import (
             TelegramUser,
             TelegramChat,
@@ -111,10 +108,10 @@ class TelegramGroupMemberManager(
         tg_user = tg_member.user
 
         # This updates snapshot fields in the ORM.
-        user, created = await TelegramUser.objects.aget_or_create_from_user(tg_user)
-        chat, created = await TelegramChat.objects.aget_or_create_from_chat(tg_chat)
+        user, created = TelegramUser.objects.get_or_create_from_user(tg_user)
+        chat, created = TelegramChat.objects.get_or_create_from_chat(tg_chat)
 
-        member, created = await self.aget_or_create(
+        member, created = self.get_or_create(
             user=user,
             chat=chat,
             defaults={
@@ -125,23 +122,22 @@ class TelegramGroupMemberManager(
 
         # Update snapshot fields.
         if not created:
-            updated_fields = await member.aupdate_snapshot(tg_member)
+            updated_fields = member.update_snapshot(tg_member)
 
         return member, created
 
-
-    async def ensure_membership(
-        self,
-        user,
-        chat,
-        role="member",
-    ):
-        await self.aupdate_or_create(
-            user=user,
-            chat=chat,
-            defaults={
-                "role": role,
-                "is_active": True,
-                "left_at": None,
-            },
-        )
+    # async def ensure_membership(
+    #     self,
+    #     user,
+    #     chat,
+    #     role="member",
+    # ):
+    #     self.update_or_create(
+    #         user=user,
+    #         chat=chat,
+    #         defaults={
+    #             "role": role,
+    #             "is_active": True,
+    #             "left_at": None,
+    #         },
+    #     )
