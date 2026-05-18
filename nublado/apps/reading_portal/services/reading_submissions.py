@@ -5,6 +5,7 @@ from telegram.ext import ContextTypes
 from telegram.error import BadRequest
 
 from django_telegram.models import TelegramChat, TelegramGroupMember
+from django_telegram.utils.async_utils import async_call
 
 from ..models import ReadingPortal, PortalReading, ReadingSubmission
 from ..exceptions import (
@@ -46,7 +47,7 @@ async def submit_reading_voice_message_service(
     chat, created = await TelegramChat.objects.aget_or_create_from_chat(tg_chat)
 
     try:
-        portal = await ReadingPortal.objects.aget_open(chat=chat)
+        portal = await async_call(ReadingPortal.objects.get_open, chat=chat)
     except ReadingPortal.DoesNotExist:
         return None
 
@@ -113,7 +114,7 @@ async def review_reading_service(update: Update, context: ContextTypes.DEFAULT_T
     chat, created = await TelegramChat.objects.aget_or_create_from_chat(tg_chat)
 
     # Current reading portal (open or last closed)
-    portal = await ReadingPortal.objects.acurrent(chat=chat)
+    portal = await async_call(ReadingPortal.objects.current, chat=chat)
     if not portal:
         raise NoPortal()
 
@@ -145,34 +146,6 @@ async def review_reading_service(update: Update, context: ContextTypes.DEFAULT_T
 
     return reading_submission
 
-
-# async def get_readings_service(
-#     update: Update, context: ContextTypes.DEFAULT_TYPE
-# ):
-#     """
-#     Return all reading submissions for the currently open
-#     Reading Portal.
-#     """
-#     tg_chat = update.effective_chat
-
-#     chat, created = await TelegramChat.objects.aget_or_create_from_chat(tg_chat)
-
-#     # Get reading submissions from currently upen Reading Portal.
-#     try:
-#         portal = await ReadingPortal.objects.aget_open(chat=chat)
-#     except ReadingPortal.DoesNotExist:
-#         raise NoOpenPortal()
-
-#     readings = (
-#         ReadingSubmission.objects.with_portal()
-#         .with_user()
-#         .filter(portal_reading__reading_portal_id=portal.id)
-#     )
-
-#     return readings
-
-
-
 async def get_portal_pending_readings_service(
     update: Update, context: ContextTypes.DEFAULT_TYPE
 ):
@@ -186,7 +159,7 @@ async def get_portal_pending_readings_service(
 
     # Get pending reading submissions from currently open
     # or the last closed Reading Portal if none is open.
-    portal = await ReadingPortal.objects.acurrent(chat=chat)
+    portal = await async_call(ReadingPortal.objects.current, chat=chat)
     if not portal:
         raise NoPortal()
 

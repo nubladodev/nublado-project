@@ -6,6 +6,7 @@ from telegram.error import BadRequest
 
 from django_telegram.models import TelegramChat
 from django_telegram.utils.telegram import safe_delete_message
+from django_telegram.utils.async_utils import async_call
 
 from ..models import ReadingPortal, PortalReading
 from ..exceptions import (
@@ -47,7 +48,7 @@ async def edit_reading_service(
 
     # Get open portal.
     try:
-        portal = await ReadingPortal.objects.aget_open(chat=chat)
+        portal = await async_call(ReadingPortal.objects.get_open, chat=chat)
     except ReadingPortal.DoesNotExist:
         raise NoOpenPortal()
 
@@ -86,7 +87,7 @@ async def open_portal_service(
     chat, created = await TelegramChat.objects.aget_or_create_from_chat(tg_chat)
 
     # Make sure an open portal doesn't already exist.
-    if await ReadingPortal.objects.aexisting_open(chat=chat):
+    if await async_call(ReadingPortal.objects.existing_open, chat=chat):
         raise OpenPortalExists()
 
     # If a slug is provided, attempt to open a Reading Portal with the coresponding slug.
@@ -102,7 +103,7 @@ async def open_portal_service(
             return
     else:
         # If no slug is provided, ger the next ready Reading Portal in the queue.
-        portal = await ReadingPortal.objects.anext_ready(chat=chat)
+        portal = await async_call(ReadingPortal.objects.next_ready, chat=chat)
 
     if not portal:
         # There are no portals ready to be posted.
@@ -160,7 +161,7 @@ async def close_portal_service(
     chat, created = await TelegramChat.objects.aget_or_create_from_chat(tg_chat)
 
     try:
-        portal = await ReadingPortal.objects.aget_open(chat=chat)
+        portal = await async_call(ReadingPortal.objects.get_open, chat=chat)
     except ReadingPortal.DoesNotExist:
         raise NoOpenPortal()
 

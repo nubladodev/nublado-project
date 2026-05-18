@@ -7,6 +7,11 @@ class ReadingPortalQuerySet(models.QuerySet):
     """
     QuerySet for ReadingPortalManager
     """
+    def base_qs(self):
+        """
+        A fully hyrated base queryset.
+        """
+        return self.select_related("chat").prefetch_related("portal_readings")
 
     def draft(self):
         return self.filter(portal_status=self.model.PortalStatus.DRAFT)
@@ -26,8 +31,21 @@ class ReadingPortalQuerySet(models.QuerySet):
             closed_at__isnull=False,
         )
 
-    def from_chat(self, chat):
+    def from_chat(self, chat: TelegramChat):
         return self.filter(chat=chat)
+
+    def open_in_chat(self, chat: TelegramChat):
+        return (
+            self.open()
+            .from_chat(chat)
+        )
+
+    def closed_in_chat(self, chat: TelegramChat):
+        return (
+            self.closed()
+            .from_chat(chat)
+            .order_by("-closed_at", "-id")
+        )
 
 
 class ReadingPortalManager(models.Manager.from_queryset(ReadingPortalQuerySet)):
@@ -35,52 +53,40 @@ class ReadingPortalManager(models.Manager.from_queryset(ReadingPortalQuerySet)):
     Manager for ReadingPortal
     """
 
-    async def aget_open(self, chat: TelegramChat):
-        return await (
-            self.get_queryset()
-            .select_related("chat")
-            .prefetch_related("portal_readings")
-            .open()
-            .from_chat(chat)
-            .aget()
-        )
+    def get_open(self, chat: TelegramChat):
+        base = self.get_queryset().base_qs()
 
-    async def acurrent(self, chat):
+        return base.open_in_chat(chat).get()
+
+    def current(self, chat: TelegramChat):
         """
-        Get currently open portal or fall back to last closed portal.
+        Get currently open portal in the chat, or fall back to last closed portal.
         """
-        queryset = (
-            self.get_queryset()
-            .select_related("chat")
-            .prefetch_related("portal_readings")
-            .from_chat(chat)
-        )
+        base = self.get_queryset().base_qs()
 
-        portal = await queryset.open().afirst() 
+        portal = base.open_in_chat(chat).first()
 
-        if not portal:
-            portal =  await (
-                queryset.closed()
-                .order_by("-closed_at", "-id")
-                .afirst()
-            )
+        if portal:
+            return portal
 
-        return portal
+        return base.closed_in_chat(chat).first()
 
-    async def anext_ready(self, chat: TelegramChat):
-        return await (
-            self.get_queryset()
-            .select_related("chat")
-            .prefetch_related("portal_readings")
-            .ready()
+    def next_ready(self, chat: TelegramChat):
+        base = self.get_queryset().base_qs()
+        return (
+            base.ready()
             .from_chat(chat)
             .order_by("created_at")
-            .afirst()
+            .first()
         )
 
-    async def aexisting_open(self, chat: TelegramChat):
-        queryset = self.get_queryset().open().from_chat(chat)
-        return await queryset.aexists()
+    def existing_open(self, chat: TelegramChat):
+        return (
+            self.get_queryset()
+            .open()
+            .from_chat(chat)
+            .exists()
+        )
 
 
 class PortalReadingQuerySet(models.QuerySet):
