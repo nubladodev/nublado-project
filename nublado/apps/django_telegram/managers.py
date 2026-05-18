@@ -125,19 +125,3 @@ class TelegramGroupMemberManager(
             updated_fields = member.update_snapshot(tg_member)
 
         return member, created
-
-    # async def ensure_membership(
-    #     self,
-    #     user,
-    #     chat,
-    #     role="member",
-    # ):
-    #     self.update_or_create(
-    #         user=user,
-    #         chat=chat,
-    #         defaults={
-    #             "role": role,
-    #             "is_active": True,
-    #             "left_at": None,
-    #         },
-    #     )

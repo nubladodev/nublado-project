@@ -44,7 +44,7 @@ async def submit_reading_voice_message_service(
     if tg_reply_to_message.from_user.id != context.bot.id:
         return None
 
-    chat, created = await TelegramChat.objects.get_or_create_from_chat(tg_chat)
+    chat, created = await async_call(TelegramChat.objects.get_or_create_from_chat, tg_chat)
 
     try:
         portal = await async_call(ReadingPortal.objects.get_open, chat=chat)
