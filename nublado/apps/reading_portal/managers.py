@@ -63,7 +63,6 @@ class ReadingPortalManager(models.Manager.from_queryset(ReadingPortalQuerySet)):
         Get currently open portal in the chat, or fall back to last closed portal.
         """
         base = self.get_queryset().base_qs()
-
         portal = base.open_in_chat(chat).first()
 
         if portal:
@@ -73,6 +72,7 @@ class ReadingPortalManager(models.Manager.from_queryset(ReadingPortalQuerySet)):
 
     def next_ready(self, chat: TelegramChat):
         base = self.get_queryset().base_qs()
+
         return (
             base.ready()
             .from_chat(chat)
