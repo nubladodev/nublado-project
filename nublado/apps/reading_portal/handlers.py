@@ -25,7 +25,7 @@ from .services.portals import (
 from .services.reading_submissions import (
     submit_reading_voice_message_service,
     review_reading_service,
-    get_portal_pending_readings_service,
+    portal_pending_readings_service,
 )
 from .utils.formatting import format_edited_reading
 from .bot_messages import BOT_MESSAGES
@@ -161,7 +161,7 @@ async def pending_readings(update: Update, context: ContextTypes.DEFAULT_TYPE):
     tg_chat = update.effective_chat
     tg_message = update.effective_message
 
-    portal, pending_readings = await get_portal_pending_readings_service(update, context)
+    portal, pending_readings = await portal_pending_readings_service(update, context)
 
     if not await pending_readings.aexists():
         await context.bot.send_message(

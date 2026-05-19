@@ -113,10 +113,15 @@ async def review_reading_service(update: Update, context: ContextTypes.DEFAULT_T
     tg_chat = update.effective_chat
     tg_message = update.effective_message
 
-    chat, created = await async_call(TelegramChat.objects.get_or_create_from_chat, tg_chat)
+    chat, created = await async_call(
+        TelegramChat.objects.get_or_create_from_chat,
+        tg_chat,
+    )
+    portal = await async_call(
+        ReadingPortal.objects.current,
+        chat=chat,
+    )
 
-    # Current reading portal (open or last closed)
-    portal = await async_call(ReadingPortal.objects.current, chat=chat)
     if not portal:
         raise NoPortal()
 
@@ -148,29 +153,39 @@ async def review_reading_service(update: Update, context: ContextTypes.DEFAULT_T
 
     return reading_submission
 
-async def get_portal_pending_readings_service(
-    update: Update, context: ContextTypes.DEFAULT_TYPE
+
+async def portal_readings_service(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
+    pending_only: bool = False,
 ):
     """
     Return current portal (currently open or last closed) and its 
-    pending readings submissions.
+    pending reading submissions.
     """
     tg_chat = update.effective_chat
 
-    chat, created = await async_call(TelegramChat.objects.get_or_create_from_chat, tg_chat)
+    chat, created = await async_call(
+        TelegramChat.objects.get_or_create_from_chat,
+        tg_chat,
+    )
+    portal = await async_call(
+        ReadingPortal.objects.current,
+        chat=chat,
+    )
 
-    # Get pending reading submissions from currently open
-    # or the last closed Reading Portal if none is open.
-    portal = await async_call(ReadingPortal.objects.current, chat=chat)
     if not portal:
         raise NoPortal()
 
-    pending_readings = (
+    readings = (
         ReadingSubmission.objects.with_portal()
         .with_user()
-        .pending()
         .filter(portal_reading__reading_portal_id=portal.id)
     )
 
-    return portal, pending_readings
+    if pending_only:
+        readings = readings.pending()
+
+    return portal, readings
+
 
