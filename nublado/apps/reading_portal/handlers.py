@@ -193,6 +193,7 @@ async def pending_readings(update: Update, context: ContextTypes.DEFAULT_TYPE):
         text="\n".join(readings_list),
     )
   
+    # Make the message and command disappear after 30 seconds.
     context.job_queue.run_once(
         delete_message_job,
         30,

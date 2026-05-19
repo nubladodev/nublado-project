@@ -40,9 +40,10 @@ class TelegramUser(TimestampModel):
                 name = self.first_name
         return name
 
-    def update_snapshot(self, tg_user: User):
+    def update_snapshot(self, tg_user: User) -> list[str]:
         """
-        Update fields derived from telegram user.
+        Update fields derived from telegram user and return a list
+        of the field names that have been updated.
         """
         updated_fields = []
 
@@ -93,9 +94,10 @@ class TelegramChat(TimestampModel):
     def __str__(self):
         return f"{self.title}: {self.id}"
 
-    def update_snapshot(self, tg_chat: Chat):
+    def update_snapshot(self, tg_chat: Chat) -> list[str]:
         """
-        Update fields derived from telegram chat.
+        Update fields derived from telegram chat and return a list
+        of the field names that have been updated.
         """
         updated_fields = []
 
@@ -183,7 +185,7 @@ class TelegramGroupMember(TimestampModel):
         return f'<a href="tg://user?id={self.user.id}">{display_name}</a>'
 
 
-    def update_snapshot(self, tg_member: ChatMember):
+    def update_snapshot(self, tg_member: ChatMember) -> list[str]:
         updated_fields = []
 
         role = tg_member.status

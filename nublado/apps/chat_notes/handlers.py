@@ -1,7 +1,7 @@
 from telegram import Update, ReactionTypeEmoji
 from telegram.ext import ContextTypes, filters
 
-
+from django_telegram.jobs import delete_message_job
 from .utils import normalize_key
 from .services import save_repo_item_service, get_repo_item_service, list_repo_items_service
 from .bot_messages import BOT_MESSAGES
@@ -69,6 +69,7 @@ async def get_repo_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def list_repo_items(update: Update, context: ContextTypes.DEFAULT_TYPE):
     tg_chat = update.effective_chat
+    tg_message = update.effective_message
     search_key = normalize_key(" ".join(context.args)) if context.args else None
 
     repo_items = await list_repo_items_service(update, context, search_key)
@@ -80,12 +81,22 @@ async def list_repo_items(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         body = "\n".join(f"#{item.key}" for item in repo_items)
 
-        await context.bot.send_message(
+        notes_message = await context.bot.send_message(
             chat_id=tg_chat.id,
             text=f"{header}{body}"
         )
     else:
-        await context.bot.send_message(
+       notes_message = await context.bot.send_message(
             chat_id=tg_chat.id,
             text="No notes found."
         )
+
+    # Make the message and command disappear after 30 seconds.
+    context.job_queue.run_once(
+        delete_message_job,
+        30,
+        data={
+            "chat_id": tg_chat.id,
+            "message_ids": [tg_message.message_id, notes_message.message_id],
+        },
+    )
