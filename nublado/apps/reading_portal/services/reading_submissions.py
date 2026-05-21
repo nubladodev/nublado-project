@@ -35,7 +35,7 @@ async def submit_reading(
 
     # Must be reply to a bot-generated reading message with text
     reading_message = tg_message.reply_to_message
-    if not (reading_message and reading_messsage.text):
+    if not (reading_message and reading_message.text):
         return None
 
     # Readings are posted by the bot, so ignore non-bot sources
