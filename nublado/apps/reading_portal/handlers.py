@@ -175,7 +175,7 @@ async def handle_review_reading(update: Update, context: ContextTypes.DEFAULT_TY
             pass
 
 
-async def pending_readings(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def show_pending_readings(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
     Display the pending (pending review) reading submissions for the
     currently open Reading Portal.
@@ -185,7 +185,7 @@ async def pending_readings(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     portal, pending_readings = await portal_reading_submissions(update, context, pending_only=True)
 
-    if not await pending_readings.aexists():
+    if not pending_readings:
         await context.bot.send_message(
             chat_id=tg_chat.id,
             text=str(BOT_MESSAGES["error.no_pending_readings"]),
@@ -195,7 +195,7 @@ async def pending_readings(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     readings_by_member = defaultdict(list)
 
-    async for pending_reading in pending_readings:
+    for pending_reading in pending_readings:
         readings_by_member[pending_reading.member].append(pending_reading)
 
     readings_list = [f"{str(BOT_MESSAGES['pending_readings']).title()} \n"]

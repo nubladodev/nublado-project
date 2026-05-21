@@ -18,7 +18,7 @@ def register_handlers(app):
         show_ready_portals,
         handle_open_portal,
         handle_close_portal,
-        pending_readings,
+        show_pending_readings,
         handle_submit_reading,
         handle_review_reading,
         open_portal_callback,
@@ -113,7 +113,7 @@ def register_handlers(app):
     app.add_handler(
         CommandHandler(
             "pending_readings",
-            with_policies(GroupOnly)(with_language(pending_readings)),
+            with_policies(GroupOnly)(with_language(show_pending_readings)),
         ),
         group=HANDLER_GROUP,
     )
