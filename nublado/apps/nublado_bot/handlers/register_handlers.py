@@ -15,14 +15,14 @@ def register_handlers(app):
     # import modules that use models here to avoid "app not ready" errors.
     from django_telegram.handlers import LanguageHandler
     from reading_portal.handlers import (
-        list_ready_portals,
+        show_ready_portals,
+        handle_open_portal,
+        handle_close_portal,
         pending_readings,
-        open_portal,
-        close_portal,
-        submit_reading,
-        review_reading,
+        handle_submit_reading,
+        handle_review_reading,
         open_portal_callback,
-        edit_reading,
+        handle_edit_reading,
     )
     from group_points.handlers import give_points, POINT_FILTER
     from chat_notes.handlers import (
@@ -97,7 +97,7 @@ def register_handlers(app):
     app.add_handler(
         CommandHandler(
             "open_portal",
-            with_policies(GroupOnly)(with_language(open_portal)),
+            with_policies(GroupOnly)(with_language(handle_open_portal)),
         ),
         group=HANDLER_GROUP,
     )
@@ -105,7 +105,7 @@ def register_handlers(app):
     app.add_handler(
         CommandHandler(
             "close_portal",
-            with_policies(GroupOnly)(with_language(close_portal)),
+            with_policies(GroupOnly)(with_language(handle_close_portal)),
         ),
         group=HANDLER_GROUP,
     )
@@ -121,7 +121,7 @@ def register_handlers(app):
     app.add_handler(
         CommandHandler(
             "show_portals",
-            with_policies(GroupOnly)(with_language(list_ready_portals)),
+            with_policies(GroupOnly)(with_language(show_ready_portals)),
         ),
         group=HANDLER_GROUP,
     )
@@ -129,7 +129,7 @@ def register_handlers(app):
     app.add_handler(
         CommandHandler(
             "reviewed",
-            with_policies(GroupOnly)(with_language(review_reading)),
+            with_policies(GroupOnly)(with_language(handle_review_reading)),
         ),
         group=HANDLER_GROUP,
     )
@@ -137,7 +137,7 @@ def register_handlers(app):
     app.add_handler(
         CommandHandler(
             "edit_reading",
-            with_policies(GroupOwnerOnly)(with_language(edit_reading)),
+            with_policies(GroupOwnerOnly)(with_language(handle_edit_reading)),
         ),
         group=HANDLER_GROUP,
     )
@@ -150,7 +150,7 @@ def register_handlers(app):
     app.add_handler(
         MessageHandler(
             filters.VOICE & filters.REPLY,
-            with_policies(GroupOnly)(with_language(submit_reading)),
+            with_policies(GroupOnly)(with_language(handle_submit_reading)),
         ),
         group=HANDLER_GROUP,
     )

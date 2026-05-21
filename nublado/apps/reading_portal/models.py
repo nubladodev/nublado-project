@@ -14,7 +14,7 @@ from .managers import (
     PortalReadingManager,
     ReadingSubmissionManager,
 )
-from .exceptions import EmptyPortal, OpenPortalExists, PortalNotReady, PortalAlreadyOpen
+from .exceptions import PortalNotReady, PortalAlreadyOpen
 
 
 # Constant to keep the "open" value consistent in the meta constraint and in the choices enum.
@@ -84,8 +84,9 @@ class ReadingPortal(TimestampModel):
     def clean(self):
         # Only one Reading Portal session may be open at a time.
         if self.portal_status == self.PortalStatus.OPEN:
-            existing_open = ReadingPortal.objects.filter(
-                chat=self.chat, portal_status=self.PortalStatus.OPEN
+            existing_open = (
+                ReadingPortal.objects.open()
+                .for_chat(self.chat)
             )
             if self.pk:
                 existing_open = existing_open.exclude(pk=self.pk)

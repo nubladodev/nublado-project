@@ -10,15 +10,13 @@ from django_telegram.utils.async_utils import async_call
 from ..models import ReadingPortal, PortalReading, ReadingSubmission
 from ..exceptions import (
     NoPortal,
-    NoOpenPortal,
-    NoReplyToReading,
     NoPendingReading,
 )
 
 logger = logging.getLogger("django")
 
 
-async def submit_reading_voice_message_service(
+async def submit_reading(
     update: Update, context: ContextTypes.DEFAULT_TYPE
 ):
     """
@@ -35,26 +33,32 @@ async def submit_reading_voice_message_service(
     if not tg_message or not tg_message.voice:
         return None
 
-    # Voice message must be a reply to a text message.
-    tg_reply_to_message = tg_message.reply_to_message
-    if not tg_reply_to_message or not tg_reply_to_message.text:
+    # Must be reply to a bot-generated reading message with text
+    reading_message = tg_message.reply_to_message
+    if not (reading_message and reading_messsage.text):
         return None
 
-    # Readings are posted by the bot, so ignore text messages from other sources.
-    if tg_reply_to_message.from_user.id != context.bot.id:
+    # Readings are posted by the bot, so ignore non-bot sources
+    if reading_message.from_user.id != context.bot.id:
         return None
 
-    chat, created = await async_call(TelegramChat.objects.get_or_create_from_chat, tg_chat)
+    chat, created = await async_call(
+        TelegramChat.objects.get_or_create_from_chat,
+        tg_chat,
+    )
 
     try:
-        portal = await async_call(ReadingPortal.objects.get_open, chat=chat)
+        portal = await async_call(
+            ReadingPortal.objects.get_open,
+            chat=chat,
+        )
     except ReadingPortal.DoesNotExist:
         return None
 
     try:
         reading = await PortalReading.objects.with_portal().aget(
             reading_portal=portal,
-            message_id=tg_reply_to_message.message_id,
+            message_id=reading_message.message_id,
         )
     except PortalReading.DoesNotExist:
         return None
@@ -66,7 +70,7 @@ async def submit_reading_voice_message_service(
         tg_chat
     )
 
-    # Delete old reading submission if this is a resubmission.
+    # Replace old reading submission if it exists.
     old_submission = await (
         ReadingSubmission.objects.pending()
         .filter(
@@ -77,23 +81,25 @@ async def submit_reading_voice_message_service(
     )
 
     if old_submission:
-        # Delete the old voice message
+        # Delete the old voice message.
         try:
             await bot.delete_message(
-                chat_id=tg_chat.id, message_id=old_submission.message_id
+                chat_id=tg_chat.id,
+                message_id=old_submission.message_id,
             )
         except BadRequest as e:
             # Message may already be deleted.
-            logger.warning("BadRequest: %s", e)
+            logger.warning(f"Error deleting old message: {e}")
 
         # Delete the old reading submissions bot reply if it exists.
         if old_submission.reply_message_id:
             try:
                 await bot.delete_message(
-                    chat_id=tg_chat.id, message_id=old_submission.reply_message_id
+                    chat_id=tg_chat.id,
+                    message_id=old_submission.reply_message_id
                 )
             except BadRequest as e:
-                logger.warning("BadRequest: %s", e)
+                logger.warning(f"Error deleting old submission's bot reply: {e}")
 
         # Hard delete the old submission from the db.
         await old_submission.adelete()
@@ -109,7 +115,7 @@ async def submit_reading_voice_message_service(
     return reading_submission
 
 
-async def review_reading_service(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def review_reading(update: Update, context: ContextTypes.DEFAULT_TYPE):
     tg_chat = update.effective_chat
     tg_message = update.effective_message
 
@@ -125,12 +131,9 @@ async def review_reading_service(update: Update, context: ContextTypes.DEFAULT_T
     if not portal:
         raise NoPortal()
 
-    if not tg_message or not tg_message.reply_to_message:
-        return None
+    reading_message = tg_message.reply_to_message
 
-    tg_reply_to_message = tg_message.reply_to_message
-
-    if not tg_reply_to_message.voice:
+    if not reading_message or not reading_message.voice:
         return None
 
     # Check if voice message is a pending reading submission.
@@ -139,7 +142,7 @@ async def review_reading_service(update: Update, context: ContextTypes.DEFAULT_T
             ReadingSubmission.objects.with_user()
             .for_portal(portal)
             .aget(
-                message_id=tg_reply_to_message.message_id,
+                message_id=reading_message.message_id,
             )
         )
     except ReadingSubmission.DoesNotExist:
@@ -154,7 +157,7 @@ async def review_reading_service(update: Update, context: ContextTypes.DEFAULT_T
     return reading_submission
 
 
-async def portal_readings_service(
+async def portal_reading_submissions(
     update: Update,
     context: ContextTypes.DEFAULT_TYPE,
     pending_only: bool = False,

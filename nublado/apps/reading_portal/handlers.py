@@ -17,15 +17,16 @@ from django_telegram.utils.formatting import user_display_name
 from django_telegram.jobs import delete_message_job
 
 from .services.portals import (
-    open_portal_service,
-    close_portal_service,
-    list_ready_portals_service,
-    edit_reading_service,
+    ready_portals,
+    open_portal,
+    close_portal,
+    ready_portals,
+    edit_reading,
 )
 from .services.reading_submissions import (
-    submit_reading_voice_message_service,
-    review_reading_service,
-    portal_pending_readings_service,
+    submit_reading,
+    review_reading,
+    portal_reading_submissions,
 )
 from .utils.formatting import format_edited_reading
 from .bot_messages import BOT_MESSAGES
@@ -33,7 +34,51 @@ from .bot_messages import BOT_MESSAGES
 OPEN_PORTAL_CALLBACK = "open_portal"
 
 
-async def open_portal(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def show_ready_portals(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    tg_chat = update.effective_chat
+    tg_message = update.effective_message
+
+    portals = await ready_portals(update, context)
+
+    if not portals:
+        await context.bot.send_message(
+            chat_id=tg_chat.id,
+            text=str(BOT_MESSAGES["error.no_ready_portals"]),
+            reply_to_message_id=tg_message.message_id,
+        )
+        return
+
+    message_header = BOT_MESSAGES["ready_reading_portals"]
+    buttons = [
+        [
+            InlineKeyboardButton(
+                f"{portal.title}",
+                callback_data=f"{OPEN_PORTAL_CALLBACK}:{portal.slug}",
+            )
+        ]
+        for portal in portals
+    ]
+
+    keyboard = InlineKeyboardMarkup(buttons)
+
+    portals_message = await context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text=str(message_header).title(),
+        reply_markup=keyboard,
+    )
+
+    # Delete the command and result list after 30 seconds.
+    context.job_queue.run_once(
+        delete_message_job,
+        30,
+        data={
+            "chat_id": tg_chat.id,
+            "message_ids": [tg_message.message_id, portals_message.message_id],
+        },
+    )
+
+
+async def handle_open_portal(update: Update, context: ContextTypes.DEFAULT_TYPE):
     tg_chat = update.effective_chat
     tg_message = update.effective_message
     slug = None
@@ -41,8 +86,7 @@ async def open_portal(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if context.args:
         slug = context.args[0]
 
-    await open_portal_service(update, context, slug, True)
-
+    await open_portal(update, context, slug, True)
     # Delete the lingering command in the chat.
     await delete_command(update)
 
@@ -55,102 +99,80 @@ async def open_portal_callback(update: Update, context: ContextTypes.DEFAULT_TYP
     if data.startswith(f"{OPEN_PORTAL_CALLBACK}:"):
         slug = data.split(":", 1)[1]
 
-        await open_portal_service(update, context, slug=slug)
+        await open_portal(update, context, slug=slug)
         await query.message.delete()
 
 
-async def close_portal(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    tg_chat = update.effective_chat
-    tg_message = update.effective_message
-
-    await close_portal_service(update, context)
+async def handle_close_portal(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await close_portal(update, context)
 
     # Delete the lingering command in the chat.
     await delete_command(update)
 
 
-async def list_ready_portals(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    tg_chat = update.effective_chat
-    tg_message = update.effective_message
+async def handle_submit_reading(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    reading_submission = await submit_reading(update, context)
 
-    portals = await list_ready_portals_service(update, context)
-
-    if not await portals.aexists():
-        await context.bot.send_message(
-            chat_id=tg_chat.id,
-            text=str(BOT_MESSAGES["error.no_ready_portals"]),
-            reply_to_message_id=tg_message.message_id,
-        )
+    if not reading_submission:
         return
 
-    bot_message = BOT_MESSAGES["ready_reading_portals"]
-    buttons = []
-
-    async for portal in portals:
-        buttons.append(
-            [
-                InlineKeyboardButton(
-                    f"{portal.title}",
-                    callback_data=f"{OPEN_PORTAL_CALLBACK}:{portal.slug}",
-                )
-            ]
-        )
-
-    keyboard = InlineKeyboardMarkup(buttons)
-
-    portals_message = await context.bot.send_message(
-        chat_id=update.effective_chat.id,
-        text=str(bot_message).title(),
-        reply_markup=keyboard,
-    )
-
-    context.job_queue.run_once(
-        delete_message_job,
-        30,
-        data={
-            "chat_id": tg_chat.id,
-            "message_ids": [tg_message.message_id, portals_message.message_id],
-        },
-    )
-
-
-async def submit_reading(update: Update, context: ContextTypes.DEFAULT_TYPE):
     tg_chat = update.effective_chat
     tg_message = update.effective_message
+    tg_user = update.effective_user
+    portal_reading = reading_submission.portal_reading
 
-    reading_submission = await submit_reading_voice_message_service(update, context)
+    bot_message = (
+        f"#pending_{portal_reading.language} : {user_display_name(tg_user)}"
+    )
 
-    if reading_submission:
-        tg_user = update.effective_user
-        portal_reading = reading_submission.portal_reading
-        bot_message = (
-            f"#pending_{portal_reading.language} : {user_display_name(tg_user)}"
-        )
+    reply_message = await context.bot.send_message(
+        chat_id=tg_chat.id,
+        text=bot_message,
+        reply_to_message_id=tg_message.message_id,
+    )
 
-        reply_message = await context.bot.send_message(
-            chat_id=tg_chat.id,
-            text=bot_message,
-            reply_to_message_id=tg_message.message_id,
-        )
+    await context.bot.set_message_reaction(
+        chat_id=update.effective_chat.id,
+        message_id=reading_submission.message_id,
+        reaction=[ReactionTypeEmoji("⚡️")],
+    )
 
-        await context.bot.set_message_reaction(
-            chat_id=update.effective_chat.id,
-            message_id=reading_submission.message_id,
-            reaction=[ReactionTypeEmoji("⚡️")],
-        )
-
-        reading_submission.reply_message_id = reply_message.message_id
-        await reading_submission.asave(update_fields=["reply_message_id"])
+    reading_submission.reply_message_id = reply_message.message_id
+    await reading_submission.asave(update_fields=["reply_message_id"])
 
 
-# async def readings(update: Update, context: ConteextTypes.DEFAULT_TYPE):
-#     """
-#     Display all the reading submissions for the currently open Reading Portal.
-#     """
-#     tg_chat = update.effective_chat
-#     tg_message = update.effective_message
+async def handle_review_reading(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    reading_submission = await review_reading(update, context)
 
-#     readings = await get_readings_service(update, context)
+    if not reading_submission:
+        await delete_command(update)
+        return
+
+    tg_user = update.effective_user
+    tg_chat = update.effective_chat
+
+    await context.bot.set_message_reaction(
+        chat_id=tg_chat.id,
+        message_id=reading_submission.message_id,
+        reaction=[ReactionTypeEmoji("💯")],
+    )
+
+    bot_message = BOT_MESSAGES["reading_reviewed"].format(
+        reviewer_name=user_display_name(tg_user)
+    )
+    await context.bot.send_message(
+        chat_id=tg_chat.id,
+        text=str(bot_message),
+        reply_to_message_id=reading_submission.message_id,
+    )
+
+    if reading_submission.reply_message_id:
+        try:
+            await context.bot.delete_message(
+                chat_id=tg_chat.id, message_id=reading_submission.reply_message_id
+            )
+        except BadRequest:
+            pass
 
 
 async def pending_readings(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -161,7 +183,7 @@ async def pending_readings(update: Update, context: ContextTypes.DEFAULT_TYPE):
     tg_chat = update.effective_chat
     tg_message = update.effective_message
 
-    portal, pending_readings = await portal_pending_readings_service(update, context)
+    portal, pending_readings = await portal_reading_submissions(update, context, pending_only=True)
 
     if not await pending_readings.aexists():
         await context.bot.send_message(
@@ -204,61 +226,12 @@ async def pending_readings(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-async def review_reading(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    tg_chat = update.effective_chat
-    tg_message = update.effective_message
-
-    reading_submission = await review_reading_service(update, context)
-
-    if reading_submission:
-        tg_user = update.effective_user
-        tg_chat = update.effective_chat
-        portal_reading = reading_submission.portal_reading
-
-        await context.bot.set_message_reaction(
-            chat_id=tg_chat.id,
-            message_id=reading_submission.message_id,
-            reaction=[ReactionTypeEmoji("💯")],
-        )
-
-        bot_message = BOT_MESSAGES["reading_reviewed"].format(
-            reviewer_name=user_display_name(tg_user)
-        )
-        await context.bot.send_message(
-            chat_id=tg_chat.id,
-            text=str(bot_message),
-            reply_to_message_id=reading_submission.message_id,
-        )
-
-        if reading_submission.reply_message_id:
-            try:
-                await context.bot.delete_message(
-                    chat_id=tg_chat.id, message_id=reading_submission.reply_message_id
-                )
-            except BadRequest:
-                pass
-
-    # Delete the lingering command in the chat.
-    await delete_command(update)
-
-
-async def edit_reading(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def handle_edit_reading(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
     Edit an open Reading Portal's reading by language from text in the chat.
     """
     tg_chat = update.effective_chat
     tg_message = update.effective_message
-
-    # Command must be a reply to a text message. 
-    if not tg_message.reply_to_message:
-        await tg_message.reply_text("Error: must be reply")
-        return
-
-    source_message = tg_message.reply_to_message
-
-    if not source_message.text:
-        await tg_message.reply_text("Error: must be a reply to a text message.")
-        return
 
     # Parse args
     if not context.args:
@@ -267,7 +240,21 @@ async def edit_reading(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     language = context.args[0].lower()
 
-    reading = await edit_reading_service(update, context, language=language, text=source_message.text)
+    # Must be reply
+    source_message = tg_message.reply_to_message
+    if not source_message or not source_message.text:
+        await tg_message.reply_text(
+            "Error: must be a reply to a text message."
+        )
+        return
+
+    reading = await edit_reading(
+        update,
+        context,
+        language=language,
+        text=source_message.text,
+    )
+
     reading_text = format_edited_reading(reading)
 
     try:
@@ -277,7 +264,7 @@ async def edit_reading(update: Update, context: ContextTypes.DEFAULT_TYPE):
             text=reading_text,
             parse_mode="HTML",
         )
-    except Exception as e:
+    except BadRequest as e:
         await tg_message.reply_text(
             f"Updated DB, but failed to edit message: {e}"
         )
