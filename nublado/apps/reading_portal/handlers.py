@@ -1,7 +1,5 @@
 from html import escape
 
-from collections import defaultdict
-
 from telegram import (
     Update,
     ReactionTypeEmoji,
@@ -11,7 +9,6 @@ from telegram import (
 from telegram.error import BadRequest
 from telegram.ext import ContextTypes
 
-from django_telegram.utils.helpers import message_link
 from django_telegram.utils.telegram import delete_command
 from django_telegram.utils.formatting import user_display_name
 from django_telegram.jobs import delete_message_job
@@ -28,7 +25,10 @@ from .services.reading_submissions import (
     review_reading,
     portal_reading_submissions,
 )
-from .utils.formatting import format_edited_reading
+from .utils.formatting import (
+    format_edited_reading,
+    format_reading_submission_list,
+)
 from .bot_messages import BOT_MESSAGES
 
 OPEN_PORTAL_CALLBACK = "open_portal"
@@ -193,22 +193,12 @@ async def show_pending_readings(update: Update, context: ContextTypes.DEFAULT_TY
         )
         return
 
-    readings_by_member = defaultdict(list)
-
-    for pending_reading in pending_readings:
-        readings_by_member[pending_reading.member].append(pending_reading)
-
-    readings_list = [f"{str(BOT_MESSAGES['pending_readings']).title()} \n"]
-
-    for member, readings in readings_by_member.items():
-        language_links = []
-
-        for reading in readings:
-            link = message_link(tg_chat.id, reading.message_id)
-            language = reading.portal_reading.language.upper()
-            language_links.append(f'<a href="{link}">{language}</a>')
-
-        readings_list.append(f"{member.mention_html}: {', '.join(language_links)}")
+    readings_list = format_reading_submission_list(
+        portal,
+        pending_readings,
+        tg_chat.id,
+        str(BOT_MESSAGES['pending_readings']).title(),
+    )
 
     readings_message = await context.bot.send_message(
         chat_id=tg_chat.id,

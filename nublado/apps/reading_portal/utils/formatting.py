@@ -1,8 +1,10 @@
 from html import escape
+from collections import defaultdict
 
 from django.utils.timezone import now
 
-from ..models import ReadingPortal, PortalReading
+from django_telegram.utils.helpers import message_link
+from ..models import ReadingPortal, PortalReading, ReadingSubmission
 
 
 def format_portal_intro(portal: ReadingPortal):
@@ -33,3 +35,39 @@ def format_portal_closed():
         "Please wait for the reading submissions to be reviewed "
         "and a new portal to appear. Thanks."
     )
+
+
+def format_reading_submission_list(
+    portal: ReadingPortal,
+    reading_submissions: list[ReadingSubmission],
+    tg_chat_id: int,
+    list_header: str = "Readings",
+):
+    """
+    Return a list of members and corresponding reading-submission links by language.
+
+    Example:
+        Readings:
+        @user_1: EN, ES
+        @user_2: EN
+        @user_3: ES
+    """
+
+    readings_by_member = defaultdict(list)
+
+    for reading_submission in reading_submissions:
+        readings_by_member[reading_submission.member].append(reading_submission)
+
+    readings_list = [f"{list_header} \n"]
+
+    for member, readings in readings_by_member.items():
+        language_links = []
+
+        for reading in readings:
+            link = message_link(tg_chat_id, reading.message_id)
+            language = reading.portal_reading.language.upper()
+            language_links.append(f'<a href="{link}">{language}</a>')
+
+        readings_list.append(f"{member.mention_html}: {', '.join(language_links)}")
+
+    return readings_list
