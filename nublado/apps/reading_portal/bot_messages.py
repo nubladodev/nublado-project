@@ -47,4 +47,6 @@ BOT_MESSAGES = {
     "reading_reviewed": READING_REVIEWED,
     "pending_readings": PENDING_READINGS,
     "ready_reading_portals": READING_PORTALS,
+    "reading_submissions": _("reading_portal.bot.reading_submissions"),
+    "no_reading_submissions": _("reading_portal.bot.no_reading_submissions")
 }

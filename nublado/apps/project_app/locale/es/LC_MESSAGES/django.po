@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-25 20:38+0000\n"
+"POT-Creation-Date: 2026-05-23 07:25+0000\n"
 "PO-Revision-Date: 2026-04-04 12:03-0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -58,35 +58,35 @@ msgstr ""
 msgid "django_telegram.bot.error.bot_owner_access"
 msgstr ""
 
-#: nublado/apps/django_telegram/models.py:77
+#: nublado/apps/django_telegram/models.py:78
 msgid "Unknown"
 msgstr ""
 
-#: nublado/apps/django_telegram/models.py:78
+#: nublado/apps/django_telegram/models.py:79
 msgid "private"
 msgstr ""
 
-#: nublado/apps/django_telegram/models.py:79
+#: nublado/apps/django_telegram/models.py:80
 msgid "group"
 msgstr ""
 
-#: nublado/apps/django_telegram/models.py:80
+#: nublado/apps/django_telegram/models.py:81
 msgid "supergroup"
 msgstr ""
 
-#: nublado/apps/django_telegram/models.py:81
+#: nublado/apps/django_telegram/models.py:82
 msgid "channel"
 msgstr ""
 
-#: nublado/apps/django_telegram/models.py:137
+#: nublado/apps/django_telegram/models.py:139
 msgid "member"
 msgstr ""
 
-#: nublado/apps/django_telegram/models.py:138
+#: nublado/apps/django_telegram/models.py:140
 msgid "admin"
 msgstr ""
 
-#: nublado/apps/django_telegram/models.py:139
+#: nublado/apps/django_telegram/models.py:141
 msgid "owner"
 msgstr ""
 
@@ -288,115 +288,144 @@ msgstr ""
 msgid "reading_portal.bot.error.portal_not_found"
 msgstr "No hay Portal de Lectura abierto."
 
+#. Translators: Message when a portal required to be ready but isn't.
+#. Example: Reading Portal not ready to be posted.
+#: nublado/apps/reading_portal/bot_messages.py:25
+#: nublado/apps/reading_portal/exceptions.py:20
+#, fuzzy
+#| msgid "reading_portal.bot.error.portal_not_found"
+msgid "reading_portal.bot.error.portal_not_ready"
+msgstr "No hay Portal de Lectura abierto."
+
 #. Translators: Message when a reading is reviewed by a user.
 #. {reviewer_name} = username of user who reviewed the reading.
 #. Example: Reviewed by @fooman.
-#: nublado/apps/reading_portal/bot_messages.py:26
+#: nublado/apps/reading_portal/bot_messages.py:30
 #, python-brace-format
 msgid "reading_portal.bot.reading_reviewed {reviewer_name}"
 msgstr "Revisado por {reviewer_name}."
 
 #. Translators: Message header when listing pending reading submissions.
 #. Example: Pending Reading Submissions:
-#: nublado/apps/reading_portal/bot_messages.py:30
+#: nublado/apps/reading_portal/bot_messages.py:34
 msgid "reading_portal.bot.pending_readings"
 msgstr "lecturas pendientes"
 
 #. Translators: Message header when listing portals in the queue ready to be posted.
 #. Example: Reading Portals:
-#: nublado/apps/reading_portal/bot_messages.py:34
+#: nublado/apps/reading_portal/bot_messages.py:38
 msgid "reading_portal.bot.ready_reading_portals"
 msgstr "portales"
+
+#: nublado/apps/reading_portal/bot_messages.py:50
+msgid "reading_portal.bot.reading_submissions"
+msgstr "lecturas"
+
+#: nublado/apps/reading_portal/bot_messages.py:51
+msgid "reading_portal.bot.no_reading_submissions"
+msgstr "No hay lecturas."
 
 #: nublado/apps/reading_portal/exceptions.py:7
 msgid "Reading Portal error"
 msgstr ""
 
-#: nublado/apps/reading_portal/exceptions.py:18
+#: nublado/apps/reading_portal/exceptions.py:24
+#, fuzzy
+#| msgid "reading_portal.bot.error.portal_not_found"
+msgid "reading_portal.bot.error.portal_already_open"
+msgstr "No hay Portal de Lectura abierto."
+
+#: nublado/apps/reading_portal/exceptions.py:28
 msgid "reading_portal.bot.error.no_reply_to_audio"
 msgstr "Hay que responder a un audio de lectura."
 
-#: nublado/apps/reading_portal/exceptions.py:22
+#: nublado/apps/reading_portal/exceptions.py:32
 #, fuzzy
 #| msgid "reading_portal.bot.error.no_pending_readings"
 msgid "reading_portal.bot.error.no_reply_to_reading"
 msgstr "No hay lecturas pendientes."
 
-#: nublado/apps/reading_portal/exceptions.py:26
+#: nublado/apps/reading_portal/exceptions.py:36
 #, fuzzy
 #| msgid "reading_portal.bot.error.no_open_portal"
 msgid "reading_portal.bot.error.no_reply_to_text"
 msgstr "No hay Portal de Lectura abierto."
 
-#: nublado/apps/reading_portal/exceptions.py:30
+#: nublado/apps/reading_portal/exceptions.py:40
+#, fuzzy
+#| msgid "reading_portal.bot.error.no_open_portal"
+msgid "reading_portal.bot.error.no_portal"
+msgstr "No hay Portal de Lectura abierto."
+
+#: nublado/apps/reading_portal/exceptions.py:44
 #, fuzzy
 #| msgid "reading_portal.bot.error.no_draft_portals"
 msgid "reading_portal.bot.error.no_draft_portal"
 msgstr "No hay portal listo para publicar."
 
-#: nublado/apps/reading_portal/exceptions.py:34
+#: nublado/apps/reading_portal/exceptions.py:51
 msgid "reading_portal.bot.error.no_ready_portal"
 msgstr "No hay portal listo para publicar."
 
-#: nublado/apps/reading_portal/exceptions.py:38
+#: nublado/apps/reading_portal/exceptions.py:55
 msgid "reading_portal.bot.error.no_open_portal"
 msgstr "No hay Portal de Lectura abierto."
 
-#: nublado/apps/reading_portal/exceptions.py:42
+#: nublado/apps/reading_portal/exceptions.py:59
 #, fuzzy
 #| msgid "reading_portal.bot.error.no_open_portal"
 msgid "reading_portal.bot.error.open_portal_exists"
 msgstr "No hay Portal de Lectura abierto."
 
-#: nublado/apps/reading_portal/exceptions.py:46
+#: nublado/apps/reading_portal/exceptions.py:63
 #, fuzzy
 #| msgid "reading_portal.bot.error.no_open_portal"
 msgid "reading_portal.bot.error.empty_portal"
 msgstr "No hay Portal de Lectura abierto."
 
-#: nublado/apps/reading_portal/exceptions.py:50
+#: nublado/apps/reading_portal/exceptions.py:67
 #, fuzzy
 #| msgid "reading_portal.bot.error.no_pending_readings"
 msgid "reading_portal.bot.error.no_pending_reading"
 msgstr "No hay lecturas pendientes."
 
-#: nublado/apps/reading_portal/exceptions.py:54
+#: nublado/apps/reading_portal/exceptions.py:71
 #, fuzzy
 #| msgid "reading_portal.bot.error.no_pending_readings"
 msgid "reading_portal.bot.error.no_existing_reading"
 msgstr "No hay lecturas pendientes."
 
-#: nublado/apps/reading_portal/exceptions.py:58
+#: nublado/apps/reading_portal/exceptions.py:75
 #, fuzzy
 #| msgid "reading_portal.bot.error.no_pending_readings"
 msgid "reading_portal.bot.error.no_reading_message_id"
 msgstr "No hay lecturas pendientes."
 
-#: nublado/apps/reading_portal/models.py:26
+#: nublado/apps/reading_portal/models.py:30
 msgid "Draft"
 msgstr ""
 
-#: nublado/apps/reading_portal/models.py:27
+#: nublado/apps/reading_portal/models.py:31
 msgid "Ready"
 msgstr ""
 
-#: nublado/apps/reading_portal/models.py:28
+#: nublado/apps/reading_portal/models.py:32
 msgid "Open"
 msgstr ""
 
-#: nublado/apps/reading_portal/models.py:29
+#: nublado/apps/reading_portal/models.py:33
 msgid "Closed"
 msgstr ""
 
-#: nublado/apps/reading_portal/models.py:212
+#: nublado/apps/reading_portal/models.py:277
 msgid "Pending"
 msgstr ""
 
-#: nublado/apps/reading_portal/models.py:213
+#: nublado/apps/reading_portal/models.py:278
 msgid "Reviewed"
 msgstr ""
 
-#: nublado/apps/reading_portal/models.py:214
+#: nublado/apps/reading_portal/models.py:279
 msgid "Archived"
 msgstr ""
 

@@ -175,6 +175,45 @@ async def handle_review_reading(update: Update, context: ContextTypes.DEFAULT_TY
         except BadRequest:
             pass
 
+async def show_reading_submissions(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """
+    Display the reading submissions for the
+    currently open Reading Portal.
+    """
+    tg_chat = update.effective_chat
+    tg_message = update.effective_message
+
+    portal, submissions = await portal_reading_submissions(update, context, pending_only=True)
+
+    if not submissions:
+        await context.bot.send_message(
+            chat_id=tg_chat.id,
+            text=str(BOT_MESSAGES["no_reading_submissions"]),
+            reply_to_message_id=tg_message.message_id,
+        )
+        return
+
+    submissions_list = format_reading_submission_list(
+        portal,
+        submissions,
+        list_header=str(BOT_MESSAGES["reading_submissions"]).title(),
+    )
+
+    bot_message = await context.bot.send_message(
+        chat_id=tg_chat.id,
+        text="\n".join(submissions_list),
+    )
+  
+    # Make the message and command disappear after 30 seconds.
+    context.job_queue.run_once(
+        delete_message_job,
+        30,
+        data={
+            "chat_id": tg_chat.id,
+            "message_ids": [tg_message.message_id, bot_message.message_id],
+        },
+    )
+
 
 async def show_pending_readings(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
