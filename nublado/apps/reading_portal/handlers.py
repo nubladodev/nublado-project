@@ -172,6 +172,9 @@ async def handle_review_reading(update: Update, context: ContextTypes.DEFAULT_TY
         except BadRequest:
             pass
 
+    await delete_command(update)
+
+
 async def show_reading_submissions(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
     Display the reading submissions for the
@@ -215,7 +218,7 @@ async def show_reading_submissions(update: Update, context: ContextTypes.DEFAULT
 
 async def show_pending_readings(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
-    Display the pending (pending review) reading submissions for the
+    Display the pending reading submissions for the
     currently open Reading Portal.
     """
     tg_chat = update.effective_chat
