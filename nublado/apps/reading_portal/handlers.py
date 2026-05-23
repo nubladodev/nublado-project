@@ -196,7 +196,6 @@ async def show_pending_readings(update: Update, context: ContextTypes.DEFAULT_TY
     readings_list = format_reading_submission_list(
         portal,
         pending_readings,
-        tg_chat.id,
         str(BOT_MESSAGES['pending_readings']).title(),
     )
 

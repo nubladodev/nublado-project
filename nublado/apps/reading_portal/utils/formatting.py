@@ -40,7 +40,6 @@ def format_portal_closed():
 def format_reading_submission_list(
     portal: ReadingPortal,
     reading_submissions: list[ReadingSubmission],
-    tg_chat_id: int,
     list_header: str = "Readings",
 ):
     """
@@ -64,7 +63,7 @@ def format_reading_submission_list(
         language_links = []
 
         for reading in readings:
-            link = message_link(tg_chat_id, reading.message_id)
+            link = message_link(portal.chat_id, reading.message_id)
             language = reading.portal_reading.language.upper()
             language_links.append(f'<a href="{link}">{language}</a>')
 
