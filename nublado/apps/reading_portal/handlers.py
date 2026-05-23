@@ -61,7 +61,7 @@ async def show_ready_portals(update: Update, context: ContextTypes.DEFAULT_TYPE)
 
     keyboard = InlineKeyboardMarkup(buttons)
 
-    portals_message = await context.bot.send_message(
+    bot_message = await context.bot.send_message(
         chat_id=update.effective_chat.id,
         text=str(message_header).title(),
         reply_markup=keyboard,
@@ -73,7 +73,7 @@ async def show_ready_portals(update: Update, context: ContextTypes.DEFAULT_TYPE)
         30,
         data={
             "chat_id": tg_chat.id,
-            "message_ids": [tg_message.message_id, portals_message.message_id],
+            "message_ids": [tg_message.message_id, bot_message.message_id],
         },
     )
 
@@ -121,13 +121,13 @@ async def handle_submit_reading(update: Update, context: ContextTypes.DEFAULT_TY
     tg_user = update.effective_user
     portal_reading = reading_submission.portal_reading
 
-    bot_message = (
+    reply_message = (
         f"#pending_{portal_reading.language} : {user_display_name(tg_user)}"
     )
 
-    reply_message = await context.bot.send_message(
+    bot_message = await context.bot.send_message(
         chat_id=tg_chat.id,
-        text=bot_message,
+        text=reply_message,
         reply_to_message_id=tg_message.message_id,
     )
 
@@ -137,7 +137,7 @@ async def handle_submit_reading(update: Update, context: ContextTypes.DEFAULT_TY
         reaction=[ReactionTypeEmoji("⚡️")],
     )
 
-    reading_submission.reply_message_id = reply_message.message_id
+    reading_submission.reply_message_id = bot_message.message_id
     await reading_submission.asave(update_fields=["reply_message_id"])
 
 
@@ -160,6 +160,7 @@ async def handle_review_reading(update: Update, context: ContextTypes.DEFAULT_TY
     bot_message = BOT_MESSAGES["reading_reviewed"].format(
         reviewer_name=user_display_name(tg_user)
     )
+
     await context.bot.send_message(
         chat_id=tg_chat.id,
         text=str(bot_message),
@@ -196,10 +197,10 @@ async def show_pending_readings(update: Update, context: ContextTypes.DEFAULT_TY
     readings_list = format_reading_submission_list(
         portal,
         pending_readings,
-        str(BOT_MESSAGES['pending_readings']).title(),
+        list_header=str(BOT_MESSAGES['pending_readings']).title(),
     )
 
-    readings_message = await context.bot.send_message(
+    bot_message = await context.bot.send_message(
         chat_id=tg_chat.id,
         text="\n".join(readings_list),
     )
@@ -210,7 +211,7 @@ async def show_pending_readings(update: Update, context: ContextTypes.DEFAULT_TY
         30,
         data={
             "chat_id": tg_chat.id,
-            "message_ids": [tg_message.message_id, readings_message.message_id],
+            "message_ids": [tg_message.message_id, bot_message.message_id],
         },
     )
 

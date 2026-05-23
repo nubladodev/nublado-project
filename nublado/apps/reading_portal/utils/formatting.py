@@ -40,6 +40,7 @@ def format_portal_closed():
 def format_reading_submission_list(
     portal: ReadingPortal,
     reading_submissions: list[ReadingSubmission],
+    *,
     list_header: str = "Readings",
 ):
     """
@@ -52,21 +53,21 @@ def format_reading_submission_list(
         @user_3: ES
     """
 
-    readings_by_member = defaultdict(list)
+    submissions_by_member = defaultdict(list)
 
-    for reading_submission in reading_submissions:
-        readings_by_member[reading_submission.member].append(reading_submission)
+    for submission in reading_submissions:
+        submissions_by_member[submission.member].append(submission)
 
-    readings_list = [f"{list_header} \n"]
+    submissions_list = [f"{list_header} \n"]
 
-    for member, readings in readings_by_member.items():
+    for member, submissions in submissions_by_member.items():
         language_links = []
 
-        for reading in readings:
-            link = message_link(portal.chat_id, reading.message_id)
-            language = reading.portal_reading.language.upper()
+        for submission in submissions:
+            link = message_link(portal.chat_id, submission.message_id)
+            language = submission.portal_reading.language.upper()
             language_links.append(f'<a href="{link}">{language}</a>')
 
-        readings_list.append(f"{member.mention_html}: {', '.join(language_links)}")
+        submissions_list.append(f"{member.mention_html}: {', '.join(language_links)}")
 
-    return readings_list
+    return submissions_list
