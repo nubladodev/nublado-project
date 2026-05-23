@@ -183,7 +183,11 @@ async def show_reading_submissions(update: Update, context: ContextTypes.DEFAULT
     tg_chat = update.effective_chat
     tg_message = update.effective_message
 
-    portal, submissions = await portal_reading_submissions(update, context, pending_only=True)
+    portal, submissions = await portal_reading_submissions(
+        update,
+        context,
+        pending_only=False,
+    )
 
     if not submissions:
         await context.bot.send_message(
@@ -223,7 +227,11 @@ async def show_pending_readings(update: Update, context: ContextTypes.DEFAULT_TY
     tg_chat = update.effective_chat
     tg_message = update.effective_message
 
-    portal, pending_readings = await portal_reading_submissions(update, context, pending_only=True)
+    portal, pending_readings = await portal_reading_submissions(
+        update,
+        context,
+        pending_only=True,
+    )
 
     if not pending_readings:
         await context.bot.send_message(
