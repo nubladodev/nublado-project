@@ -1,4 +1,5 @@
 from telegram import Update, Message
+from telegram.ext import ContextTypes
 from telegram.error import BadRequest, Forbidden
 
 
@@ -17,6 +18,7 @@ async def delete_command(update: Update):
     """
 
     await safe_delete_message(update.effective_message)
+
 
 
 

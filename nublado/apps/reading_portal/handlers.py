@@ -11,7 +11,7 @@ from telegram.ext import ContextTypes
 
 from django_telegram.utils.telegram import delete_command
 from django_telegram.utils.formatting import user_display_name
-from django_telegram.jobs import delete_message_job
+from django_telegram.jobs import delete_message_job, schedule_message_cleanup
 
 from .services.portals import (
     ready_portals,
@@ -67,14 +67,11 @@ async def show_ready_portals(update: Update, context: ContextTypes.DEFAULT_TYPE)
         reply_markup=keyboard,
     )
 
-    # Delete the command and result list after 30 seconds.
-    context.job_queue.run_once(
-        delete_message_job,
-        30,
-        data={
-            "chat_id": tg_chat.id,
-            "message_ids": [tg_message.message_id, bot_message.message_id],
-        },
+    # Chat cleanup.
+    schedule_message_cleanup(
+        update,
+        context,
+        bot_message_ids=[bot_message.message_id],
     )
 
 
@@ -208,14 +205,11 @@ async def show_reading_submissions(update: Update, context: ContextTypes.DEFAULT
         text="\n".join(submissions_list),
     )
   
-    # Make the message and command disappear after 30 seconds.
-    context.job_queue.run_once(
-        delete_message_job,
-        30,
-        data={
-            "chat_id": tg_chat.id,
-            "message_ids": [tg_message.message_id, bot_message.message_id],
-        },
+    # Chat cleanup.
+    schedule_message_cleanup(
+        update,
+        context,
+        bot_message_ids=[bot_message.message_id],
     )
 
 
@@ -227,39 +221,36 @@ async def show_pending_readings(update: Update, context: ContextTypes.DEFAULT_TY
     tg_chat = update.effective_chat
     tg_message = update.effective_message
 
-    portal, pending_readings = await portal_reading_submissions(
+    portal, submissions = await portal_reading_submissions(
         update,
         context,
         pending_only=True,
     )
 
-    if not pending_readings:
+    if not submissions:
         await context.bot.send_message(
             chat_id=tg_chat.id,
-            text=str(BOT_MESSAGES["error.no_pending_readings"]),
+            text=str(BOT_MESSAGES["no_reading_submissions"]),
             reply_to_message_id=tg_message.message_id,
         )
         return
 
-    readings_list = format_reading_submission_list(
+    submissions_list = format_reading_submission_list(
         portal,
-        pending_readings,
-        list_header=str(BOT_MESSAGES['pending_readings']).title(),
+        submissions,
+        list_header=str(BOT_MESSAGES["pending_readings"]).title(),
     )
 
     bot_message = await context.bot.send_message(
         chat_id=tg_chat.id,
-        text="\n".join(readings_list),
+        text="\n".join(submissions_list),
     )
   
-    # Make the message and command disappear after 30 seconds.
-    context.job_queue.run_once(
-        delete_message_job,
-        30,
-        data={
-            "chat_id": tg_chat.id,
-            "message_ids": [tg_message.message_id, bot_message.message_id],
-        },
+    # Chat cleanup.
+    schedule_message_cleanup(
+        update,
+        context,
+        bot_message_ids=[bot_message.message_id],
     )
 
 
