@@ -2,11 +2,11 @@ from django.utils.translation import gettext_lazy as _
 
 # Translators: Message when there are no draft portals.
 # Example: There are no draft portals.
-ERROR_NO_DRAFT_PORTALS = _("reading_portal.bot.error.no_draft_portals")
+NO_DRAFT_PORTALS = _("reading_portal.bot.no_draft_portals")
 
 # Translators: Message when there are no portals in the queue ready to be posted.
 # Example: There are no portals ready to be posted.
-ERROR_NO_READY_PORTALS = _("reading_portal.bot.error.no_ready_portals")
+NO_READY_PORTALS = _("reading_portal.bot.no_ready_portals")
 
 # Translators: Message when... 
 # Example: ...
@@ -26,12 +26,16 @@ ERROR_PORTAL_NOT_READY = _("reading_portal.bot.error.portal_not_ready")
 READING_REVIEWED = _("reading_portal.bot.reading_reviewed {reviewer_name}")
 
 # Translators: Message header when listing pending reading submissions.
-# Example: Pending Reading Submissions:
+# Example: Pending Readings, Pending Reading Submissions
 PENDING_READINGS = _("reading_portal.bot.pending_readings")
 
 # Translators: Message when there are no reading submissions pending review for the current Reading Portal pending review.
 # Example: There are no pending readings. There are no pending reading submissions.
 NO_PENDING_READINGS = _("reading_portal.bot.no_pending_readings")
+
+# Translators: Message header when listing reading submissions.
+# Example: Readings, Reading Submissions
+READINGS = _("reading_portal.bot.readings")
 
 # Translators: Message when there are no reading submissions for the current Reading Portal.
 # Example: There are no readings. There are no reading submissions.
@@ -42,15 +46,15 @@ NO_READINGS = _("reading_portal.bot.no_readings")
 READING_PORTALS = _("reading_portal.bot.ready_reading_portals")
 
 BOT_MESSAGES = {
-    "error.no_draft_portals": ERROR_NO_DRAFT_PORTALS,
-    "error.no_ready_portals": ERROR_NO_READY_PORTALS,
+    "no_draft_portals": NO_DRAFT_PORTALS,
+    "no_ready_portals": NO_READY_PORTALS,
     "error.review_no_pending_reading": ERROR_REVIEW_NO_PENDING_READING,
     "error.portal_not_found": ERROR_PORTAL_NOT_FOUND,
     "error.portal_not_ready": ERROR_PORTAL_NOT_READY,
     "reading_reviewed": READING_REVIEWED,
-    "pending_readings": PENDING_READINGS,
     "ready_reading_portals": READING_PORTALS,
-    "reading_submissions": _("reading_portal.bot.reading_submissions"),
+    "readings": READINGS,
     "no_readings": NO_READINGS,
+    "pending_readings": PENDING_READINGS,
     "no_pending_readings": NO_PENDING_READINGS,
 }

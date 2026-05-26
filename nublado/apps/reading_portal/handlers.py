@@ -43,7 +43,7 @@ async def show_ready_portals(update: Update, context: ContextTypes.DEFAULT_TYPE)
     if not portals:
         await context.bot.send_message(
             chat_id=tg_chat.id,
-            text=str(BOT_MESSAGES["error.no_ready_portals"]),
+            text=str(BOT_MESSAGES["no_ready_portals"]),
             reply_to_message_id=tg_message.message_id,
         )
         return
@@ -200,7 +200,7 @@ async def show_reading_submissions(update: Update, context: ContextTypes.DEFAULT
     submissions_list = format_reading_submission_list(
         portal,
         submissions,
-        list_header=str(BOT_MESSAGES["reading_submissions"]).title(),
+        list_header=str(BOT_MESSAGES["readings"]).title(),
     )
 
     bot_message = await context.bot.send_message(
