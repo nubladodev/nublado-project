@@ -4,6 +4,14 @@ from django.utils.translation import gettext_lazy as _
 # Example: There are no draft portals.
 NO_DRAFT_PORTALS = _("reading_portal.bot.no_draft_portals")
 
+# Translators: Message header when listing portals in the queue ready to be posted.
+# Example: Reading Portals:
+READY_PORTALS = _("reading_portal.bot.ready_reading_portals")
+
+# Translators: Message when there is no open portal in the chat.
+# Example: There is no open Reading Portal.
+NO_OPEN_PORTAL = _("reading_portal.bot.no_open_portal")
+
 # Translators: Message when there are no portals in the queue ready to be posted.
 # Example: There are no portals ready to be posted.
 NO_READY_PORTALS = _("reading_portal.bot.no_ready_portals")
@@ -41,18 +49,15 @@ READINGS = _("reading_portal.bot.readings")
 # Example: There are no readings. There are no reading submissions.
 NO_READINGS = _("reading_portal.bot.no_readings")
 
-# Translators: Message header when listing portals in the queue ready to be posted.
-# Example: Reading Portals:
-READING_PORTALS = _("reading_portal.bot.ready_reading_portals")
-
 BOT_MESSAGES = {
-    "no_draft_portals": NO_DRAFT_PORTALS,
-    "no_ready_portals": NO_READY_PORTALS,
     "error.review_no_pending_reading": ERROR_REVIEW_NO_PENDING_READING,
     "error.portal_not_found": ERROR_PORTAL_NOT_FOUND,
     "error.portal_not_ready": ERROR_PORTAL_NOT_READY,
+    "no_draft_portals": NO_DRAFT_PORTALS,
+    "no_ready_portals": NO_READY_PORTALS,
+    "no_open_portal": NO_OPEN_PORTAL,
     "reading_reviewed": READING_REVIEWED,
-    "ready_reading_portals": READING_PORTALS,
+    "ready_reading_portals": READY_PORTALS,
     "readings": READINGS,
     "no_readings": NO_READINGS,
     "pending_readings": PENDING_READINGS,

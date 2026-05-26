@@ -23,9 +23,20 @@ from ..bot_messages import BOT_MESSAGES
 logger = logging.getLogger("django")
 
 
-async def ready_portals(
-    update: Update, context: ContextTypes.DEFAULT_TYPE
-):
+# async def current_portal(update: Update, context: ContextTypes.DEFAULT_TYPE):
+#     tg_chat = update.effective_chat
+#     chat, created = await async_call(TelegramChat.objects.get_or_create_from_chat, tg_chat)
+
+#     # Get open portal.
+#     try:
+#         portal = await async_call(ReadingPortal.objects.get_open, chat=chat)
+#     except ReadingPortal.DoesNotExist:
+#         raise NoOpenPortal()
+
+#     return portal
+
+
+async def ready_portals(update: Update):
     """
     Return a list of ready Reading Portals.
     """
@@ -194,7 +205,6 @@ async def close_portal(
 
 async def edit_reading(
     update: Update,
-    context: ContextTypes.DEFAULT_TYPE,
     *,
     language: str,
     text: str

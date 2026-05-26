@@ -14,6 +14,7 @@ from django_telegram.utils.formatting import user_display_name
 from django_telegram.jobs import delete_message_job, schedule_message_cleanup
 
 from .services.portals import (
+    # current_portal,
     ready_portals,
     open_portal,
     close_portal,
@@ -34,11 +35,17 @@ from .bot_messages import BOT_MESSAGES
 OPEN_PORTAL_CALLBACK = "open_portal"
 
 
+# async def show_current_portal(update: Update, context: ContextTypes.DEFAULT_TYPE):
+#     tg_chat = update.effective_chat
+
+#     portal = await current_portal(update, context)
+
+
 async def show_ready_portals(update: Update, context: ContextTypes.DEFAULT_TYPE):
     tg_chat = update.effective_chat
     tg_message = update.effective_message
 
-    portals = await ready_portals(update, context)
+    portals = await ready_portals(update)
 
     if not portals:
         await context.bot.send_message(
@@ -281,7 +288,6 @@ async def handle_edit_reading(update: Update, context: ContextTypes.DEFAULT_TYPE
 
     reading = await edit_reading(
         update,
-        context,
         language=language,
         text=source_message.text,
     )
