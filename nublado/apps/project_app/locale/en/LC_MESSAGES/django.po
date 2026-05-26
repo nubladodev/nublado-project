@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-23 07:25+0000\n"
+"POT-Creation-Date: 2026-05-26 11:24+0000\n"
 "PO-Revision-Date: 2026-04-04 12:03-0700\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -270,27 +270,21 @@ msgstr "There are no portals to post."
 msgid "reading_portal.bot.error.no_ready_portals"
 msgstr "There are no portals ready to be posted."
 
-#. Translators: Message when there are no readings submissions pending review.
-#. Example: There are no pending readings. There are no pending reading submissions.
-#: nublado/apps/reading_portal/bot_messages.py:13
-msgid "reading_portal.bot.error.no_pending_readings"
-msgstr "There are no pending readings."
-
 #. Translators: Message when...
 #. Example: ...
-#: nublado/apps/reading_portal/bot_messages.py:17
+#: nublado/apps/reading_portal/bot_messages.py:13
 msgid "reading_portal.bot.error.review_no_pending_reading"
 msgstr ""
 
 #. Translators: Message when a portal isn't found.
 #. Example: Reading Portal not found.
-#: nublado/apps/reading_portal/bot_messages.py:21
+#: nublado/apps/reading_portal/bot_messages.py:17
 msgid "reading_portal.bot.error.portal_not_found"
 msgstr ""
 
 #. Translators: Message when a portal required to be ready but isn't.
 #. Example: Reading Portal not ready to be posted.
-#: nublado/apps/reading_portal/bot_messages.py:25
+#: nublado/apps/reading_portal/bot_messages.py:21
 #: nublado/apps/reading_portal/exceptions.py:20
 #, fuzzy
 #| msgid "reading_portal.bot.error.no_ready_portal"
@@ -300,30 +294,38 @@ msgstr "There are no portals to post."
 #. Translators: Message when a reading is reviewed by a user.
 #. {reviewer_name} = username of user who reviewed the reading.
 #. Example: Reviewed by @fooman.
-#: nublado/apps/reading_portal/bot_messages.py:30
+#: nublado/apps/reading_portal/bot_messages.py:26
 #, python-brace-format
 msgid "reading_portal.bot.reading_reviewed {reviewer_name}"
 msgstr "Reviewed by {reviewer_name}."
 
 #. Translators: Message header when listing pending reading submissions.
 #. Example: Pending Reading Submissions:
-#: nublado/apps/reading_portal/bot_messages.py:34
+#: nublado/apps/reading_portal/bot_messages.py:30
 msgid "reading_portal.bot.pending_readings"
 msgstr "pending readings"
 
+#. Translators: Message when there are no reading submissions pending review for the current Reading Portal pending review.
+#. Example: There are no pending readings. There are no pending reading submissions.
+#: nublado/apps/reading_portal/bot_messages.py:34
+msgid "reading_portal.bot.no_pending_readings"
+msgstr "There are no pending readings."
+
+#. Translators: Message when there are no reading submissions for the current Reading Portal.
+#. Example: There are no readings. There are no reading submissions.
+#: nublado/apps/reading_portal/bot_messages.py:38
+msgid "reading_portal.bot.no_readings"
+msgstr "There are no readings."
+
 #. Translators: Message header when listing portals in the queue ready to be posted.
 #. Example: Reading Portals:
-#: nublado/apps/reading_portal/bot_messages.py:38
+#: nublado/apps/reading_portal/bot_messages.py:42
 msgid "reading_portal.bot.ready_reading_portals"
 msgstr "reading portals"
 
-#: nublado/apps/reading_portal/bot_messages.py:50
+#: nublado/apps/reading_portal/bot_messages.py:53
 msgid "reading_portal.bot.reading_submissions"
 msgstr "reading submissions"
-
-#: nublado/apps/reading_portal/bot_messages.py:51
-msgid "reading_portal.bot.no_reading_submissions"
-msgstr "There are no reading submissions."
 
 #: nublado/apps/reading_portal/exceptions.py:7
 msgid "Reading Portal error"
@@ -452,6 +454,12 @@ msgstr ""
 #: nublado/apps/users/models.py:29
 msgid "label_is_admin"
 msgstr ""
+
+#~ msgid "reading_portal.bot.no_reading_submissions"
+#~ msgstr "There are no reading submissions."
+
+#~ msgid "reading_portal.bot.error.no_pending_readings"
+#~ msgstr "There are no pending readings."
 
 #~ msgid "common.monday"
 #~ msgstr "Monday"

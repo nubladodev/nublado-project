@@ -8,10 +8,6 @@ ERROR_NO_DRAFT_PORTALS = _("reading_portal.bot.error.no_draft_portals")
 # Example: There are no portals ready to be posted.
 ERROR_NO_READY_PORTALS = _("reading_portal.bot.error.no_ready_portals")
 
-# Translators: Message when there are no readings submissions pending review.
-# Example: There are no pending readings. There are no pending reading submissions.
-ERROR_NO_PENDING_READINGS = _("reading_portal.bot.error.no_pending_readings")
-
 # Translators: Message when... 
 # Example: ...
 ERROR_REVIEW_NO_PENDING_READING = _("reading_portal.bot.error.review_no_pending_reading")
@@ -33,6 +29,14 @@ READING_REVIEWED = _("reading_portal.bot.reading_reviewed {reviewer_name}")
 # Example: Pending Reading Submissions:
 PENDING_READINGS = _("reading_portal.bot.pending_readings")
 
+# Translators: Message when there are no reading submissions pending review for the current Reading Portal pending review.
+# Example: There are no pending readings. There are no pending reading submissions.
+NO_PENDING_READINGS = _("reading_portal.bot.no_pending_readings")
+
+# Translators: Message when there are no reading submissions for the current Reading Portal.
+# Example: There are no readings. There are no reading submissions.
+NO_READINGS = _("reading_portal.bot.no_readings")
+
 # Translators: Message header when listing portals in the queue ready to be posted.
 # Example: Reading Portals:
 READING_PORTALS = _("reading_portal.bot.ready_reading_portals")
@@ -40,7 +44,6 @@ READING_PORTALS = _("reading_portal.bot.ready_reading_portals")
 BOT_MESSAGES = {
     "error.no_draft_portals": ERROR_NO_DRAFT_PORTALS,
     "error.no_ready_portals": ERROR_NO_READY_PORTALS,
-    "error.no_pending_readings": ERROR_NO_PENDING_READINGS,
     "error.review_no_pending_reading": ERROR_REVIEW_NO_PENDING_READING,
     "error.portal_not_found": ERROR_PORTAL_NOT_FOUND,
     "error.portal_not_ready": ERROR_PORTAL_NOT_READY,
@@ -48,5 +51,6 @@ BOT_MESSAGES = {
     "pending_readings": PENDING_READINGS,
     "ready_reading_portals": READING_PORTALS,
     "reading_submissions": _("reading_portal.bot.reading_submissions"),
-    "no_reading_submissions": _("reading_portal.bot.no_reading_submissions")
+    "no_readings": NO_READINGS,
+    "no_pending_readings": NO_PENDING_READINGS,
 }
