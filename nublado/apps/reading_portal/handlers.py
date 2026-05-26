@@ -233,7 +233,7 @@ async def show_pending_readings(update: Update, context: ContextTypes.DEFAULT_TY
     if not submissions:
         await context.bot.send_message(
             chat_id=tg_chat.id,
-            text=str(BOT_MESSAGES["no_readings"]),
+            text=str(BOT_MESSAGES["no_pending_readings"]),
             reply_to_message_id=tg_message.message_id,
         )
         return
