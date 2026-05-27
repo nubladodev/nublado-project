@@ -9,7 +9,7 @@ from django_telegram.utils.async_utils import async_call
 
 from ..models import ReadingPortal, PortalReading, ReadingSubmission
 from ..exceptions import (
-    NoPortal,
+    NoCurrentPortal,
     NoPendingReading,
 )
 
@@ -129,7 +129,7 @@ async def review_reading(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
     if not portal:
-        raise NoPortal()
+        raise NoCurrentPortal()
 
     reading_message = tg_message.reply_to_message
 
@@ -178,7 +178,7 @@ async def portal_reading_submissions(
     )
 
     if not portal:
-        raise NoPortal()
+        raise NoCurrentPortal()
 
     readings_qs = (
         ReadingSubmission.objects.with_portal()

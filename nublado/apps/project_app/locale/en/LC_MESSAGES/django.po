@@ -286,10 +286,8 @@ msgstr ""
 #. Example: Reading Portal not ready to be posted.
 #: nublado/apps/reading_portal/bot_messages.py:21
 #: nublado/apps/reading_portal/exceptions.py:20
-#, fuzzy
-#| msgid "reading_portal.bot.error.no_ready_portal"
 msgid "reading_portal.bot.error.portal_not_ready"
-msgstr "There are no portals to post."
+msgstr "The portal is not ready to be opened."
 
 #. Translators: Message when a reading is reviewed by a user.
 #. {reviewer_name} = username of user who reviewed the reading.

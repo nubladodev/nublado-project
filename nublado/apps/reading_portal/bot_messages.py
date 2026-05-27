@@ -28,6 +28,10 @@ ERROR_PORTAL_NOT_FOUND = _("reading_portal.bot.error.portal_not_found")
 # Example: Reading Portal not ready to be posted.
 ERROR_PORTAL_NOT_READY = _("reading_portal.bot.error.portal_not_ready")
 
+# Translators: Message when an attempt is made to open an already open portal.
+# Example: The Reading Portal is already open.
+ERROR_PORTAL_ALREADY_OPEN = _("reading_portal.bot.error.portal_already_open")
+
 # Translators: Message when a reading is reviewed by a user.
 # {reviewer_name} = username of user who reviewed the reading.
 # Example: Reviewed by @fooman.
@@ -53,6 +57,7 @@ BOT_MESSAGES = {
     "error.review_no_pending_reading": ERROR_REVIEW_NO_PENDING_READING,
     "error.portal_not_found": ERROR_PORTAL_NOT_FOUND,
     "error.portal_not_ready": ERROR_PORTAL_NOT_READY,
+    "error.portal_already_open": ERROR_PORTAL_ALREADY_OPEN,
     "no_draft_portals": NO_DRAFT_PORTALS,
     "no_ready_portals": NO_READY_PORTALS,
     "no_open_portal": NO_OPEN_PORTAL,

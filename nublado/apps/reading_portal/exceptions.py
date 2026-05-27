@@ -1,5 +1,7 @@
 from django.utils.translation import gettext_lazy as _
 
+from .bot_messages import BOT_MESSAGES
+
 
 class ReadingPortalError(Exception):
     """Base exception for Reading Portal domain."""
@@ -17,42 +19,26 @@ class PortalNotReady(ReadingPortalError):
     """
     Exception raised when a portal is required to be ready, and it isn't.
     """
-    default_message = _("reading_portal.bot.error.portal_not_ready")
+    default_message = BOT_MESSAGES["error.portal_not_ready"]
 
 
 class PortalAlreadyOpen(ReadingPortalError):
-    default_message = _("reading_portal.bot.error.portal_already_open")
+    default_message = BOT_MESSAGES["error.portal_already_open"]
 
 
-class NoReplyToAudio(ReadingPortalError):
-    default_message = _("reading_portal.bot.error.no_reply_to_audio")
-
-
-class NoReplyToReading(ReadingPortalError):
-    default_message = _("reading_portal.bot.error.no_reply_to_reading")
-
-
-class NoAudioReplyToText(ReadingPortalError):
-    default_message = _("reading_portal.bot.error.no_reply_to_text")
-
-
-class NoPortal(ReadingPortalError):
-    default_message = _("reading_portal.bot.error.no_portal")
-
-
-class NoDraftPortal(ReadingPortalError):
-    default_message = _("reading_portal.bot.error.no_draft_portal")
+class NoCurrentPortal(ReadingPortalError):
+    default_message = BOT_MESSAGES["error.portal_not_found"]
 
 
 class NoReadyPortal(ReadingPortalError):
     """
-    Exception raised when there is no ready portal.
+    Exception raised when there is no ready portal to be open.
     """
-    default_message = _("reading_portal.bot.error.no_ready_portal")
+    default_message = BOT_MESSAGES["no_ready_portals"]
 
 
 class NoOpenPortal(ReadingPortalError):
-    default_message = _("reading_portal.bot.error.no_open_portal")
+    default_message = BOT_MESSAGES["no_open_portal"]
 
 
 class OpenPortalExists(ReadingPortalError):
