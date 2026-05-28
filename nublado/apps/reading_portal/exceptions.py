@@ -1,12 +1,8 @@
-from django.utils.translation import gettext_lazy as _
-
-from .bot_messages import BOT_MESSAGES
-
 
 class ReadingPortalError(Exception):
     """Base exception for Reading Portal domain."""
 
-    default_message = _("Reading Portal error")
+    default_message = "Reading Portal error."
 
     def __init__(self, message=None):
         self.message = message or self.default_message
@@ -19,43 +15,43 @@ class PortalNotReady(ReadingPortalError):
     """
     Exception raised when a portal is required to be ready, and it isn't.
     """
-    default_message = BOT_MESSAGES["error.portal_not_ready"]
+    default_message = "The portal isn't ready to be opened."
 
 
 class PortalAlreadyOpen(ReadingPortalError):
-    default_message = BOT_MESSAGES["error.portal_already_open"]
+    default_message = "The portal is already open."
 
 
 class NoCurrentPortal(ReadingPortalError):
-    default_message = BOT_MESSAGES["error.portal_not_found"]
+    default_message = "Portal not found."
 
 
 class NoReadyPortal(ReadingPortalError):
     """
     Exception raised when there is no ready portal to be open.
     """
-    default_message = BOT_MESSAGES["no_ready_portals"]
+    default_message = "There are no portals ready to be opened."
 
 
 class NoOpenPortal(ReadingPortalError):
-    default_message = BOT_MESSAGES["no_open_portal"]
+    default_message = "There is no open portal."
 
 
 class OpenPortalExists(ReadingPortalError):
-    default_message = _("reading_portal.bot.error.open_portal_exists")
+    default_message = "An open portal already exists."
 
 
 class EmptyPortal(ReadingPortalError):
-    default_message = _("reading_portal.bot.error.empty_portal")
+    default_message = "The portal is empty. It must have at least one reading."
 
 
 class NoPendingReading(ReadingPortalError):
-    default_message = _("reading_portal.bot.error.no_pending_reading")
+    default_message = "Therare no pending readings."
 
 
 class NoExistingReading(ReadingPortalError):
-    default_message = _("reading_portal.bot.error.no_existing_reading")
+    default_message = "The reading doesn't exist."
 
 
 class NoReadingMessageId(ReadingPortalError):
-    default_message = _("reading_portal.bot.error.no_reading_message_id")
+    default_message = "No reading message id found."
