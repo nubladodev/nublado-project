@@ -46,12 +46,8 @@ class EmptyPortal(ReadingPortalError):
 
 
 class NoPendingReading(ReadingPortalError):
-    default_message = "Therare no pending readings."
-
-
-class NoExistingReading(ReadingPortalError):
-    default_message = "The reading doesn't exist."
+    default_message = "There are no pending readings."
 
 
 class NoReadingMessageId(ReadingPortalError):
-    default_message = "No reading message id found."
+    default_message = "The reading doesn't have a message id."

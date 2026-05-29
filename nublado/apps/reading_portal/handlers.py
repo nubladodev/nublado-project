@@ -11,7 +11,7 @@ from telegram.ext import ContextTypes
 
 from django_telegram.utils.telegram import delete_command
 from django_telegram.utils.formatting import user_display_name
-from django_telegram.jobs import delete_message_job, schedule_message_cleanup
+from django_telegram.jobs import schedule_message_cleanup
 
 from .services.portals import (
     # current_portal,
@@ -291,6 +291,9 @@ async def handle_edit_reading(update: Update, context: ContextTypes.DEFAULT_TYPE
         language=language,
         text=source_message.text,
     )
+
+    if not reading:
+        return
 
     reading_text = format_edited_reading(reading)
 

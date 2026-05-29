@@ -13,7 +13,6 @@ from ..exceptions import (
     NoReadyPortal,
     NoOpenPortal,
     OpenPortalExists,
-    NoExistingReading,
     NoReadingMessageId,
     ReadingPortalError,
 )
@@ -213,7 +212,7 @@ async def edit_reading(
 
     chat, created = await async_call(TelegramChat.objects.get_or_create_from_chat, tg_chat)
 
-    # Get open portal.
+    # Get open portal in chat.
     try:
         portal = await async_call(ReadingPortal.objects.get_open, chat=chat)
     except ReadingPortal.DoesNotExist:
@@ -226,7 +225,7 @@ async def edit_reading(
             language=language,
         )
     except PortalReading.DoesNotExist:
-        raise NoExistingReading()
+        return None
 
     if not reading.message_id:
         raise NoReadingMessageId()

@@ -1,5 +1,4 @@
 from telegram import Update, Message
-from telegram.ext import ContextTypes
 from telegram.error import BadRequest, Forbidden
 
 
