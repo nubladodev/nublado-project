@@ -29,4 +29,5 @@ EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-DJANGO_TELEGRAM_BOT_MODE = BOT_MODE_WEBHOOK
+# django-nublado-telegram settings
+DJANGO_NUBLADO_TELEGRAM_BOT["BOT_MODE"] = "webhook"

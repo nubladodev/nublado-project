@@ -6,8 +6,8 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 from django_nublado_core.models import TimestampModel, LanguageModel
-from django_telegram.models import TelegramChat, TelegramGroupMember
-from django_telegram.utils.async_utils import async_call
+from django_nublado_telegram.models import TelegramChat, TelegramGroupMember
+from django_nublado_telegram.utils.async_utils import async_call
 
 from .managers import (
     ReadingPortalManager,

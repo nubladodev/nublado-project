@@ -1,5 +1,5 @@
-from django_telegram.models import TelegramGroupMember
-from django_telegram.utils.async_utils import async_call
+from django_nublado_telegram.models import TelegramGroupMember
+from django_nublado_telegram.utils.async_utils import async_call
 
 
 async def transfer_points(tg_chat, tg_member_sender, tg_member_receiver, num_points):

@@ -2,8 +2,8 @@ from telegram import Update
 from telegram.ext import ContextTypes
 from telegram.error import BadRequest
 
-from django_telegram.models import TelegramChat
-from django_telegram.utils.async_utils import async_call
+from django_nublado_telegram.models import TelegramChat
+from django_nublado_telegram.utils.async_utils import async_call
 
 
 async def register_chat(update: Update, context: ContextTypes.DEFAULT_TYPE):

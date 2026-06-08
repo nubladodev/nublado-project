@@ -1,19 +1,20 @@
 from telegram.ext import CommandHandler, MessageHandler, CallbackQueryHandler, filters
 
-from django_telegram.policies import (
-    BotOwnerOnly,
+from django_nublado_telegram.policies import (
     GroupOnly,
     PrivateOnly,
     GroupOwnerOnly,
     with_policies,
 )
-from django_telegram.decorators import with_language
-from django_telegram.constants import HANDLER_GROUP, MIDDLEWARE_GROUP
+from django_nublado_telegram.decorators import with_language
+from django_nublado_telegram.constants import HANDLER_GROUP, MIDDLEWARE_GROUP
+
+from ..policies import BotOwnerOnly
 
 
 def register_handlers(app):
     # import modules that use models here to avoid "app not ready" errors.
-    from django_telegram.handlers import LanguageHandler
+    from django_nublado_telegram.handlers import LanguageHandler
     from reading_portal.handlers import (
         show_ready_portals,
         handle_open_portal,

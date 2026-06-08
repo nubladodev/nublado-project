@@ -3,7 +3,7 @@ from telegram.ext import ContextTypes, filters
 
 from django.utils.translation import gettext_lazy as _
 
-from django_telegram.utils.formatting import user_display_name
+from django_nublado_telegram.utils.formatting import user_display_name
 
 from .services import transfer_points
 from .utils import extract_points

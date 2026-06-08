@@ -1,6 +1,6 @@
 from django.db import models
 
-from django_telegram.models import TelegramChat
+from django_nublado_telegram.models import TelegramChat
 
 
 class ReadingPortalQuerySet(models.QuerySet):

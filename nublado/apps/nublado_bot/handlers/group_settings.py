@@ -4,11 +4,11 @@ from telegram.ext import ContextTypes
 from django.utils.translation import override, gettext_lazy as _
 from django.conf import settings
 
-from django_telegram.utils.language import (
+from django_nublado_telegram.utils.language import (
     get_context_language,
     normalize_language_code,
 )
-from django_telegram.services.language import set_chat_language
+from django_nublado_telegram.services.language import set_chat_language
 
 from ..bot_messages import BOT_MESSAGES
 

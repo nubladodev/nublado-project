@@ -1,7 +1,7 @@
 from telegram import Update, ReactionTypeEmoji
 from telegram.ext import ContextTypes, filters
 
-from django_telegram.jobs import delete_message_job
+from django_nublado_telegram.jobs import delete_message_job
 from .utils import normalize_key
 from .services import save_repo_item_service, get_repo_item_service, list_repo_items_service
 from .bot_messages import BOT_MESSAGES

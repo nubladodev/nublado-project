@@ -38,55 +38,55 @@ msgstr "The note {key} has been saved to the repo."
 msgid "chat_notes.bot.error.default"
 msgstr ""
 
-#: nublado/apps/django_telegram/bot_messages.py:4
-msgid "django_telegram.bot.error.group_only"
+#: nublado/apps/django_nublado_telegram/bot_messages.py:4
+msgid "django_nublado_telegram.bot.error.group_only"
 msgstr ""
 
-#: nublado/apps/django_telegram/bot_messages.py:5
-msgid "django_telegram.bot.error.private_only"
+#: nublado/apps/django_nublado_telegram/bot_messages.py:5
+msgid "django_nublado_telegram.bot.error.private_only"
 msgstr ""
 
-#: nublado/apps/django_telegram/bot_messages.py:6
-msgid "django_telegram.bot.error.admin_access"
+#: nublado/apps/django_nublado_telegram/bot_messages.py:6
+msgid "django_nublado_telegram.bot.error.admin_access"
 msgstr ""
 
-#: nublado/apps/django_telegram/bot_messages.py:7
-msgid "django_telegram.bot.error.group_owner_access"
+#: nublado/apps/django_nublado_telegram/bot_messages.py:7
+msgid "django_nublado_telegram.bot.error.group_owner_access"
 msgstr ""
 
-#: nublado/apps/django_telegram/bot_messages.py:8
-msgid "django_telegram.bot.error.bot_owner_access"
+#: nublado/apps/django_nublado_telegram/bot_messages.py:8
+msgid "django_nublado_telegram.bot.error.bot_owner_access"
 msgstr ""
 
-#: nublado/apps/django_telegram/models.py:78
+#: nublado/apps/django_nublado_telegram/models.py:78
 msgid "Unknown"
 msgstr ""
 
-#: nublado/apps/django_telegram/models.py:79
+#: nublado/apps/django_nublado_telegram/models.py:79
 msgid "private"
 msgstr ""
 
-#: nublado/apps/django_telegram/models.py:80
+#: nublado/apps/django_nublado_telegram/models.py:80
 msgid "group"
 msgstr ""
 
-#: nublado/apps/django_telegram/models.py:81
+#: nublado/apps/django_nublado_telegram/models.py:81
 msgid "supergroup"
 msgstr ""
 
-#: nublado/apps/django_telegram/models.py:82
+#: nublado/apps/django_nublado_telegram/models.py:82
 msgid "channel"
 msgstr ""
 
-#: nublado/apps/django_telegram/models.py:139
+#: nublado/apps/django_nublado_telegram/models.py:139
 msgid "member"
 msgstr ""
 
-#: nublado/apps/django_telegram/models.py:140
+#: nublado/apps/django_nublado_telegram/models.py:140
 msgid "admin"
 msgstr ""
 
-#: nublado/apps/django_telegram/models.py:141
+#: nublado/apps/django_nublado_telegram/models.py:141
 msgid "owner"
 msgstr ""
 

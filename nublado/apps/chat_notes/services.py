@@ -3,8 +3,8 @@ from telegram.ext import ContextTypes
 
 from django.db.models import Q
 
-from django_telegram.models import TelegramChat
-from django_telegram.utils.async_utils import async_call
+from django_nublado_telegram.models import TelegramChat
+from django_nublado_telegram.utils.async_utils import async_call
 
 from .models import GroupRepo, RepoItem
 from .utils import normalize_key

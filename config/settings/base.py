@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_nublado_core",
     "users.apps.UserConfig",
-    "django_telegram.apps.DjangoTelegramConfig",
+    "django_nublado_telegram",
     "reading_portal.apps.ReadingPortalConfig",
     "group_points.apps.GroupPointsConfig",
     "chat_notes.apps.ChatNotesConfig",
@@ -113,10 +113,6 @@ LANGUAGES = [
 # Variations of LANGUAGES in different data types.
 LANGUAGES_DICT = dict(LANGUAGES)
 
-# Language Enums
-# languages_members = [(key.upper(), (key, label)) for key, label in LANGUAGES]
-# LANGUAGES_ENUM = models.TextChoices("LanguagesEnum", languages_members)
-
 LOCALE_PATHS = (APPS_ROOT / "project_app" / "locale",)
 
 TIME_ZONE = "UTC"
@@ -172,83 +168,32 @@ LOGGING = {
     },
 }
 
-# Telegram bot stuff
-BOT_MODE_WEBHOOK = "webhook"
-BOT_MODE_POLLING = "polling"
+# django-nublado-telegram settings
+DJANGO_NUBLADO_TELEGRAM_BOT = {
+    "BOT_MODE": "polling",
+}
 
-DJANGO_TELEGRAM_BOT_MODE = BOT_MODE_WEBHOOK
-
-NUBLADO_BOT = "nublado"
-NUBLADO_BOT_TOKEN = get_env_variable("NUBLADO_BOT_TOKEN")
-NUBLADO_BOT_OWNER_ID = 8009983006
-NUBLADO_BOT_WEBHOOK_URL = "https://nublado-project.onrender.com/bot/nublado/webhook/"
-NUBLADO_BOT_WEBHOOK_SECRET = "supersecretnubladowebhooktoken"
-NUBLADO_REPO_ID = get_env_variable("NUBLADO_REPO_ID")
-BOTS = {
-    NUBLADO_BOT: (
-        NUBLADO_BOT_TOKEN,
-        NUBLADO_BOT_WEBHOOK_URL,
-        NUBLADO_BOT_WEBHOOK_SECRET,
-    ),
+NUBLADO_BOT = {
+    "NAME": "nublado",
+    "TOKEN": get_env_variable("NUBLADO_BOT_TOKEN"),
+    "BOT_OWNER_ID": 8009983006,
+    "WEBHOOK_URL": "https://nublado-project.onrender.com/bot/nublado/webhook/",
+    "WEBHOOK_SECRET": "supersecretnubladowebhooktoken",
+    "REPO_ID": get_env_variable("NUBLADO_REPO_ID")
 }
 
 # Third-party settings
 JAZZMIN_SETTINGS = {
-    # title of the window (Will default to current_admin_site.site_title if absent or None)
     "site_title": "Nublado Admin",
-    # Title on the login screen (19 chars max) (defaults to current_admin_site.site_header if absent or None)
     "site_header": "Nublado",
-    # Title on the brand (19 chars max) (defaults to current_admin_site.site_header if absent or None)
     "site_brand": "Nublado",
-    # Logo to use for your site, must be present in static files, used for brand on top left
     "site_logo": "images/nublado-logo.png",
-    # CSS classes that are applied to the logo above
     "site_logo_classes": "img-circle",
-    # Relative path to a favicon for your site, will default to site_logo if absent (ideally 32x32 px)
     "site_icon": None,
-    # Welcome text on the login screen
     "welcome_sign": "Welcome to Nublado",
-    # Copyright on the footer
     "copyright": "Nublado",
-    # List of model admins to search from the search bar, search bar omitted if excluded
-    # If you want to use a single search field you dont need to use a list, you can use a simple string
-    "search_model": ["auth.User", "auth.Group"],
-    # Field name on user model that contains avatar ImageField/URLField/Charfield or a callable that receives the user
-    "user_avatar": None,
-    # Links to put along the top menu
-    "topmenu_links": [
-        # Url that gets reversed (Permissions can be added)
-        {"name": "Home", "url": "admin:index", "permissions": ["auth.view_user"]},
-        # model admin to link to (Permissions checked against model)
-        {"model": "auth.User"},
-    ],
-    # Additional links to include in the user menu on the top right ("app" url type is not allowed)
     "usermenu_links": [
         {"model": "auth.user"},
     ],
-    # Whether to display the side menu
-    "show_sidebar": True,
-    # Whether to aut expand the menu
-    "navigation_expanded": True,
-    # Hide these apps when generating side menu e.g (auth)
-    "hide_apps": [],
-    # Hide these models when generating side menu (e.g auth.user)
-    "hide_models": [],
-    "icons": {
-        "auth": "fas fa-users-cog",
-        "auth.user": "fas fa-user",
-        "auth.Group": "fas fa-users",
-    },
-    # Icons that are used when one is not manually specified
-    "default_icon_parents": "fas fa-chevron-circle-right",
-    "default_icon_children": "fas fa-circle",
-    # Use modals instead of popups
-    "related_modal_active": False,
-    # Whether to link font from fonts.googleapis.com (use custom_css to supply font otherwise)
-    "use_google_fonts_cdn": True,
-    # Whether to show the UI customizer on the sidebar
-    "show_ui_builder": False,
     "custom_css": "css/jazmin_admin_override.css",
 }
-
-JAZZMIN_UI_TWEAKS = {}

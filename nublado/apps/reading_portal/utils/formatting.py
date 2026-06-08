@@ -3,7 +3,7 @@ from collections import defaultdict
 
 from django.utils.timezone import now
 
-from django_telegram.utils.helpers import message_link
+from django_nublado_telegram.utils.helpers import message_link
 from ..models import ReadingPortal, PortalReading, ReadingSubmission
 
 

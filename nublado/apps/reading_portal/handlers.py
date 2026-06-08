@@ -9,9 +9,9 @@ from telegram import (
 from telegram.error import BadRequest
 from telegram.ext import ContextTypes
 
-from django_telegram.utils.telegram import delete_command
-from django_telegram.utils.formatting import user_display_name
-from django_telegram.jobs import schedule_message_cleanup
+from django_nublado_telegram.utils.telegram import delete_command
+from django_nublado_telegram.utils.formatting import user_display_name
+from django_nublado_telegram.jobs import schedule_message_cleanup
 
 from .services.portals import (
     # current_portal,
