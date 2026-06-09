@@ -91,7 +91,7 @@ async def open_portal(
             )
             return
     else:
-        # If no slug is provided, ger the next ready Reading Portal in the queue.
+        # If no slug is provided, get the next ready Reading Portal in the queue.
         portal = await (
             ReadingPortal.objects.ready()
             .for_chat(chat)

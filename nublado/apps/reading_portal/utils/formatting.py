@@ -18,7 +18,10 @@ def format_reading(reading: PortalReading):
     language = reading.language.upper()
     header = f"🌧 <b>Reading: {language}</b>"
     
-    return f"{header}\n\n{escape(reading.message_text)}"
+    # Consider escaping reading text.
+    reading_message = f"{header}\n\n{reading.message_text}"
+
+    return reading_message
 
 
 def format_edited_reading(reading: PortalReading):
