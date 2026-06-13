@@ -1,4 +1,3 @@
-from html import escape
 from collections import defaultdict
 
 from django.utils.timezone import now
