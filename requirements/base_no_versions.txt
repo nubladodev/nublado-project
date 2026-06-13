@@ -14,6 +14,7 @@ django-debug-toolbar
 django-import-export
 django-jazzmin
 django-nublado-core
+django-nublado-telegram
 djangorestframework
 et_xmlfile
 exceptiongroup
