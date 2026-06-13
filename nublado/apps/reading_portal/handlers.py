@@ -226,7 +226,7 @@ async def show_reading_submissions(update: Update, context: ContextTypes.DEFAULT
 async def show_pending_readings(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """
     Display the pending reading submissions for the
-    currently open Reading Portal.
+    current portal.
     """
     tg_chat = update.effective_chat
     tg_message = update.effective_message
@@ -238,10 +238,15 @@ async def show_pending_readings(update: Update, context: ContextTypes.DEFAULT_TY
     )
 
     if not submissions:
-        await context.bot.send_message(
+        bot_message = await context.bot.send_message(
             chat_id=tg_chat.id,
             text=str(BOT_MESSAGES["no_pending_readings"]),
             reply_to_message_id=tg_message.message_id,
+        )
+        schedule_message_cleanup(
+            update,
+            context,
+            bot_message_ids=[bot_message.message_id],
         )
         return
 
@@ -256,7 +261,6 @@ async def show_pending_readings(update: Update, context: ContextTypes.DEFAULT_TY
         text="\n".join(submissions_list),
     )
   
-    # Chat cleanup.
     schedule_message_cleanup(
         update,
         context,

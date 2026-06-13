@@ -163,8 +163,10 @@ async def portal_reading_submissions(
     pending_only: bool = False,
 ):
     """
-    Return current portal (currently open or last closed) and a list of its
+    Return the current portal and a list of its
     reading submissions.
+
+    pending_only: If True, only return pending reading submissions.
     """
     tg_chat = update.effective_chat
 
