@@ -9,8 +9,11 @@ from .services import transfer_points
 from .utils import extract_points
 from .exceptions import BotReceiverError, SelfReceiverError
 from .bot_messages import BOT_MESSAGES
-from .constants import POINT_SYMBOL, POINTS_MAP
+from .conf.app_settings import app_settings as points_settings
 
+
+POINT_SYMBOL = points_settings.POINT_SYMBOL
+POINTS_MAP = points_settings.POINTS_MAP
 POINT_FILTER = (
     filters.TEXT
     & filters.ChatType.GROUPS

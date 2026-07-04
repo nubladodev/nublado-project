@@ -1,6 +1,3 @@
-import re
-
-POINT_SYMBOL = re.escape("+")
 
 POINTS_MAP = {
     2: 1,
