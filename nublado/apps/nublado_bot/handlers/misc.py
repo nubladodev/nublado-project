@@ -1,3 +1,5 @@
+import time
+
 from telegram import Update
 from telegram.ext import ContextTypes
 
@@ -21,5 +23,15 @@ async def hello(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(
         chat_id=tg_chat.id,
         text=str(BOT_MESSAGES["hello"]),
+    )
+
+
+async def unix_timestamp(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    tg_chat = update.effective_chat
+    epoch_seconds = int(time.time())
+
+    await context.bot.send_message(
+        chat_id=tg_chat.id,
+        text=str(epoch_seconds)
     )
 

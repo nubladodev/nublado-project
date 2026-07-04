@@ -34,7 +34,7 @@ def register_handlers(app):
         HASHTAG_FILTER,
     )
     from .group_settings import set_bot_language
-    from .misc import start, hello
+    from .misc import start, hello, unix_timestamp
     from .admin import list_groups, broadcast_message, register_chat
     from .error_handler import error_handler
 
@@ -82,6 +82,14 @@ def register_handlers(app):
         CommandHandler(
             "hello",
             with_policies(GroupOnly)(with_language(hello)),
+        ),
+        group=HANDLER_GROUP,
+    )
+
+    app.add_handler(
+        CommandHandler(
+            "unix_timestamp",
+            with_policies(GroupOnly)(with_language(unix_timestamp)),
         ),
         group=HANDLER_GROUP,
     )
