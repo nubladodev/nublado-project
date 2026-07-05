@@ -13,7 +13,7 @@ from .conf.app_settings import app_settings as points_settings
 
 
 POINT_SYMBOL = points_settings.POINT_SYMBOL
-POINTS_MAP = points_settings.POINTS_MAP
+POINTS_MAP = points_settings.SYMBOL_COUNT_TO_POINTS
 POINT_FILTER = (
     filters.TEXT
     & filters.ChatType.GROUPS

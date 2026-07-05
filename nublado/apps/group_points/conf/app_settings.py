@@ -12,7 +12,7 @@ SETTINGS_DICT_NAME = "GROUP_POINTS"
 # The app settings default values.
 SETTINGS_DEFAULTS = {
     "POINT_SYMBOL": re.escape("+"),
-    "POINTS_MAP": {
+    "SYMBOL_COUNT_TO_POINTS": {
         2: 1,
         3: 2,
         4: 4,
@@ -23,7 +23,7 @@ SETTINGS_DEFAULTS = {
 @dataclass(frozen=True)
 class AppData:
     POINT_SYMBOL: str
-    POINTS_MAP: dict
+    SYMBOL_COUNT_TO_POINTS: dict
 
 
 app_settings = AppSettings(
