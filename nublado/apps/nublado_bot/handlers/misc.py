@@ -30,7 +30,7 @@ async def unix_timestamp(update: Update, context: ContextTypes.DEFAULT_TYPE):
     tg_chat = update.effective_chat
     tg_message = update.effective_message
     epoch_seconds = int(time.time())
-    bot_message = f"Unix timestamp: {epoch_seconds}"
+    bot_message = f"<code>{epoch_seconds}</code>"
 
     await context.bot.send_message(
         chat_id=tg_chat.id,
