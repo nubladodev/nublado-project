@@ -184,7 +184,7 @@ NUBLADO_BOT = {
 }
 
 GROUP_POINTS = {
-    "POINT_SYMBOL": re.escape("@"),
+    "POINT_SYMBOL": re.escape("+"),
     "SYMBOL_COUNT_TO_POINTS": {
         2: 1,
         3: 2,
