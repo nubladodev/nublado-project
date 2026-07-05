@@ -1,5 +1,6 @@
 import os
 import sys
+import re
 from pathlib import Path
 
 from django.utils.translation import gettext_noop as _
@@ -180,6 +181,15 @@ NUBLADO_BOT = {
     "WEBHOOK_URL": "https://nublado-project.onrender.com/bot/nublado/webhook/",
     "WEBHOOK_SECRET": "supersecretnubladowebhooktoken",
     "REPO_ID": get_env_variable("NUBLADO_REPO_ID")
+}
+
+GROUP_POINTS = {
+    "POINT_SYMBOL": re.escape("@"),
+    "SYMBOL_COUNT_TO_POINTS": {
+        2: 1,
+        3: 2,
+        4: 4,
+    },
 }
 
 # Third-party settings

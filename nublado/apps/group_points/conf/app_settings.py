@@ -8,7 +8,6 @@ from django_nublado_core.conf.base import AppSettings
 # The app's settings dict name
 SETTINGS_DICT_NAME = "GROUP_POINTS"
 
-
 # The app settings default values.
 SETTINGS_DEFAULTS = {
     "POINT_SYMBOL": re.escape("+"),
