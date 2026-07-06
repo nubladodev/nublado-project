@@ -17,7 +17,9 @@ from ..exceptions import (
     ReadingPortalError,
 )
 from ..utils.formatting import format_portal_intro, format_portal_closed, format_reading
-from ..bot_messages import BOT_MESSAGES
+from ..bot_messages import (
+    ERROR_PORTAL_NOT_FOUND,
+)
 
 logger = logging.getLogger("django")
 
@@ -86,7 +88,7 @@ async def open_portal(
         except ReadingPortal.DoesNotExist:
             await context.bot.send_message(
                 chat_id=tg_chat.id,
-                text=str(BOT_MESSAGES["error.portal_not_found"]),
+                text=str(ERROR_PORTAL_NOT_FOUND),
                 reply_to_message_id=tg_message.message_id,
             )
             return

@@ -22,12 +22,3 @@ ERROR_LANGUAGE_ACTIVE = _("nublado.bot.error.language_active {language}")
 # {language_keys} = a list of the supported language keys (e.g., en, es, de).
 # Example: Invalid language key. Valid language keys are [en, es, de].
 ERROR_INVALID_LANGUAGE = _("nublado.bot.error.invalid_language: {language_keys}")
-
-BOT_MESSAGES = {
-    "start": START,
-    "hello": HELLO,
-    # Group settings
-    "language_set": LANGUAGE_SET,
-    "error.language_active": ERROR_LANGUAGE_ACTIVE,
-    "error.invalid_language": ERROR_INVALID_LANGUAGE,
-}

@@ -1,7 +1,5 @@
 from django.utils.translation import gettext_lazy as _
 
-#from .bot_messages import BOT_MESSAGES
-
 
 class ChatNotesError(Exception):
     """Base exception for Group Points domain."""

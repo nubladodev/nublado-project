@@ -30,7 +30,15 @@ from .utils.formatting import (
     format_edited_reading,
     format_reading_submission_list,
 )
-from .bot_messages import BOT_MESSAGES
+from .bot_messages import (
+    READY_PORTALS,
+    NO_READY_PORTALS,
+    READING_REVIEWED,
+    READINGS,
+    NO_READINGS,
+    PENDING_READINGS,
+    NO_PENDING_READINGS,
+)
 
 OPEN_PORTAL_CALLBACK = "open_portal"
 
@@ -50,12 +58,12 @@ async def show_ready_portals(update: Update, context: ContextTypes.DEFAULT_TYPE)
     if not portals:
         await context.bot.send_message(
             chat_id=tg_chat.id,
-            text=str(BOT_MESSAGES["no_ready_portals"]),
+            text=str(NO_READY_PORTALS),
             reply_to_message_id=tg_message.message_id,
         )
         return
 
-    message_header = BOT_MESSAGES["ready_reading_portals"]
+    message_header = READY_PORTALS
     buttons = [
         [
             InlineKeyboardButton(
@@ -161,7 +169,7 @@ async def handle_review_reading(update: Update, context: ContextTypes.DEFAULT_TY
         reaction=[ReactionTypeEmoji("💯")],
     )
 
-    bot_message = BOT_MESSAGES["reading_reviewed"].format(
+    bot_message = READING_REVIEWED.format(
         reviewer_name=user_display_name(tg_user)
     )
 
@@ -199,7 +207,7 @@ async def show_reading_submissions(update: Update, context: ContextTypes.DEFAULT
     if not submissions:
         await context.bot.send_message(
             chat_id=tg_chat.id,
-            text=str(BOT_MESSAGES["no_readings"]),
+            text=str(NO_READINGS),
             reply_to_message_id=tg_message.message_id,
         )
         return
@@ -207,7 +215,7 @@ async def show_reading_submissions(update: Update, context: ContextTypes.DEFAULT
     submissions_list = format_reading_submission_list(
         portal,
         submissions,
-        list_header=str(BOT_MESSAGES["readings"]).title(),
+        list_header=str(READINGS).title(),
     )
 
     bot_message = await context.bot.send_message(
@@ -240,7 +248,7 @@ async def show_pending_readings(update: Update, context: ContextTypes.DEFAULT_TY
     if not submissions:
         bot_message = await context.bot.send_message(
             chat_id=tg_chat.id,
-            text=str(BOT_MESSAGES["no_pending_readings"]),
+            text=str(NO_PENDING_READINGS),
             reply_to_message_id=tg_message.message_id,
         )
         schedule_message_cleanup(
@@ -253,7 +261,7 @@ async def show_pending_readings(update: Update, context: ContextTypes.DEFAULT_TY
     submissions_list = format_reading_submission_list(
         portal,
         submissions,
-        list_header=str(BOT_MESSAGES["pending_readings"]).title(),
+        list_header=str(PENDING_READINGS).title(),
     )
 
     bot_message = await context.bot.send_message(

@@ -2,9 +2,10 @@ from telegram import Update, ReactionTypeEmoji
 from telegram.ext import ContextTypes, filters
 
 from django_nublado_telegram.jobs import delete_message_job
+
 from .utils import normalize_key
 from .services import save_repo_item_service, get_repo_item_service, list_repo_items_service
-from .bot_messages import BOT_MESSAGES
+from .bot_messages import NOTE_SAVED
 
 
 HASHTAG_FILTER = filters.TEXT & filters.Regex(r"^#\w+$")
@@ -27,7 +28,7 @@ async def save_repo_item(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     repo_item = await save_repo_item_service(update, context, key, replied_to.message_id)
 
-    bot_message = BOT_MESSAGES["note_saved"].format(key=key)
+    bot_message = NOTE_SAVED.format(key=key)
 
     await context.bot.send_message(
         chat_id=tg_chat.id,

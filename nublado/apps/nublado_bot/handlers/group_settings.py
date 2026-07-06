@@ -10,7 +10,11 @@ from django_nublado_telegram.utils.language import (
 )
 from django_nublado_telegram.services.language import set_chat_language
 
-from ..bot_messages import BOT_MESSAGES
+from ..bot_messages import (
+    LANGUAGE_SET,
+    ERROR_INVALID_LANGUAGE,
+    ERROR_LANGUAGE_ACTIVE,
+)
 
 
 async def set_bot_language(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -27,7 +31,7 @@ async def set_bot_language(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # Check if language_code is in acceptable language codes.
     if not language_code:
         keys = list(settings.LANGUAGES_DICT.keys())
-        bot_message = BOT_MESSAGES["error.invalid_language"].format(language_keys=keys)
+        bot_message = ERROR_INVALID_LANGUAGE.format(language_keys=keys)
         await context.bot.send_message(
             chat_id=tg_chat.id,
             text=str(bot_message),
@@ -38,7 +42,7 @@ async def set_bot_language(update: Update, context: ContextTypes.DEFAULT_TYPE):
     current_language = get_context_language(context)
 
     if language_code == current_language:
-        bot_message = BOT_MESSAGES["error.language_active"].format(
+        bot_message = ERROR_LANGUAGE_ACTIVE.format(
             language=_(settings.LANGUAGES_DICT[language_code])
         )
         await context.bot.send_message(
@@ -53,7 +57,7 @@ async def set_bot_language(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await set_chat_language(update, context, language_code)
 
     with override(language_code):
-        bot_message = BOT_MESSAGES["language_set"].format(
+        bot_message = LANGUAGE_SET.format(
             language=_(settings.LANGUAGES_DICT[language_code])
         )
         await context.bot.send_message(
