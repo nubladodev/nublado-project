@@ -612,15 +612,3 @@ msgstr ""
 #, python-brace-format
 #~ msgid "bot.message.note_not_in_repo {note_tag}"
 #~ msgstr "The content for the note *{note_tag}* was not found in the repo."
-
-#~ msgid "bot.point_name"
-#~ msgstr "point"
-
-#~ msgid "bot.points_name"
-#~ msgstr "points"
-
-#~ msgid "bot.orchard.point_name"
-#~ msgstr "cherry"
-
-#~ msgid "bot.orchard.points_name"
-#~ msgstr "cherries"

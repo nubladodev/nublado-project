@@ -10,7 +10,7 @@ from django_nublado_telegram.utils.formatting import user_display_name
 from .services import transfer_points
 from .utils import extract_points
 from .exceptions import BotReceiverError, SelfReceiverError
-from .bot_messages import BOT_MESSAGES
+from .bot_messages import GIVE_POINT, GIVE_POINTS
 from .conf.app_settings import app_settings as points_settings
 
 
@@ -72,7 +72,7 @@ async def give_points(update: Update, context: ContextTypes.DEFAULT_TYPE):
     receiver_name = user_display_name(tg_receiver)
 
     if num_points > 1:
-        bot_message = BOT_MESSAGES["give_points"].format(
+        bot_message = GIVE_POINTS.format(
             sender_name=sender_name,
             sender_points=sender_member.points,
             num_points=num_points,
@@ -86,7 +86,7 @@ async def give_points(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_to_message_id=tg_message.message_id,
         )
     else:
-        bot_message = BOT_MESSAGES["give_point"].format(
+        bot_message = GIVE_POINT.format(
             sender_name=sender_name,
             sender_points=sender_member.points,
             points_name=_(POINT_NAME),

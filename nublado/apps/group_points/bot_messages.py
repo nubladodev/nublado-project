@@ -54,13 +54,3 @@ ERROR_NO_GIVE_POINTS_SELF = _("group_points.bot.error.no_give_points_self {point
 # Example: You can't take karma points from yourself.
 ERROR_NO_TAKE_POINTS_SELF = _("group_points.bot.error.no_take_points_self {points_name}")
 
-BOT_MESSAGES = {
-    "error.no_give_points_bot": ERROR_NO_GIVE_POINTS_BOT,
-    "error.no_take_points_bot": ERROR_NO_TAKE_POINTS_BOT,
-    "error.no_give_points_self": ERROR_NO_GIVE_POINTS_SELF,
-    "error.no_take_points_self": ERROR_NO_TAKE_POINTS_SELF,
-    "give_point": GIVE_POINT,
-    "give_points": GIVE_POINTS,
-    "take_point": TAKE_POINT,
-    "take_points": TAKE_POINTS,
-}

@@ -1,6 +1,9 @@
 from django.utils.translation import gettext_lazy as _
 
-from .bot_messages import BOT_MESSAGES
+from .bot_messages import (
+    ERROR_NO_GIVE_POINTS_BOT,
+    ERROR_NO_GIVE_POINTS_SELF,
+)
 
 
 class GroupPointsError(Exception):
@@ -20,9 +23,9 @@ class GroupPointsError(Exception):
 
 class BotReceiverError(GroupPointsError):
     # placeholder: points_name
-    default_message = BOT_MESSAGES["error.no_give_points_bot"]
+    default_message = ERROR_NO_GIVE_POINTS_BOT
 
 
 class SelfReceiverError(GroupPointsError):
     # placeholder: points_name
-    default_message = default_message = BOT_MESSAGES["error.no_give_points_self"]
+    default_message = default_message = ERROR_NO_GIVE_POINTS_SELF
