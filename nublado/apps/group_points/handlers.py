@@ -1,3 +1,5 @@
+import re
+
 from telegram import Update
 from telegram.ext import ContextTypes, filters
 
@@ -12,7 +14,8 @@ from .bot_messages import BOT_MESSAGES
 from .conf.app_settings import app_settings as points_settings
 
 
-POINT_SYMBOL = points_settings.POINT_SYMBOL
+POINT_SYMBOL = re.escape(points_settings.POINT_SYMBOL)
+POINTS_NAME = points_settings.POINTS_NAME
 POINTS_MAP = points_settings.SYMBOL_COUNT_TO_POINTS
 POINT_FILTER = (
     filters.TEXT
@@ -39,11 +42,11 @@ async def give_points(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # Can't send points to self.
     if tg_sender.id == tg_receiver.id:
-        raise SelfReceiverError(points_name=_(BOT_MESSAGES["points_name"]))
+        raise SelfReceiverError(points_name=_(POINTS_NAME))
 
     # Can't send points to bot.
     if tg_receiver.is_bot:
-        raise BotReceiverError(points_name=_(BOT_MESSAGES["points_name"]))
+        raise BotReceiverError(points_name=_(POINTS_NAME))
 
     num_points = extract_points(tg_message.text, POINT_SYMBOL, POINTS_MAP)
 
@@ -72,7 +75,7 @@ async def give_points(update: Update, context: ContextTypes.DEFAULT_TYPE):
             sender_name=sender_name,
             sender_points=sender_member.points,
             num_points=num_points,
-            points_name=BOT_MESSAGES["points_name"],
+            points_name=_(POINTS_NAME),
             receiver_name=receiver_name,
             receiver_points=receiver_member.points,
         )

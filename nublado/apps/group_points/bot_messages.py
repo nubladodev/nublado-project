@@ -60,7 +60,6 @@ POINT_NAME = _("group_points.bot.point_name")
 # Translators: Plural form of the points name (e.g., points, karma points, raindrops).
 POINTS_NAME = _("group_points.bot.points_name")
 
-
 BOT_MESSAGES = {
     "error.no_give_points_bot": ERROR_NO_GIVE_POINTS_BOT,
     "error.no_take_points_bot": ERROR_NO_TAKE_POINTS_BOT,

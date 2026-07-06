@@ -1,6 +1,5 @@
 import os
 import sys
-import re
 from pathlib import Path
 
 from django.utils.translation import gettext_noop as _
@@ -184,7 +183,8 @@ NUBLADO_BOT = {
 }
 
 GROUP_POINTS = {
-    "POINT_SYMBOL": re.escape("+"),
+    "POINTS_NAME": _("group_points.bot.points_name"),
+    "POINT_SYMBOL": "+",
     "SYMBOL_COUNT_TO_POINTS": {
         2: 1,
         3: 2,

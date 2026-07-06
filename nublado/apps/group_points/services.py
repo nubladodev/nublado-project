@@ -5,7 +5,8 @@ from django_nublado_telegram.utils.async_utils import async_call
 async def transfer_points(tg_chat, tg_member_sender, tg_member_receiver, num_points):
     """
     Persist points transfer in the database.
-    Returns sender_member, receiver_member group member objects from the ORM.
+    Returns sender_member, receiver_member 
+    TelegramGroupMember objects from the ORM.
     """
 
     sender_member, created = await async_call(
