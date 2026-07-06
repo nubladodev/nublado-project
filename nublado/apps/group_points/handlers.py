@@ -16,6 +16,7 @@ from .conf.app_settings import app_settings as points_settings
 
 POINT_SYMBOL = re.escape(points_settings.POINT_SYMBOL)
 POINTS_NAME = points_settings.POINTS_NAME
+POINT_NAME = points_settings.POINT_NAME
 POINTS_MAP = points_settings.SYMBOL_COUNT_TO_POINTS
 POINT_FILTER = (
     filters.TEXT
@@ -88,7 +89,7 @@ async def give_points(update: Update, context: ContextTypes.DEFAULT_TYPE):
         bot_message = BOT_MESSAGES["give_point"].format(
             sender_name=sender_name,
             sender_points=sender_member.points,
-            points_name=BOT_MESSAGES["point_name"],
+            points_name=_(POINT_NAME),
             receiver_name=receiver_name,
             receiver_points=receiver_member.points,
         )

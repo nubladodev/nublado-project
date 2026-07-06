@@ -623,16 +623,3 @@ msgstr ""
 #~ msgid "bot.message.note_no_args"
 #~ msgstr "Una nota necesita una etiqueta y contenido."
 
-#~| msgid "bot.point_name"
-#~ msgid "bot.point_name"
-#~ msgstr "un punto"
-
-#~| msgid "bot.points_name"
-#~ msgid "bot.points_name"
-#~ msgstr "puntos"
-
-#~ msgid "bot.orchard.point_name"
-#~ msgstr "una cereza"
-
-#~ msgid "bot.orchard.points_name"
-#~ msgstr "cerezas"

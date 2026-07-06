@@ -183,6 +183,7 @@ NUBLADO_BOT = {
 }
 
 GROUP_POINTS = {
+    "POINT_NAME": _("group_points.bot.point_name"),
     "POINTS_NAME": _("group_points.bot.points_name"),
     "POINT_SYMBOL": "+",
     "SYMBOL_COUNT_TO_POINTS": {
