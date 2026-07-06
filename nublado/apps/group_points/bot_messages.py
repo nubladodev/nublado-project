@@ -1,5 +1,6 @@
 from django.utils.translation import gettext_lazy as _
 
+
 # Translators: Message when giving exactly 1 point to a group member.
 # {sender_name}, {receiver_name} = usernames.
 # {sender_points}, {receiver_points} = updated point totals for sender and receiver.
